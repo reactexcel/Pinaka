@@ -14,6 +14,9 @@ import PageFullscreen from 'routes/fullscreen/';
 import PageLockScreen from 'routes/lock-screen/';
 import PageLogin from 'routes/login/';
 import PageSignUp from 'routes/sign-up/';
+import * as actions from 'actions';
+import {bindActionCreators} from 'redux';
+import {withRouter} from 'react-router';
 
 // = styles =
 // 3rd
@@ -30,7 +33,14 @@ import grayTheme from './themes/grayTheme';
 
 
 class App extends Component {
-  componentDidMount() {}
+  componentWillMount() {
+    let data = sessionStorage.getItem('user');
+    let user = JSON.parse(data);
+    if( user && user.data.token && user.data.data){
+      this.props.loginUserSuccess(user.data);
+      this.props.history.push('/app/dashboard');
+    }
+  }
 
   render() {
     const { match, location, layoutBoxed, navCollapsed, navBehind, fixedHeader, sidebarWidth, theme } = this.props;
@@ -85,6 +95,7 @@ class App extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
+  user: state.user.userLogged,
   layoutBoxed: state.settings.layoutBoxed,
   navCollapsed: state.settings.navCollapsed,
   navBehind: state.settings.navBehind,
@@ -93,6 +104,10 @@ const mapStateToProps = (state, ownProps) => ({
   theme: state.settings.theme,
 });
 
-module.exports = connect(
-  mapStateToProps
-)(App);
+const mapDispatchToProps = (dispatch) => { return bindActionCreators(actions, dispatch); };
+
+
+module.exports = withRouter(connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App));

@@ -15,27 +15,36 @@ class Login extends React.Component {
     super();
     this.state = {
       brand: APPCONFIG.brand,
-      email:'',
-      password:'',
+      email:'123@gmail.com',
+      password:'123',
       isOpen:false,
       message:''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
+    this.handleRequestClose = this.handleRequestClose.bind(this);
   }
   componentWillReceiveProps(props){
     console.log(props.user);
+    if(props.user.isError){
+      this.setState({isOpen:true,message:props.user.message.message});
+    } else if (props.user.isSuccess) {
+      sessionStorage.setItem('user',JSON.stringify(props.user));
+      this.setState({isOpen:true, message:'Login Successfully'})
+    }
   }
   handleChange = props => (event, index, value) =>{
     this.setState({[props]:event.target.value});
   }
   handleSave(){
-    console.log(this.state);
     let data = {email:this.state.email,password:this.state.password}
     this.props.loginUserRequest(data)
   }
   handleRequestClose(){
     this.setState({isOpen:false})
+    if(this.props.user.isSuccess){
+      this.props.history.push('/app/dashboard');
+    }
   }
   render() {
     return (
@@ -83,11 +92,6 @@ class Login extends React.Component {
           </div>
         </div>
 
-        {/* <div className="additional-info">
-          <a href="#/sign-up">Sign up</a>
-          <span className="divider-h" />
-          <a href="#/forgot-password">Forgot your password?</a>
-        </div> */}
 
       </div>
     );

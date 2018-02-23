@@ -9,6 +9,7 @@ import {
   addCustomer,
   updateCustomer,
   deleteCustomer,
+  getInterests,
   loginUser,
   searchUser,
   searchCustomer,

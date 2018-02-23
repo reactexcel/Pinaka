@@ -17,7 +17,6 @@ export function* fetchUser(){
              resolve(data);
          })
          .catch(err => {
-             console.log("Deleting Card API Error", err);
              reject(err);
          });
      });
@@ -50,7 +49,6 @@ export function* addUser(data){
              resolve(data);
          })
          .catch(err => {
-             console.log("Add api error", err);
              reject(err);
          });
      });
@@ -83,7 +81,6 @@ export function* updateUser(data){
              resolve(data);
          })
          .catch(err => {
-             console.log("Add api error", err);
              reject(err);
          });
      });
@@ -101,7 +98,6 @@ export function* updateUser(data){
 
 export function* deleteUser(data){
   let body = JSON.stringify(data.payload);
-  console.log(body,'deleteuser');
   try{
     const api = () =>  new Promise((resolve, reject) => {
         return fetch(API.SERVER_DEV_URL+'admin/deleteAdminStaff',{
@@ -117,7 +113,6 @@ export function* deleteUser(data){
              resolve(data);
          })
          .catch(err => {
-             console.log("Add api error", err);
              reject(err);
          });
      });
@@ -133,10 +128,11 @@ export function* deleteUser(data){
      }
 }
 
-export function* fetchCustomer(){
+export function* fetchCustomer(action){
+  let token = action.payload;
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/getAllCustomer',{
+        return fetch(API.SERVER_DEV_URL+'admin/getAllCustomer?accessToken='+token,{
           method: 'GET',
           headers: {
            'content-type': 'application/json'
@@ -147,7 +143,6 @@ export function* fetchCustomer(){
              resolve(data);
          })
          .catch(err => {
-             console.log("Deleting Card API Error", err);
              reject(err);
          });
      });
@@ -177,7 +172,7 @@ export function* addCustomer(data){
         formData.append('phone', '+1' + params.phone);
     }
     formData.append('interests', ['5a41e46065925d20e5b4fbea']);
-    formData.append('source', 0);
+    formData.append('source', params.source);
     formData.append('type', 0);
     formData.append('password', params.password);
     formData.append('occupation', params.occupation);
@@ -203,7 +198,6 @@ export function* addCustomer(data){
              resolve(data);
          })
          .catch(err => {
-             console.log("Add api error", err);
              reject(err);
          });
      });
@@ -211,7 +205,6 @@ export function* addCustomer(data){
 
 
      let res = yield call(api);
-     console.log(res);
         if(res.status == 1){
          yield put( actions.customerAddSuccess(res.data));
        } else {
@@ -240,7 +233,6 @@ export function* updateCustomer(data){
              resolve(data);
          })
          .catch(err => {
-             console.log("Add api error", err);
              reject(err);
          });
      });
@@ -273,7 +265,6 @@ export function* deleteCustomer(data){
              resolve(data);
          })
          .catch(err => {
-             console.log("Add api error", err);
              reject(err);
          });
      });
@@ -307,7 +298,6 @@ export function* searchUser(data){
              resolve(data);
          })
          .catch(err => {
-             console.log("Add api error", err);
              reject(err);
          });
      });
@@ -340,7 +330,6 @@ export function* searchCustomer(data){
              resolve(data);
          })
          .catch(err => {
-             console.log("Add api error", err);
              reject(err);
          });
      });
@@ -374,7 +363,6 @@ export function* addRedeem(data){
              resolve(data);
          })
          .catch(err => {
-             console.log("Add api error", err);
              reject(err);
          });
      });
@@ -408,7 +396,6 @@ export function* updateRedeem(data){
              resolve(data);
          })
          .catch(err => {
-             console.log("Add api error", err);
              reject(err);
          });
      });
@@ -441,7 +428,6 @@ export function* deleteRedeem(data){
              resolve(data);
          })
          .catch(err => {
-             console.log("Add api error", err);
              reject(err);
          });
      });
@@ -463,27 +449,27 @@ export function* loginUser(data){
   try{
     const api = () =>  new Promise((resolve, reject) => {
         return fetch(API.SERVER_DEV_URL+'admin/Adminlogin',{
+
              method: 'POST',
-             cache: 'no-cache',
+
              headers: {
               'content-type': 'application/json'
             },
             body,
          })
-         .then((res)=> res.json())
+         .then((res)=> {  return res.json()})
          .then(data => {
              resolve(data);
          })
          .catch(err => {
-             console.log("Add api error", err);
              reject(err);
          });
      });
 
      let res = yield call(api);
-     console.log(res);
        if(res.status == 1){
-         yield put( actions.loginUserSuccess(res.data));
+         let payload = {token:res.token,data:res.data};
+         yield put( actions.loginUserSuccess(payload));
        } else {
          yield put (actions.loginUserError(res));
        }
@@ -507,7 +493,6 @@ export function* fetchRedeem(){
              resolve(data);
          })
          .catch(err => {
-             console.log("Deleting Card API Error", err);
              reject(err);
          });
      });
@@ -521,4 +506,25 @@ export function* fetchRedeem(){
      } catch (e){
        console.log(e);
      }
+}
+
+
+export function getInterests(){
+    return new Promise((resolve, reject) => {
+        fetch(API.SERVER_DEV_URL + 'interest', {
+            method: "GET",
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+        .then((res) => res.json())
+        .then(data => {
+            console.log("Getting Interests API Success", data);
+            resolve(data);
+        })
+        .catch(err => {
+            console.log("Getting Interests API Error", err);
+            reject(err);
+        });
+    });
 }

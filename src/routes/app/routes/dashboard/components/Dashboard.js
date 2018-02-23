@@ -78,11 +78,11 @@ const Engagement = () => (
       super(props);
     }
     componentWillMount(){
+      let token = this.props.user.userLogged.data.token;
       this.props.userListRequest();
-      this.props.customerListRequest();
+      this.props.customerListRequest(token);
     }
     render(){
-      // console.log(this.props,'dashboard');
       return(
         <div className="container-fluid no-breadcrumbs page-dashboard">
           <QueueAnim type="bottom" className="ui-animate">

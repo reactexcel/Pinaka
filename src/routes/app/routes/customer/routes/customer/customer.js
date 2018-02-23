@@ -42,7 +42,7 @@ class Customer extends React.Component {
         <td className="mdl-data-table__cell--non-numeric">{index+1}</td>
         <td className="mdl-data-table__cell--non-numeric">{value.name} {value.lastName}</td>
         <td className="mdl-data-table__cell--non-numeric">{value.email}</td>
-        <td>{value.phone}</td>
+        <td>{value.phone?value.phone.substring(2, value.phone.length):''}</td>
         <td>{value.sms_option ? "Yes" : "No"}</td>
         <td>{value.app_installed ? "Yes" : "No"}</td>
 

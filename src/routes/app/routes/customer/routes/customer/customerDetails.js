@@ -51,7 +51,7 @@ const DetailsForm = (props) => {
 
     );
   });
-
+  console.log(props,'-------------------------');
   return(
   <div className="row">
     <div className="col-xl-12">
@@ -102,7 +102,7 @@ const DetailsForm = (props) => {
                   <div className="col-md-10">
                     <TextField
                       hintText="Phone Number"
-                      value={props.data.phone}
+                      value={props.data.phone?props.data.phone.substring(2, props.data.phone.length):''}
                       onChange={props.handleChange('phone')}
                       type="number"
                       disabled={isDisabled}
@@ -234,8 +234,8 @@ const DetailsForm = (props) => {
                       onChange={props.handleChange('city')}
                       disabled={isDisabled}
                     >
-                      <MenuItem value={1} primaryText="A city" />
-                      <MenuItem value={2} primaryText="B city" />
+                      <MenuItem value={"1"} primaryText="A city" />
+                      <MenuItem value={"2"} primaryText="B city" />
                       {/* {cities} */}
                     </SelectField>
                   </div>
@@ -249,8 +249,8 @@ const DetailsForm = (props) => {
                       onChange={props.handleChange('state')}
                       disabled={isDisabled}
                     >
-                      <MenuItem value={1} primaryText="A state" />
-                      <MenuItem value={2} primaryText="B state" />
+                      <MenuItem value={"1"} primaryText="A state" />
+                      <MenuItem value={"2"} primaryText="B state" />
                     </SelectField>
                   </div>
                 </div>
@@ -495,8 +495,8 @@ class CustomerDetails extends React.Component {
       interests: [],
       address1: '',
       address2: '',
-      city: 1,
-      state: 1,
+      city: "1",
+      state: "1",
       zipcode: '',
       password:'123',
       birthday: '',

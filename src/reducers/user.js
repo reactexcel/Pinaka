@@ -20,6 +20,7 @@ const initialState = {
   },
   userLogged:{
     isLoading:false,
+    isLogged:false,
     data:'',
     isError: false,
     isSuccess: false,
@@ -134,9 +135,11 @@ const loginUserRequest = (state, action) =>{
 });}
 const loginUserSuccess = (state, action) => update(state, {
   userLogged : {
+    data: {$set:action.payload},
     isLoading:  {$set: false},
     isError:    {$set: false},
     isSuccess:  {$set: true},
+    isLogged: {$set:true},
     message:    {$set: 'User Delete success'}
   }
 });
