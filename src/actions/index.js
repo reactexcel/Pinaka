@@ -87,8 +87,13 @@ export const searchUserRequest = createAction(types.SEARCH_USER_REQUEST);
 export const searchUserSuccess = createAction(types.SEARCH_USER_SUCCESS);
 export const searchUserError = createAction(types.SEARCH_USER_ERROR);
 
+export const searchCustomerRequest = createAction(types.SEARCH_CUSTOMER_REQUEST);
+export const searchCustomerSuccess = createAction(types.SEARCH_CUSTOMER_SUCCESS);
+export const searchCustomerError = createAction(types.SEARCH_CUSTOMER_ERROR);
+
 // loginUser
 
 export const loginUserRequest = createAction(types.LOGIN_USER_REQUEST);
 export const loginUserSuccess = createAction(types.LOGIN_USER_SUCCESS);
 export const loginUserError = createAction(types.LOGIN_USER_ERROR);
+export const loginUserReset = createAction(types.LOGIN_USER_RESET);

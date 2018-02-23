@@ -1,25 +1,56 @@
 import React from 'react';
 import APPCONFIG from 'constants/Config';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {withRouter} from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import QueueAnim from 'rc-queue-anim';
+import * as actions from 'actions';
+import Snackbar from 'material-ui/Snackbar';
+
 
 class Login extends React.Component {
   constructor() {
     super();
     this.state = {
-      brand: APPCONFIG.brand
+      brand: APPCONFIG.brand,
+      email:'',
+      password:'',
+      isOpen:false,
+      message:''
     };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSave = this.handleSave.bind(this);
   }
-
+  componentWillReceiveProps(props){
+    console.log(props.user);
+  }
+  handleChange = props => (event, index, value) =>{
+    this.setState({[props]:event.target.value});
+  }
+  handleSave(){
+    console.log(this.state);
+    let data = {email:this.state.email,password:this.state.password}
+    this.props.loginUserRequest(data)
+  }
+  handleRequestClose(){
+    this.setState({isOpen:false})
+  }
   render() {
     return (
       <div className="body-inner">
+        <Snackbar
+          open={this.state.isOpen}
+          message={this.state.message}
+          autoHideDuration={4000}
+          onRequestClose={this.handleRequestClose}
+        />
         <div className="card bg-white">
           <div className="card-content">
 
             <section className="logo text-center">
-              <h1><a href="#/">{this.state.brand}</a></h1>
+              <img src="assets/logo1.png" style={{height:'50px'}} />
             </section>
 
             <form className="form-horizontal">
@@ -28,12 +59,17 @@ class Login extends React.Component {
                   <TextField
                     floatingLabelText="Email"
                     fullWidth
+                    value={this.state.email}
+                    type="email"
+                    onChange={this.handleChange('email')}
                   />
                 </div>
                 <div className="form-group">
                   <TextField
                     floatingLabelText="Password"
                     type="password"
+                    value={this.state.password}
+                    onChange={this.handleChange('password')}
                     fullWidth
                     />
                 </div>
@@ -41,31 +77,41 @@ class Login extends React.Component {
             </form>
           </div>
           <div className="card-action no-border text-right">
-            <a href="#/app/dashboard" className="color-primary">Login</a>
+            {/* <a href="#/app/dashboard" className="color-primary">Login</a> */}
+            <RaisedButton label="Login"  onClick={()=>{this.handleSave()}}  primary  />
+
           </div>
         </div>
 
-        <div className="additional-info">
+        {/* <div className="additional-info">
           <a href="#/sign-up">Sign up</a>
           <span className="divider-h" />
           <a href="#/forgot-password">Forgot your password?</a>
-        </div>
+        </div> */}
 
       </div>
     );
   }
 }
 
-const Page = () => (
+const Page = (props) => (
   <div className="page-login">
     <div className="main-body">
       <QueueAnim type="bottom" className="ui-animate">
         <div key="1">
-          <Login />
+          <Login {...props}/>
         </div>
       </QueueAnim>
     </div>
   </div>
 );
+function mapStateToProps (state) {
+  return {
+    user: state.user.userLogged
+  };
+}
+const mapDispatchToProps = (dispatch) => { return bindActionCreators(actions, dispatch); };
 
-module.exports = Page;
+
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Page));

@@ -24,6 +24,13 @@ const initialState = {
     isError: false,
     isSuccess: false,
     message : ''
+  },
+  searchUser:{
+    isLoading:false,
+    data:'',
+    isError: false,
+    isSuccess: false,
+    message : ''
   }
 }
 
@@ -142,6 +149,42 @@ const loginUserError = (state, action) => update(state, {
   }
 });
 
+const userSearchRequest = (state, action) => update(state, {
+  searchUser : {
+    isSuccess: {$set: false},
+    isLoading: {$set: false},
+    isError:   {$set: true},
+    message:   {$set: ''}
+  }
+});
+
+const userSearchSuccess = (state, action) => update(state, {
+  searchUser : {
+    isSuccess: {$set: false},
+    isLoading: {$set: false},
+    isError:   {$set: true},
+    message:   {$set: 'Search Successfully'}
+  },
+  user:{
+    data:       {$set: action.payload},
+  }
+});
+
+const userSearchError = (state, action) => update(state, {
+  searchUser : {
+    isSuccess: {$set: false},
+    isLoading: {$set: false},
+    isError:   {$set: true},
+    message:   {$set: 'Something Went Wrong'}
+  }
+});
+
+const loginUserRest = (state,action) => update(state,{
+  userLogged:{
+    isError: {$set:false}
+  }
+});
+
 export default handleActions({
   [constants.USER_LIST_REQUEST]: userListRequest,
   [constants.USER_LIST_SUCCESS]: userListSuccess,
@@ -150,6 +193,10 @@ export default handleActions({
   [constants.USER_ADD_REQUEST]: userAddRequest,
   [constants.USER_ADD_SUCCESS]: userAddSuccess,
   [constants.USER_ADD_ERROR]:   userAddError,
+
+  [constants.SEARCH_USER_REQUEST]: userSearchRequest,
+  [constants.SEARCH_USER_SUCCESS]: userSearchSuccess,
+  [constants.SEARCH_USER_ERROR]: userSearchError,
 
   [constants.USER_UPDATE_REQUEST]: userAddRequest,
   [constants.USER_UPDATE_SUCCESS]: userAddSuccess,
@@ -162,6 +209,7 @@ export default handleActions({
   [constants.USER_DELETE_ERROR]:   userDeleteError,
 
   [constants.LOGIN_USER_REQUEST]: loginUserRequest,
+  [constants.LOGIN_USER_REST]: loginUserRest,
   [constants.LOGIN_USER_SUCCESS]: loginUserSuccess,
   [constants.LOGIN_USER_ERROR]:   loginUserError,
 

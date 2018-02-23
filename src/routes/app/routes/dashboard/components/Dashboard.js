@@ -79,6 +79,7 @@ const Engagement = () => (
     }
     componentWillMount(){
       this.props.userListRequest();
+      this.props.customerListRequest();
     }
     render(){
       // console.log(this.props,'dashboard');

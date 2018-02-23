@@ -6,6 +6,7 @@ import { Link } from 'react-router';
 import * as _ from 'lodash';
 import ReactEcharts from 'components/ReactECharts';
 import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn, TableFooter} from 'material-ui/Table';
 import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
@@ -30,16 +31,20 @@ class User extends React.Component {
       this.setState({[props]:index});
     } else {
       this.setState({[props]:event.target.value});
+      let searchvalue = this.state.searchType == 'name' ? {type:this.state.searchType,name:event.target.value} : {type:this.state.searchType,email:event.target.value}
+      this.props.searchUserRequest(searchvalue);
     }
   }
   render(){
-    console.log(this.props,'***********************');
+    // console.log(this.props,'***********************');
     let CustomerList = _.map(this.props.user.user.data, (value, index) => (
       <tr key={index}>
         <td className="mdl-data-table__cell--non-numeric">{index+1}</td>
         <td className="mdl-data-table__cell--non-numeric">{value.name}</td>
         <td className="mdl-data-table__cell--non-numeric">{value.email}</td>
         <td>{value.role}</td>
+        {/* <td>{value.lastLogin}</td> */}
+        <td></td>
         <td>
           <a href={`/#/app/user/viewuserdetails/${index}/disable`}>More Detail</a>
         </td>
@@ -52,7 +57,14 @@ class User extends React.Component {
             <div className="box box-default">
               <div className="box-body">
                 <article className="article">
-                  <h2 className="article-title">User Details</h2>
+                  <div>
+                    <h2 className="article-title">User Details</h2>
+                    <div>
+                      {/* button for add update and delete */}
+                      <RaisedButton label="Add User"  onClick={()=>{this.props.history.push('/app/user/viewuserdetails/0/add')}}  primary  />
+
+                    </div>
+                  </div>
                   <div className=" col-xl-12 row" >
                     <SelectField
                       hintText="Select a name"
@@ -80,6 +92,7 @@ class User extends React.Component {
                           <th className="mdl-data-table__cell--non-numeric">Name</th>
                           <th className="mdl-data-table__cell--non-numeric">Email Id</th>
                           <th>Role</th>
+                          <th>Last Login Time</th>
                           <th>More Details</th>
                         </tr>
                       </thead>

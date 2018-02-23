@@ -96,14 +96,14 @@ class SidebarContent extends React.Component {
         <li>
           <FlatButton href="#/app/customer"><i className="nav-icon material-icons">people</i><span className="nav-text">Customer</span></FlatButton>
           <ul>
-            <li><FlatButton className="prepend-icon" href="#/app/customer/viewcustomerdetails/0/add"><span>Add Customer</span></FlatButton></li>
+            {/* <li><FlatButton className="prepend-icon" href="#/app/customer/viewcustomerdetails/0/add"><span>Add Customer</span></FlatButton></li> */}
             <li><FlatButton className="prepend-icon" href="#/app/customer/viewcustomer"><span>View Customer</span></FlatButton></li>
           </ul>
         </li>
         <li>
           <FlatButton href="#/app/user"><i className="nav-icon material-icons">person</i><span className="nav-text">User</span></FlatButton>
           <ul>
-            <li><FlatButton className="prepend-icon" href="#/app/user/viewuserdetails/0/add"><span>Add User</span></FlatButton></li>
+            {/* <li><FlatButton className="prepend-icon" href="#/app/user/viewuserdetails/0/add"><span>Add User</span></FlatButton></li> */}
             <li><FlatButton className="prepend-icon" href="#/app/user/viewuser"><span>View User</span></FlatButton></li>
           </ul>
         </li>
