@@ -38,7 +38,6 @@ class App extends Component {
     let user = JSON.parse(data);
     if( user && user.data.token && user.data.data){
       this.props.loginUserSuccess(user.data);
-      this.props.history.push('/app/dashboard');
     }
   }
 

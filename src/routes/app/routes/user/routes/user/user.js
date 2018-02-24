@@ -24,7 +24,8 @@ class User extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
   componentWillMount(){
-    this.props.userListRequest();
+    let token = this.props.user.userLogged.data.token;
+    this.props.userListRequest(token);
   }
   handleChange = props => (event, value, index) => {
     if(props == 'searchType'){
@@ -32,7 +33,9 @@ class User extends React.Component {
     } else {
       this.setState({[props]:event.target.value});
       let searchvalue = this.state.searchType == 'name' ? {type:this.state.searchType,name:event.target.value} : {type:this.state.searchType,email:event.target.value}
-      this.props.searchUserRequest(searchvalue);
+      let token = this.props.user.userLogged.data.token;
+      let apiData = {token,data:searchvalue};
+      this.props.searchUserRequest(apiData);
     }
   }
   render(){

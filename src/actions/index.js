@@ -81,6 +81,13 @@ export const redeemDeleteSuccess = createAction(types.REDEEM_DELETE_SUCCESS);
 export const redeemDeleteError = createAction(types.REDEEM_DELETE_ERROR);
 
 
+// interest list
+
+export const interestListRequest = createAction(types.INTEREST_LIST_REQUEST);
+export const interestListSuccess = createAction(types.INTEREST_LIST_SUCCESS);
+export const interestListError = createAction(types.INTEREST_LIST_ERROR);
+
+
 // searchUser
 
 export const searchUserRequest = createAction(types.SEARCH_USER_REQUEST);

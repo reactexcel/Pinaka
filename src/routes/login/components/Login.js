@@ -15,8 +15,8 @@ class Login extends React.Component {
     super();
     this.state = {
       brand: APPCONFIG.brand,
-      email:'123@gmail.com',
-      password:'123',
+      email:'',
+      password:'',
       isOpen:false,
       message:''
     };

@@ -23,19 +23,21 @@ class Customer extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
   componentWillMount(){
-    this.props.customerListRequest();
+    let token = this.props.user.userLogged.data.token;
+    this.props.customerListRequest(token);
   }
   handleChange = props => (event, value, index) => {
     if(props == 'searchType'){
       this.setState({[props]:index});
     } else {
+      let token = this.props.user.userLogged.data.token;
       this.setState({[props]:event.target.value});
       let searchvalue = this.state.searchType == 'phone' ? {type:this.state.searchType,phone:event.target.value} : {type:this.state.searchType,email:event.target.value}
-      this.props.searchCustomerRequest(searchvalue);
+      let apiData={token,data:searchvalue}
+      this.props.searchCustomerRequest(apiData);
     }
   }
   render(){
-    console.log(this.props.customer.data);
     let CustomerList = _.map(this.props.customer.data, (value, index) => {
       return(
       <tr key={index}>
@@ -112,7 +114,8 @@ class Customer extends React.Component {
 }
 function mapStateToProps (state) {
   return {
-    customer: state.customer.customer
+    customer: state.customer.customer,
+    user: state.user
   };
 }
 const mapDispatchToProps = (dispatch) => { return bindActionCreators(actions, dispatch); };

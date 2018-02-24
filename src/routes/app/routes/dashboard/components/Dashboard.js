@@ -79,7 +79,8 @@ const Engagement = () => (
     }
     componentWillMount(){
       let token = this.props.user.userLogged.data.token;
-      this.props.userListRequest();
+      this.props.interestListRequest();
+      this.props.userListRequest(token);
       this.props.customerListRequest(token);
     }
     render(){
@@ -96,6 +97,7 @@ const Engagement = () => (
   }
   function mapStateToProps (state) {
     return {
+      interest: state.interest,
       user: state.user,
       customer: state.customer
     };

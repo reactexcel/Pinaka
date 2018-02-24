@@ -55,7 +55,7 @@ const DetailsForm = (props) => {
               <div>
                 {/* button for add update and delete */}
                 <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-md" />
-                <RaisedButton label="Delete" backgroundColor="#FF0000" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.userDeleteRequest({_id:props.data._id})}} className="btn-w-md" />
+                <RaisedButton label="Delete" backgroundColor="#FF0000" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.userDeleteRequest({token:props.user.userLogged.data.token,data:{_id:props.data._id}})}} className="btn-w-md" />
                 <RaisedButton label="Back"  style={{marginLeft:5}}  onClick={()=>{props.handleEdit('back')}} className="btn-w-md" />
 
               </div>
@@ -191,10 +191,11 @@ class UserDetails extends React.Component {
   }
   handleSave(){
     const { data } = this.state;
+    let token = this.props.user.userLogged.data.token;
     if(this.state.type == 'add'){
-      this.props.userAddRequest(data);
+      this.props.userAddRequest({token,data});
     } else if(this.state.type == 'edit'){
-      this.props.userUpdateRequest(data);
+      this.props.userUpdateRequest({token,data});
     }
   }
   handleEdit (data) {

@@ -2,10 +2,11 @@ import { API } from '../constants';
 import * as actions from 'actions';
 import {call, put} from 'redux-saga/effects';
 
-export function* fetchUser(){
+export function* fetchUser(action){
+  let token = action.payload;
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/getAllAdminStaff',{
+        return fetch(API.SERVER_DEV_URL+'admin/getAllAdminStaff?accessToken='+token,{
              method: 'GET',
              cache: 'no-cache',
              headers: {
@@ -33,10 +34,11 @@ export function* fetchUser(){
 }
 
 export function* addUser(data){
-  let body = JSON.stringify(data.payload);
+  let body = JSON.stringify(data.payload.data);
+  let token = data.payload.token;
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/addAdminStaff',{
+        return fetch(API.SERVER_DEV_URL+'admin/addAdminStaff?accessToken='+token,{
              method: 'POST',
              cache: 'no-cache',
              headers: {
@@ -65,10 +67,11 @@ export function* addUser(data){
 }
 
 export function* updateUser(data){
-  let body = JSON.stringify(data.payload);
+  let body = JSON.stringify(data.payload.data);
+  let token = data.payload.token;
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/updateAdminStaff',{
+        return fetch(API.SERVER_DEV_URL+'admin/updateAdminStaff?accessToken='+token,{
              method: 'PUT',
              cache: 'no-cache',
              headers: {
@@ -97,10 +100,11 @@ export function* updateUser(data){
 }
 
 export function* deleteUser(data){
-  let body = JSON.stringify(data.payload);
+  let body = JSON.stringify(data.payload.data);
+  let token = data.payload.token;
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/deleteAdminStaff',{
+        return fetch(API.SERVER_DEV_URL+'admin/deleteAdminStaff?accessToken='+token,{
              method: 'DELETE',
              cache: 'no-cache',
              headers: {
@@ -159,7 +163,8 @@ export function* fetchCustomer(action){
 }
 
 export function* addCustomer(data){
-  let params = data.payload;
+  let params = data.payload.data;
+  let token = data.payload.token;
   var formData = new FormData();
     formData.append('name', params.name);
     formData.append('email', params.email);
@@ -171,7 +176,7 @@ export function* addCustomer(data){
     if(params.phone != undefined){
         formData.append('phone', '+1' + params.phone);
     }
-    formData.append('interests', ['5a41e46065925d20e5b4fbea']);
+    formData.append('interests', params.interests);
     formData.append('source', params.source);
     formData.append('type', 0);
     formData.append('password', params.password);
@@ -187,7 +192,7 @@ export function* addCustomer(data){
 
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/addCustomer',{
+        return fetch(API.SERVER_DEV_URL+'admin/addCustomer?accessToken='+token,{
              method: 'POST',
             body:formData,
          })
@@ -217,10 +222,11 @@ export function* addCustomer(data){
 
 
 export function* updateCustomer(data){
-  let body = JSON.stringify(data.payload);
+  let body = JSON.stringify(data.payload.data);
+  let token = data.payload.token;
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/updateCustomer',{
+        return fetch(API.SERVER_DEV_URL+'admin/updateCustomer?accessToken='+token,{
              method: 'PUT',
              cache: 'no-cache',
              headers: {
@@ -249,10 +255,11 @@ export function* updateCustomer(data){
 }
 
 export function* deleteCustomer(data){
-  let body = JSON.stringify(data.payload);
+  let body = JSON.stringify(data.payload.data);
+  let token = data.payload.token;
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/deleteAdminStaff',{
+        return fetch(API.SERVER_DEV_URL+'admin/deleteAdminStaff?accessToken='+token,{
              method: 'DELETE',
              cache: 'no-cache',
              headers: {
@@ -282,10 +289,11 @@ export function* deleteCustomer(data){
 
 
 export function* searchUser(data){
-  let body = JSON.stringify(data.payload);
+  let body = JSON.stringify(data.payload.data);
+  let token = data.payload.token;
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/searchAdminStaff',{
+        return fetch(API.SERVER_DEV_URL+'admin/searchAdminStaff?accessToken='+token,{
              method: 'POST',
              cache: 'no-cache',
              headers: {
@@ -314,10 +322,11 @@ export function* searchUser(data){
 }
 
 export function* searchCustomer(data){
-  let body = JSON.stringify(data.payload);
+  let body = JSON.stringify(data.payload.data);
+  let token = data.payload.token;
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/search_allCustomers',{
+        return fetch(API.SERVER_DEV_URL+'admin/search_allCustomers?accessToken='+token,{
              method: 'POST',
              cache: 'no-cache',
              headers: {
@@ -347,10 +356,13 @@ export function* searchCustomer(data){
 
 
 export function* addRedeem(data){
-  let body = JSON.stringify(data.payload);
+  let body = JSON.stringify(data.payload.data);
+  let token = data.payload.token;
+  console.log(body);
+  console.log(data,'+565');
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/addCustomer',{
+        return fetch(API.SERVER_DEV_URL+'RedeemCode/AddRedeemCode?accessToken='+token,{
              method: 'POST',
              cache: 'no-cache',
              headers: {
@@ -368,10 +380,11 @@ export function* addRedeem(data){
      });
 
      let res = yield call(api);
+     console.log(res);
        if(res.status == 1){
-         yield put( actions.userAddSuccess(res.data));
+         yield put( actions.redeemAddSuccess(res.data));
        } else {
-         yield put (actions.userAddError(res));
+         yield put (actions.redeemAddError(res));
        }
      } catch (e){
        console.log(e);
@@ -380,10 +393,11 @@ export function* addRedeem(data){
 
 
 export function* updateRedeem(data){
-  let body = JSON.stringify(data.payload);
+  let body = JSON.stringify(data.payload.data);
+  let token = data.payload.token
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/updateCustomer',{
+        return fetch(API.SERVER_DEV_URL+'RedeemCode/updateRedeemCode?accessToken='+token,{
              method: 'PUT',
              cache: 'no-cache',
              headers: {
@@ -391,7 +405,7 @@ export function* updateRedeem(data){
             },
             body,
          })
-         .then((res)=> res.json())
+         .then((res)=>{ return res.json()})
          .then(data => {
              resolve(data);
          })
@@ -401,10 +415,11 @@ export function* updateRedeem(data){
      });
 
      let res = yield call(api);
+     console.log(res);
        if(res.status == 1){
-         yield put( actions.userUpdateSuccess(res.data));
+         yield put( actions.redeemUpdateSuccess(res.data));
        } else {
-         yield put (actions.userUpdateError(res));
+         yield put (actions.redeemUpdateError(res));
        }
      } catch (e){
        console.log(e);
@@ -412,10 +427,11 @@ export function* updateRedeem(data){
 }
 
 export function* deleteRedeem(data){
-  let body = JSON.stringify(data.payload);
+  let body = JSON.stringify(data.payload.data);
+  let token = data.payload.token;
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/deleteAdminStaff',{
+        return fetch(API.SERVER_DEV_URL+'RedeemCode/deleteRedeemCode?accessToken='+token,{
              method: 'DELETE',
              cache: 'no-cache',
              headers: {
@@ -434,9 +450,9 @@ export function* deleteRedeem(data){
 
      let res = yield call(api);
        if(res.status == 1){
-         yield put( actions.userUpdateSuccess(res.data));
+         yield put( actions.redeemDeleteSuccess(res.data));
        } else {
-         yield put (actions.userUpdateError(res));
+         yield put (actions.redeemDeleteError(res));
        }
      } catch (e){
        console.log(e);
@@ -478,10 +494,11 @@ export function* loginUser(data){
      }
 }
 
-export function* fetchRedeem(){
+export function* fetchRedeem(action){
+  let token = action.payload;
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/getAllAdminStaff',{
+        return fetch(API.SERVER_DEV_URL+'RedeemCode/getAllRedeemCode?accessToken='+token,{
              method: 'GET',
              cache: 'no-cache',
              headers: {
@@ -499,9 +516,9 @@ export function* fetchRedeem(){
 
      let res = yield call(api);
        if(res.status == 1){
-         yield put( actions.userListSuccess(res.data));
+         yield put( actions.redeemListSuccess(res.data));
        } else {
-         yield put (actions.userListError(res));
+         yield put (actions.redeemListError(res));
        }
      } catch (e){
        console.log(e);
@@ -509,8 +526,9 @@ export function* fetchRedeem(){
 }
 
 
-export function getInterests(){
-    return new Promise((resolve, reject) => {
+export function* getInterests(){
+  try{
+    const api = () => new Promise((resolve, reject) => {
         fetch(API.SERVER_DEV_URL + 'interest', {
             method: "GET",
             headers: {
@@ -519,12 +537,19 @@ export function getInterests(){
         })
         .then((res) => res.json())
         .then(data => {
-            console.log("Getting Interests API Success", data);
             resolve(data);
         })
         .catch(err => {
-            console.log("Getting Interests API Error", err);
             reject(err);
         });
     });
+    let res = yield call(api);
+      if(res){
+        yield put( actions.interestListSuccess(res));
+      } else {
+        yield put (actions.interestListError(res));
+      }
+    } catch (e){
+      console.log(e);
+    }
 }

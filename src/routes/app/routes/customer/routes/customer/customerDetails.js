@@ -51,14 +51,25 @@ const DetailsForm = (props) => {
 
     );
   });
-  console.log(props,'-------------------------');
+
   return(
   <div className="row">
     <div className="col-xl-12">
 
       <div className="box box-default">
-        <div className="box-heading"><h3>Customer Detail</h3></div>
+        <div className="box-heading"><h3 className="article-title">Customer Detail</h3></div>
         <div className="box-body">
+        {props.type == 'add' ?
+            null
+          :
+            <div>
+              {/* button for add update and delete */}
+              <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-md" />
+              <RaisedButton label="Delete" backgroundColor="#FF0000" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.customerDeleteRequest({token:props.user.userLogged.data.token,data:{_id:props.data._id}})}} className="btn-w-md" />
+              <RaisedButton label="Back"  style={{marginLeft:5}}  onClick={()=>{props.handleEdit('back')}} className="btn-w-md" />
+
+            </div>
+        }
           <article className="article">
 
               <form role="form">
@@ -102,7 +113,7 @@ const DetailsForm = (props) => {
                   <div className="col-md-10">
                     <TextField
                       hintText="Phone Number"
-                      value={props.data.phone?props.data.phone.substring(2, props.data.phone.length):''}
+                      value={props.data.phone?props.data.phone:''}
                       onChange={props.handleChange('phone')}
                       type="number"
                       disabled={isDisabled}
@@ -134,69 +145,16 @@ const DetailsForm = (props) => {
                 <div className="form-group row">
                   <label  className="col-md-2 control-label">Interest</label>
                   <div className="col-md-10">
-                    <Checkbox
-                      label="Laser Tag"
-                      style={styles.checkbox}
-                      onCheck={props.handleChange({props:'interests',item:'Laser Tag'})}
-                      checked={_.indexOf(props.data.interests, 'Laser Tag') >= 0}
-                      disabled={isDisabled}
-                    />
-                    <Checkbox
-                      label="Arcade"
-                      style={styles.checkbox}
-                      onCheck={props.handleChange({props:'interests',item:'Arcade'})}
-                      checked={_.indexOf(props.data.interests, 'Arcade') >= 0}
-                      disabled={isDisabled}
-                    />
-                    <Checkbox
-                      label="League"
-                      style={styles.checkbox}
-                      onCheck={props.handleChange({props:'interests',item:'League'})}
-                      checked={_.indexOf(props.data.interests, 'League') >= 0}
-                      disabled={isDisabled}
-                    />
-                    <Checkbox
-                      label="Cosmic bowling"
-                      style={styles.checkbox}
-                      onCheck={props.handleChange({props:'interests',item:'Cosmic bowling'})}
-                      checked={_.indexOf(props.data.interests, 'Cosmic bowling') >= 0}
-                      disabled={isDisabled}
-                    />
-                    <Checkbox
-                      label="Kids party"
-                      style={styles.checkbox}
-                      onCheck={props.handleChange({props:'interests',item:'Kids party'})}
-                      checked={_.indexOf(props.data.interests, 'Kids party') >= 0}
-                      disabled={isDisabled}
-                    />
-                    <Checkbox
-                      label="Bowling"
-                      style={styles.checkbox}
-                      onCheck={props.handleChange({props:'interests',item:'Bowling'})}
-                      checked={_.indexOf(props.data.interests, 'Bowling') >= 0}
-                      disabled={isDisabled}
-                    />
-                    <Checkbox
-                      label="Food"
-                      style={styles.checkbox}
-                      onCheck={props.handleChange({props:'interests',item:'Food'})}
-                      checked={_.indexOf(props.data.interests, 'Food') >= 0}
-                      disabled={isDisabled}
-                    />
-                    <Checkbox
-                      label="Adult Party"
-                      style={styles.checkbox}
-                      onCheck={props.handleChange({props:'interests',item:'Adult Party'})}
-                      checked={_.indexOf(props.data.interests, 'Adult Party') >= 0}
-                      disabled={isDisabled}
-                    />
-                    <Checkbox
-                      label="Group Event"
-                      style={styles.checkbox}
-                      onCheck={props.handleChange({props:'interests',item:'Group Event'})}
-                      checked={_.indexOf(props.data.interests, 'Group Event') >= 0}
-                      disabled={isDisabled}
-                    />
+                    {  _.map(props.intrestList,(value,index)=>(
+                        <Checkbox
+                          label={value.name}
+                          style={styles.checkbox}
+                          onCheck={props.handleChange({props:'interests',item:value._id})}
+                          checked={_.indexOf(props.data.interests, value._id) >= 0}
+                          disabled={isDisabled}
+                        />
+                      )
+                    )}
                   </div>
                 </div>
                 <div className="form-group row">
@@ -454,12 +412,15 @@ const DetailsForm = (props) => {
                 <div className="form-group row">
                   <div className="col-md-2"></div>
                   <div className="col-md-10">
-                    {props.type == 'disable' ?
-                      <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-md" />
-                    :
+                  {props.type == 'disable' ?
+                  null
+                  // <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-md" />
+                :
+                  <div>
                     <RaisedButton label={props.type =='add'?"Add":"Save"} backgroundColor={"#1b025c"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-md" />
-                    }
                     <RaisedButton label="Cancel" style={styles.button} onClick={()=>{props.handleEdit('cancel')}} className="btn-w-md" />
+                  </div>
+                }
                   </div>
                 </div>
               </form>
@@ -484,7 +445,7 @@ class CustomerDetails extends React.Component {
     this.handleSave = this.handleSave.bind(this);
   }
   componentWillMount(){
-    const { customer, match } = this.props;
+    const { customer, match, interest } = this.props;
     let data={
       name: '',
       lastName: '',
@@ -508,21 +469,24 @@ class CustomerDetails extends React.Component {
       occupation: '',
       source: 1,
     };
-    console.log(this.props);
     if(match.params.type == 'add'){
       this.setState({
         data,
-        type: match.params.type
+        type: match.params.type,
+        intrestList: interest.interestList.data,
       });
     }else{
+      let data = customer.customer.data[match.params.id];
+      data.phone = data.phone.substring(2, data.phone.length);
       this.setState({
-        data: customer.customer.data[match.params.id],
-        type: match.params.type
+        data: data,
+        type: match.params.type,
+        intrestList: interest.interestList.data,
       });
     }
   }
   componentWillReceiveProps(props){
-    const { user, match } = props;
+    const { customer, match, interest } = props;
     let data={
       name: '',
       lastName: '',
@@ -549,12 +513,16 @@ class CustomerDetails extends React.Component {
     if(match.params.type == 'add'){
       this.setState({
         data,
-        type: match.params.type
+        type: match.params.type,
+        intrestList: interest.interestList.data,
       });
     } else {
+      let data = customer.customer.data[match.params.id];
+      data.phone = data.phone.substring(2, data.phone.length);
       this.setState({
-        data: user.user.data[match.params.id],
-        type: match.params.type
+        data: data,
+        type: match.params.type,
+        intrestList: interest.interestList.data,
       });
     }
     if(props.customer.updateCustomer.isSuccess == true ){
@@ -564,11 +532,12 @@ class CustomerDetails extends React.Component {
   }
   handleSave(){
     const { data } = this.state;
-    console.log(data);
+    const token = this.props.user.data.token;
+    const apiData = {token:token,data:data};
     if(this.state.type == 'add'){
-     this.props.customerAddRequest(data);
+     this.props.customerAddRequest(apiData);
     } else if(this.state.type == 'edit'){
-      this.props.customerUpdateRequest(data);
+      this.props.customerUpdateRequest(apiData);
     }
   }
   handleEdit (data) {
@@ -596,14 +565,16 @@ class CustomerDetails extends React.Component {
   render(){
     return(
       <div className="container-fluid no-breadcrumbs">
-        <DetailsForm {...this.props} handleSave={this.handleSave} handleEdit={this.handleEdit} handleChange={this.handleChange} {...this.state} />
+        <DetailsForm {...this.props} intrestList={this.state.intrestList} handleSave={this.handleSave} handleEdit={this.handleEdit} handleChange={this.handleChange} {...this.state} />
       </div>
     );
   }
 }
 function mapStateToProps (state) {
   return {
-    customer: state.customer
+    user: state.user.userLogged,
+    customer: state.customer,
+    interest: state.interest
   };
 }
 const mapDispatchToProps = (dispatch) => { return bindActionCreators(actions, dispatch); };

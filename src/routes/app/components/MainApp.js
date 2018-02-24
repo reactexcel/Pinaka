@@ -10,6 +10,8 @@ import Customizer from 'components/Customizer';
 import Dashboard from '../routes/dashboard/';
 import customer from '../routes/customer/';
 import user from '../routes/user/';
+import redeem from '../routes/redeem/';
+
 
 
 
@@ -31,6 +33,7 @@ class MainApp extends React.Component {
                 <Route path={`${match.url}/dashboard`} component={Dashboard} />
                 <Route path={`${match.url}/customer`} component={customer} />
                 <Route path={`${match.url}/user`} component={user} />
+                <Route path={`${match.url}/redeem`} component={redeem} />
                 {/* <Route path={`${match.url}/chart`} component={AsyncChart} /> */}
               </div>
             </div>
