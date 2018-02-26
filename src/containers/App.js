@@ -40,9 +40,9 @@ class App extends Component {
       isOpen:false,
       message:''
     };
-    this.handleRequestClose = this.handleRequestClose.bind(this);    
+    this.handleRequestClose = this.handleRequestClose.bind(this);
   }
-  
+
   componentWillMount() {
     let data = sessionStorage.getItem('user');
     let user = JSON.parse(data);
@@ -61,8 +61,7 @@ class App extends Component {
   handleRequestClose(){
     this.setState({isOpen:false})
     if(this.props.user.userLogged.isSuccess){
-      this.props.loginUserReset();      
-      this.props.history.push('/app/dashboard');
+      this.props.loginUserReset();
     }
   }
   render() {
