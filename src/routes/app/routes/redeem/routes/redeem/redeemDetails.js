@@ -14,6 +14,7 @@ import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import TextField from 'material-ui/TextField';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn, TableFooter} from 'material-ui/Table';
 import CHARTCONFIG from 'constants/ChartConfig';
+import Snackbar from 'material-ui/Snackbar';
 import * as actions from 'actions';
 
 const styles = {
@@ -45,7 +46,7 @@ const styles = {
 
 
 const DetailsForm = (props) => {
-  const { isLoading } = props;
+  const { isLoading, errors } = props;
   let isDisabled = props.type == 'disable' ? true : false;
   return(
   <div className="row">
@@ -63,7 +64,6 @@ const DetailsForm = (props) => {
                 <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-md" />
                 <RaisedButton label="Delete" backgroundColor="#FF0000" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.redeemDeleteRequest({token:props.user.userLogged.data.token,data:{_id:props.data._id}})}} className="btn-w-md" />
                 <RaisedButton label="Back"  style={{marginLeft:5}}  onClick={()=>{props.handleEdit('back')}} className="btn-w-md" />
-
               </div>
           }
             {isLoading? 
@@ -81,6 +81,7 @@ const DetailsForm = (props) => {
                       onChange={props.handleChange('redeem_code')}
                       type="text"
                       disabled={isDisabled}
+                      errorText={errors.redeem == '' ? null : errors.redeem}                      
                     />
                   </div>
                 </div>
@@ -132,10 +133,14 @@ class redeemDetails extends React.Component {
     this.state = {
       redeem_code: '',
       type:'',
-      isLoading: false
+      isLoading: false,
+      isOpen:false,
+      message:'',
+      errors: {}
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
+    this.handleRequestClose = this.handleRequestClose.bind(this);    
     this.handleSave = this.handleSave.bind(this);
   }
   componentWillReceiveProps(props){
@@ -155,14 +160,18 @@ class redeemDetails extends React.Component {
         type: match.params.type
       });
     }
-    if(props.redeem.updateRedeem.isSuccess == true ){
-      props.redeemReset()
-      props.history.push('/app/redeem/viewredeem');
-    }
     if(props.redeem.updateRedeem.isLoading){
       this.setState({isLoading:true})
     } else if(props.redeem.isLoading == false){
       this.setState({isLoading:false})
+    }
+    if(props.redeem.updateRedeem.isSuccess == true ){
+      props.redeemReset()
+      if(this.state.type == 'add'){
+        this.setState({isOpen:true,message:"Added Redeem Code Successfully"});
+      } else if (this.state.type == 'disable'){
+        this.setState({isOpen:true,message:"Redeem Code Updated Successfully"});        
+      }
     }
   }
   componentWillMount(){
@@ -186,10 +195,24 @@ class redeemDetails extends React.Component {
   handleSave(){
     const { data } = this.state;
     let token = this.props.user.userLogged.data.token;
-    if(this.state.type == 'add'){
-      this.props.redeemAddRequest({token,data});
-    } else if(this.state.type == 'edit'){
-      this.props.redeemUpdateRequest({token,data});
+    const apiData = {token,data};
+    // if(this.state.type == 'add'){
+    //   this.props.redeemAddRequest({token,data});
+    // } else if(this.state.type == 'edit'){
+    //   this.props.redeemUpdateRequest({token,data});
+    // }
+    let errors = {};
+    if(data.redeem_code != ''){
+      errors.redeem = '';
+      if(this.state.type == 'add'){
+        this.props.redeemAddRequest(apiData);
+      } else if(this.state.type == 'edit'){
+        this.props.redeemUpdateRequest(apiData);
+      }
+      this.setState({errors})
+    } else {
+      errors.redeem = data.redeem_code != '' ? '' : 'Cannot be Empty.';
+      this.setState({errors: errors});      
     }
   }
   handleEdit (data) {
@@ -212,9 +235,19 @@ class redeemDetails extends React.Component {
     }
     this.setState({ data });
   }
+  handleRequestClose(){
+    this.setState({isOpen:false})
+    this.props.history.push('/app/redeem/viewredeem');
+  }
   render(){
     return(
       <div className="container-fluid no-breadcrumbs">
+      <Snackbar
+          open={this.state.isOpen}
+          message={this.state.message}
+          autoHideDuration={1000}
+          onRequestClose={this.handleRequestClose}
+        />
         <DetailsForm {...this.props} handleSave={this.handleSave} handleEdit={this.handleEdit} handleChange={this.handleChange} {...this.state} />
       </div>
     );

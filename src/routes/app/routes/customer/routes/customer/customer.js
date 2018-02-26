@@ -79,7 +79,7 @@ class Customer extends React.Component {
                   <h2 className="article-title">Customer Details</h2>
                   <div>
                     {/* button for add update and delete */}
-                    <RaisedButton label="Add User" style={{marginBottom:5}}  onClick={()=>{this.props.history.push('/app/customer/viewcustomerdetails/0/add')}}  primary  />
+                    <RaisedButton label="Add Customer" style={{marginBottom:5}}  onClick={()=>{this.props.history.push('/app/customer/viewcustomerdetails/0/add')}}  primary  />
 
                   </div>
                   <div className=" col-xl-12 row" >

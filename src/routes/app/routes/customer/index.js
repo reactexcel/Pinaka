@@ -8,7 +8,6 @@ import CustomerDetails from './routes/customer/customerDetails'
 // const customer = ({ match }) =>{
 const customer = (props) =>{
   let { match } = props;
-  console.log(match);
   return(
   <div>
     <Route path={`${match.url}/viewcustomer`} component={Customer}/>

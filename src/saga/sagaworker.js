@@ -245,9 +245,9 @@ export function* updateCustomer(data){
 
      let res = yield call(api);
        if(res.status == 1){
-         yield put( actions.userUpdateSuccess(res.data));
+         yield put( actions.customerUpdateSuccess(res.data));
        } else {
-         yield put (actions.userUpdateError(res));
+         yield put (actions.customerUpdateError(res));
        }
      } catch (e){
        console.log(e);
@@ -257,7 +257,6 @@ export function* updateCustomer(data){
 export function* deleteCustomer(data){
   let body = JSON.stringify(data.payload.data);
   let token = data.payload.token;
-  console.log(data);
   try{
     const api = () =>  new Promise((resolve, reject) => {
         return fetch(API.SERVER_DEV_URL+'admin/deleteCustomer?accessToken='+token,{
@@ -360,8 +359,6 @@ export function* searchCustomer(data){
 export function* addRedeem(data){
   let body = JSON.stringify(data.payload.data);
   let token = data.payload.token;
-  console.log(body);
-  console.log(data,'+565');
   try{
     const api = () =>  new Promise((resolve, reject) => {
         return fetch(API.SERVER_DEV_URL+'RedeemCode/AddRedeemCode?accessToken='+token,{
@@ -382,7 +379,6 @@ export function* addRedeem(data){
      });
 
      let res = yield call(api);
-     console.log(res);
        if(res.status == 1){
          yield put( actions.redeemAddSuccess(res.data));
        } else {
@@ -417,7 +413,6 @@ export function* updateRedeem(data){
      });
 
      let res = yield call(api);
-     console.log(res);
        if(res.status == 1){
          yield put( actions.redeemUpdateSuccess(res.data));
        } else {
@@ -431,7 +426,6 @@ export function* updateRedeem(data){
 export function* deleteRedeem(data){
   let body = JSON.stringify(data.payload.data);
   let token = data.payload.token;
-  console.log(data);
   try{
     const api = () =>  new Promise((resolve, reject) => {
         return fetch(API.SERVER_DEV_URL+'RedeemCode/deleteRedeemCode?accessToken='+token,{
@@ -442,7 +436,7 @@ export function* deleteRedeem(data){
             },
             body,
          })
-         .then((res)=> { console.log(res); return res.json()})
+         .then((res)=> { return res.json()})
          .then(data => {
              resolve(data);
          })

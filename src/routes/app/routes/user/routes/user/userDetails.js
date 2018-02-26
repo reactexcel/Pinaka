@@ -47,7 +47,7 @@ const styles = {
 
 
 const DetailsForm = (props) => {
-  const { isLoading } = props;
+  const { isLoading, errors } = props;
   let isDisabled = props.type == 'disable' ? true : false;
   return(
   <div className="row">
@@ -83,6 +83,7 @@ const DetailsForm = (props) => {
                       onChange={props.handleChange('name')}
                       type="text"
                       disabled={isDisabled}
+                      errorText={errors.name == '' ? null : errors.name}                      
                     />
                   </div>
                 </div>
@@ -95,6 +96,7 @@ const DetailsForm = (props) => {
                       onChange={props.handleChange('email')}
                       type="email"
                       disabled={isDisabled}
+                      errorText={errors.email == '' ? null : errors.email}
                     />
                   </div>
                 </div>
@@ -107,6 +109,7 @@ const DetailsForm = (props) => {
                       onChange={props.handleChange('password')}
                       type="password"
                       disabled={isDisabled}
+                      errorText={errors.password == '' ? null : errors.password}                      
                     />
                   </div>
                 </div>
@@ -155,6 +158,7 @@ class UserDetails extends React.Component {
       data: '',
       type:'',
       isLoading:false,
+      errors: {},      
       isOpen:false,
       message:''
     }
@@ -169,7 +173,7 @@ class UserDetails extends React.Component {
       name:'',
       email:'',
       password:'',
-      role:''
+      role:'Admin'
     }];
     if(match.params.type == 'add'){
       this.setState({
@@ -184,7 +188,11 @@ class UserDetails extends React.Component {
     }
     if(props.user.updateUser.isSuccess == true ){
       props.userReset();
-      props.history.push('/app/user/viewuser');
+      if(this.state.type == 'add'){
+        this.setState({isOpen:true,message:"Added User Successfully"});
+      } else if (this.state.type == 'disable'){
+        this.setState({isOpen:true,message:"User Data Updated Successfully"});        
+      }
     }
     if(props.user.updateUser.isLoading){
       this.setState({isLoading:true})
@@ -198,7 +206,7 @@ class UserDetails extends React.Component {
       name:'',
       email:'',
       password:'',
-      role:''
+      role:'Admin'
     };
     if(match.params.type == 'add'){
       this.setState({
@@ -215,10 +223,28 @@ class UserDetails extends React.Component {
   handleSave(){
     const { data } = this.state;
     let token = this.props.user.userLogged.data.token;
-    if(this.state.type == 'add'){
-      this.props.userAddRequest({token,data});
-    } else if(this.state.type == 'edit'){
-      this.props.userUpdateRequest({token,data});
+    const apiData = {token,data};
+    console.log(data);
+    let errors = {};
+    
+    
+    if(data.name != '' && data.email != '' && data.password != '' ){
+      const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+      if(!data.email.match(pattern)){
+        errors.email = 'Not a valid email';
+      } else {
+        if(this.state.type == 'add'){
+          this.props.userAddRequest(apiData);
+        } else if(this.state.type == 'edit'){
+          this.props.userUpdateRequest(apiData);
+        }
+      }
+      this.setState({errors: errors});
+    } else {
+      errors.name = data.name != '' ? '' : 'Cannot be Empty.';
+      errors.email = data.email != '' ? '' : 'Cannot be Empty.';
+      errors.password = data.password != '' ? '' : 'Cannot be Empty.';
+      this.setState({errors: errors});
     }
   }
   handleEdit (data) {
@@ -243,14 +269,17 @@ class UserDetails extends React.Component {
   }
   handleRequestClose(){
     this.setState({isOpen:false})
-    // if(this.props.user.userLogged.isSuccess){
-    //   // this.props.loginUserReset();      
-    //   // this.props.history.push('/app/dashboard');
-    // }
+    this.props.history.push('/app/user/viewuser');    
   }
   render(){
     return(
       <div className="container-fluid no-breadcrumbs">
+      <Snackbar
+          open={this.state.isOpen}
+          message={this.state.message}
+          autoHideDuration={1000}
+          onRequestClose={this.handleRequestClose}
+        />
         <DetailsForm {...this.props} handleSave={this.handleSave} handleEdit={this.handleEdit} handleChange={this.handleChange} {...this.state} />
       </div>
     );
