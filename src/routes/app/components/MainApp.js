@@ -25,7 +25,6 @@ class MainApp extends React.Component {
   }
 
   render() {
-    console.log(this.props,'main app')
     const { match, location } = this.props;
 
     return (

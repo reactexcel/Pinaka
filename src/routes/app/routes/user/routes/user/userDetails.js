@@ -185,9 +185,9 @@ class UserDetails extends React.Component {
     if(props.user.updateUser.isSuccess == true ){
       props.userReset();
       if(this.state.type == 'add'){
-        this.setState({isOpen:true,message:"Added Redeem Code Successfully"});
+        this.setState({isOpen:true,message:"Added User Successfully"});
       } else if (this.state.type == 'disable'){
-        this.setState({isOpen:true,message:"Redeem Code Updated Successfully"});        
+        this.setState({isOpen:true,message:"User Data Updated Successfully"});        
       }
     }
     if(props.user.updateUser.isLoading){

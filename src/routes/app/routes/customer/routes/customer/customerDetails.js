@@ -15,6 +15,7 @@ import TextField from 'material-ui/TextField';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn, TableFooter} from 'material-ui/Table';
 import CHARTCONFIG from 'constants/ChartConfig';
 import * as actions from 'actions';
+import Snackbar from 'material-ui/Snackbar';
 import {statecity} from 'constants/statecity';
 
 const styles = {
@@ -449,10 +450,13 @@ class CustomerDetails extends React.Component {
     this.state = {
       data: '',
       type:'',
-      isLoading:false      
+      isLoading:false,
+      isOpen:false,
+      message:''      
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
+    this.handleRequestClose = this.handleRequestClose.bind(this);        
     this.handleSave = this.handleSave.bind(this);
   }
   componentWillMount(){
@@ -538,13 +542,21 @@ class CustomerDetails extends React.Component {
     }
     if(props.customer.updateCustomer.isSuccess == true ){
       props.customerReset()
-      props.history.push('/app/customer/viewcustomer');
+      if(this.state.type == 'add'){
+        this.setState({isOpen:true,message:"Added User Successfully"});
+      } else if (this.state.type == 'disable'){
+        this.setState({isOpen:true,message:"User Data Updated Successfully"});        
+      }
     }
     if(props.customer.updateCustomer.isLoading){
       this.setState({isLoading:true})
     } else if(props.customer.updateCustomer.isLoading == false){
       this.setState({isLoading:false})
     }
+  }
+  handleRequestClose(){
+    this.setState({isOpen:false})
+    this.props.history.push('/app/customer/viewcustomer');
   }
   handleSave(){
     const { data } = this.state;
@@ -581,6 +593,12 @@ class CustomerDetails extends React.Component {
   render(){
     return(
       <div className="container-fluid no-breadcrumbs">
+        <Snackbar
+          open={this.state.isOpen}
+          message={this.state.message}
+          autoHideDuration={1000}
+          onRequestClose={this.handleRequestClose}
+        />
         <DetailsForm {...this.props} intrestList={this.state.intrestList} handleSave={this.handleSave} handleEdit={this.handleEdit} handleChange={this.handleChange} {...this.state} />
       </div>
     );
