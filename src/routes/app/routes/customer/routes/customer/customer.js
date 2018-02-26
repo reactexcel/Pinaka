@@ -53,7 +53,7 @@ class Customer extends React.Component {
     }
   }
   render(){
-    const { isLoading } = this.state;        
+    const { isLoading } = this.state;
     let CustomerList = _.map(this.props.customer.data, (value, index) => {
       return(
       <tr key={index}>
@@ -115,10 +115,10 @@ class Customer extends React.Component {
                         </tr>
                       </thead>
                       <tbody>
-                        {isLoading ? 
+                        {isLoading ?
                           <tr>
                             <td colSpan={7} style={styles.loading} >Loading Data..........</td>
-                          </tr> 
+                          </tr>
                         :
                           CustomerList
                         }

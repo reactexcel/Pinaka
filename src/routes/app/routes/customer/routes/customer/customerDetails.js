@@ -50,20 +50,17 @@ const styles = {
 
 const DetailsForm = (props) => {
   let isDisabled = props.type == 'disable' ? true : false;
-  let cities = _.map(statecity,(value,index)=>{
-    return (
+  let cities = _.map(statecity,(value,index) => (
       <MenuItem value={value.city} key={index} primaryText={value.city} />
-
-    );
-  });
-  const { isLoading } = props;
-  console.log(props,"asdasd");
+    ));
+  const { isLoading, errors } = props;
   return(
   <div className="row">
     <div className="col-xl-12">
-
       <div className="box box-default">
-        <div className="box-heading"><h3 className="article-title">Customer Detail</h3></div>
+        <div className="box-heading">
+            <h3 className="article-title">Customer Detail</h3>
+        </div>
         <div className="box-body">
         {props.type == 'add' ?
             null
@@ -73,25 +70,25 @@ const DetailsForm = (props) => {
               <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-md" />
               <RaisedButton label="Delete" backgroundColor="#FF0000" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.customerDeleteRequest({token:props.user.data.token,data:{_id:props.data._id}})}} className="btn-w-md" />
               <RaisedButton label="Back"  style={{marginLeft:5}}  onClick={()=>{props.handleEdit('back')}} className="btn-w-md" />
-
             </div>
         }
           <article className="article">
-          {isLoading? 
+          {isLoading?
             <div className="col-md-12" style={styles.loading} >
               Adding New User...........
-            </div>        
+            </div>
             :
               <form role="form">
                 <div className="form-group row">
                   <label style={styles.label1}  className="col-md-2 control-label">First Name</label>
                   <div className="col-md-10">
                     <TextField
-                      hintText="First name"
+                      hintText="First name *"
                       value={props.data.name}
                       onChange={props.handleChange('name')}
                       type="text"
                       disabled={isDisabled}
+                      errorText={errors.name == '' ? null : errors.name}
                     />
                   </div>
                 </div>
@@ -99,11 +96,12 @@ const DetailsForm = (props) => {
                   <label style={styles.label1} className="col-md-2 control-label">Last Name</label>
                   <div className="col-md-10">
                     <TextField
-                      hintText="Last Name"
+                      hintText="Last Name *"
                       value={props.data.lastName}
                       onChange={props.handleChange('lastName')}
                       type="text"
                       disabled={isDisabled}
+                      errorText={errors.lastName == '' ? null : errors.lastName}
                     />
                   </div>
                 </div>
@@ -111,10 +109,11 @@ const DetailsForm = (props) => {
                   <label style={styles.label1} className="col-md-2 control-label">Email Id</label>
                   <div className="col-md-10">
                     <TextField
-                      hintText="Email Id"
+                      hintText="Email Id *"
                       value={props.data.email} onChange={props.handleChange('email')}
                       type="email"
                       disabled={isDisabled}
+                      errorText={errors.email == '' ? null : errors.email}
                     />
                   </div>
                 </div>
@@ -122,16 +121,17 @@ const DetailsForm = (props) => {
                   <label style={styles.label1} className="col-md-2 control-label">Phone Number</label>
                   <div className="col-md-10">
                     <TextField
-                      hintText="Phone Number"
+                      hintText="Phone Number *"
                       value={props.data.phone?props.data.phone:''}
                       onChange={props.handleChange('phone')}
                       type="number"
                       disabled={isDisabled}
+                      errorText={errors.phone == '' ? null : errors.phone}
                     />
                   </div>
                 </div>
                 <div className="form-group row">
-                  <label  className="col-md-2 control-label">SMS Option</label>
+                  <label className="col-md-2 control-label">SMS Option</label>
                   <div className="col-md-10">
                     <Toggle
                       defaultToggled={props.data.sms_option}
@@ -153,7 +153,7 @@ const DetailsForm = (props) => {
                   </div>
                 </div>
                 <div className="form-group row">
-                  <label  className="col-md-2 control-label">Interest</label>
+                  <label className={errors.interests != '' && errors.interests != undefined ? 'col-md-2 control-label text-danger' : 'col-md-2 control-label'}>Interest *</label>
                   <div className="col-md-10">
                     {  _.map(props.intrestList,(value,index)=>(
                         <Checkbox
@@ -168,7 +168,7 @@ const DetailsForm = (props) => {
                   </div>
                 </div>
                 <div className="form-group row">
-                  <label style={styles.label1} className="col-md-2 control-label">Address Line 1</label>
+                  <label style={styles.label1} className="col-md-2 control-label">Address Line 1 *</label>
                   <div className="col-md-10">
                     <TextField
                       hintText="Address Line 1"
@@ -177,6 +177,7 @@ const DetailsForm = (props) => {
                       type="text"
                       multiLine
                       disabled={isDisabled}
+                      errorText={errors.address1 == '' ? null : errors.address1}
                     />
                   </div>
                 </div>
@@ -190,11 +191,12 @@ const DetailsForm = (props) => {
                       type="text"
                       multiLine
                       disabled={isDisabled}
+                      errorText={errors.address2 == '' ? null : errors.address2}
                     />
                   </div>
                 </div>
                 <div className="form-group row">
-                  <label style={styles.label2} className="col-md-2 control-label">City</label>
+                  <label style={styles.label2} className="col-md-2 control-label">City *</label>
                   <div className="col-md-10">
                     <SelectField
                       floatingLabelText="Select city"
@@ -209,7 +211,7 @@ const DetailsForm = (props) => {
                   </div>
                 </div>
                 <div className="form-group row">
-                  <label style={styles.label2} className="col-md-2 control-label">State</label>
+                  <label style={styles.label2} className="col-md-2 control-label">State *</label>
                   <div className="col-md-10">
                     <SelectField
                       floatingLabelText="Select State"
@@ -223,7 +225,7 @@ const DetailsForm = (props) => {
                   </div>
                 </div>
                 <div className="form-group row">
-                  <label style={styles.label1} className="col-md-2 control-label">Zip Code</label>
+                  <label style={styles.label1} className="col-md-2 control-label">Zip Code *</label>
                   <div className="col-md-10">
                     <TextField
                       hintText="Zip code"
@@ -231,6 +233,7 @@ const DetailsForm = (props) => {
                       onChange={props.handleChange('zipcode')}
                       type="number"
                       disabled={isDisabled}
+                      errorText={errors.zipcode == '' ? null : errors.zipcode}
                     />
                   </div>
                 </div>
@@ -319,7 +322,7 @@ const DetailsForm = (props) => {
                 null
               }
                 <div className="form-group row">
-                  <label style={styles.label1} className="col-md-2 control-label">Date of Birth</label>
+                  <label style={styles.label1} className="col-md-2 control-label">Date of Birth *</label>
                   <div className="col-md-10">
                     <DatePicker
                       hintText="Select date"
@@ -328,11 +331,12 @@ const DetailsForm = (props) => {
                       value={props.data.birthday}
                       onChange={props.handleChange('birthday')}
                       disabled={isDisabled}
+                      errorText={errors.birthday == '' ? null : errors.birthday}
                     />
                   </div>
                 </div>
                 <div className="form-group row">
-                  <label style={styles.label1}  className="col-md-2 control-label">Anniversary date with Year</label>
+                  <label style={styles.label1}  className="col-md-2 control-label">Anniversary date with Year *</label>
                   <div className="col-md-10">
                     <DatePicker
                       hintText="Select date"
@@ -341,13 +345,14 @@ const DetailsForm = (props) => {
                       value={props.data.anniversary}
                       onChange={props.handleChange('anniversary')}
                       disabled={isDisabled}
+                      errorText={errors.anniversary == '' ? null : errors.anniversary}
                     />
                   </div>
                 </div>
                 <div className="form-group row">
-                  <label  className="col-md-2 control-label">Gender</label>
+                  <label  className="col-md-2 control-label">Gender *</label>
                   <div className="col-md-10">
-                      <RadioButtonGroup disabled={isDisabled} name="gender" defaultSelected={props.data.gender} onChange={props.handleChange('Gender')}>
+                      <RadioButtonGroup disabled={isDisabled} name="gender" defaultSelected={props.data.gender} onChange={props.handleChange('gender')}>
                       <RadioButton
                         value={false}
                         label="Male"
@@ -398,6 +403,7 @@ const DetailsForm = (props) => {
                       onChange={props.handleChange('occupation')}
                       type="text"
                       disabled={isDisabled}
+                      errorText={errors.occupation == '' ? null : errors.occupation}
                     />
                   </div>
                 </div>
@@ -449,7 +455,8 @@ class CustomerDetails extends React.Component {
     this.state = {
       data: '',
       type:'',
-      isLoading:false      
+      errors: {},
+      isLoading:false
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
@@ -519,7 +526,7 @@ class CustomerDetails extends React.Component {
       marital: true,
       type:false,
       occupation: '',
-      source: 1,
+      source: 1
     };
     if(match.params.type == 'add'){
       this.setState({
@@ -550,10 +557,46 @@ class CustomerDetails extends React.Component {
     const { data } = this.state;
     const token = this.props.user.data.token;
     const apiData = {token:token,data:data};
-    if(this.state.type == 'add'){
-     this.props.customerAddRequest(apiData);
-    } else if(this.state.type == 'edit'){
-      this.props.customerUpdateRequest(apiData);
+    let errors = {};
+    if(data.name != '' && data.lastName != '' && data.email != '' && data.phone != '' && data.interests.length != 0 && data.address1 != '' && data.address2 != '' && data.zipcode != '' && data.birthday != '' && data.anniversary != '' && data.occupation != ''){
+        var pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        let email = data.email.trim();
+        if(data.phone.length != 10){
+            errors.phone = 'Phone should be of 10 digits.';
+        }
+        if(data.zipcode.length != 5){
+            errors.zipcode = 'Phone should be of 5 digits.';
+        }
+        if (_.isEmpty(email)) {
+          errors.email = 'Empty field';
+        } else if (!data.email.match(pattern)) {
+          errors.email = 'Not a valid email';
+        } else if(data.phone.length == 10 && data.zipcode.length == 5) {
+            errors.email = '';
+            errors.phone = '';
+            errors.zipcode = '';
+            errors.others = '';
+            this.setState({errors: errors});
+            if(this.state.type == 'add'){
+                this.props.customerAddRequest(apiData);
+            } else if(this.state.type == 'edit'){
+                this.props.customerUpdateRequest(apiData);
+            }
+        }
+        this.setState({errors: errors});
+    } else {
+        errors.name = data.name != '' ? '' : 'Cannot be Empty.';
+        errors.lastName = data.lastName != '' ? '' : 'Cannot be Empty.';
+        errors.email = data.email != '' ? '' : 'Cannot be Empty.';
+        errors.phone = data.phone != '' ? '' : 'Cannot be Empty.';
+        errors.interests = data.interests.length != 0 ? '' : 'Cannot be Empty.';
+        errors.address1 = data.address1 != '' ? '' : 'Cannot be Empty.';
+        errors.address2 = data.address2 != '' ? '' : 'Cannot be Empty.';
+        errors.zipcode = data.zipcode != '' ? '' : 'Cannot be Empty.';
+        errors.birthday = data.birthday != '' ? '' : 'Cannot be Empty.';
+        errors.anniversary = data.anniversary != '' ? '' : 'Cannot be Empty.';
+        errors.occupation = data.occupation != '' ? '' : 'Cannot be Empty.';
+        this.setState({errors: errors});
     }
   }
   handleEdit (data) {
