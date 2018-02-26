@@ -32,13 +32,16 @@ const styles = {
     marginTop: 10,
   },
   label1:{
-    marginTop: 20,
+    marginTop: 14,
   },
   label2:{
     marginTop: 38,
   },
   button:{
     marginLeft: 10,
+  },
+  formGroup: {
+    marginBottom: 5,
   },
   loading: {
     textAlign: 'center',
@@ -53,7 +56,10 @@ const DetailsForm = (props) => {
   let cities = _.map(statecity,(value,index) => (
       <MenuItem value={value.city} key={index} primaryText={value.city} />
     ));
-  const { isLoading, errors } = props;
+  const { isLoading, data, errors } = props;
+  const statesList = _.sortBy(Object.keys(_.groupBy(statecity, function(o){ return o.state; })), function(o){return o;});
+  const cityList = props.data.state == '' ? null : _.filter(statecity, function(o){ return o.state == props.data.state; });
+  console.log(data, statesList, cityList, '===========');
   return(
   <div className="row">
     <div className="col-xl-12">
@@ -79,7 +85,7 @@ const DetailsForm = (props) => {
             </div>
             :
               <form role="form">
-                <div className="form-group row">
+                <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1}  className="col-md-2 control-label">First Name</label>
                   <div className="col-md-10">
                     <TextField
@@ -92,7 +98,7 @@ const DetailsForm = (props) => {
                     />
                   </div>
                 </div>
-                <div className="form-group row">
+                <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1} className="col-md-2 control-label">Last Name</label>
                   <div className="col-md-10">
                     <TextField
@@ -105,7 +111,7 @@ const DetailsForm = (props) => {
                     />
                   </div>
                 </div>
-                <div className="form-group row">
+                <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1} className="col-md-2 control-label">Email Id</label>
                   <div className="col-md-10">
                     <TextField
@@ -117,7 +123,7 @@ const DetailsForm = (props) => {
                     />
                   </div>
                 </div>
-                <div className="form-group row">
+                <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1} className="col-md-2 control-label">Phone Number</label>
                   <div className="col-md-10">
                     <TextField
@@ -130,7 +136,7 @@ const DetailsForm = (props) => {
                     />
                   </div>
                 </div>
-                <div className="form-group row">
+                <div className="form-group row" style={styles.formGroup}>
                   <label className="col-md-2 control-label">SMS Option</label>
                   <div className="col-md-10">
                     <Toggle
@@ -141,7 +147,7 @@ const DetailsForm = (props) => {
                     />
                   </div>
                 </div>
-                <div className="form-group row">
+                <div className="form-group row" style={styles.formGroup}>
                   <label  className="col-md-2 control-label">App Installed Status</label>
                   <div className="col-md-10">
                     <Toggle
@@ -152,11 +158,12 @@ const DetailsForm = (props) => {
                     />
                   </div>
                 </div>
-                <div className="form-group row">
+                <div className="form-group row" style={styles.formGroup}>
                   <label className={errors.interests != '' && errors.interests != undefined ? 'col-md-2 control-label text-danger' : 'col-md-2 control-label'}>Interest *</label>
                   <div className="col-md-10">
                     {  _.map(props.intrestList,(value,index)=>(
                         <Checkbox
+                          key={index}
                           label={value.name}
                           style={styles.checkbox}
                           onCheck={props.handleChange({props:'interests',item:value._id})}
@@ -167,7 +174,7 @@ const DetailsForm = (props) => {
                     )}
                   </div>
                 </div>
-                <div className="form-group row">
+                <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1} className="col-md-2 control-label">Address Line 1 *</label>
                   <div className="col-md-10">
                     <TextField
@@ -181,7 +188,7 @@ const DetailsForm = (props) => {
                     />
                   </div>
                 </div>
-                <div className="form-group row">
+                <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1} className="col-md-2 control-label">Address Line 2</label>
                   <div className="col-md-10">
                     <TextField
@@ -195,22 +202,7 @@ const DetailsForm = (props) => {
                     />
                   </div>
                 </div>
-                <div className="form-group row">
-                  <label style={styles.label2} className="col-md-2 control-label">City *</label>
-                  <div className="col-md-10">
-                    <SelectField
-                      floatingLabelText="Select city"
-                      value={props.data.city}
-                      onChange={props.handleChange('city')}
-                      disabled={isDisabled}
-                    >
-                      <MenuItem value={"1"} primaryText="A city" />
-                      <MenuItem value={"2"} primaryText="B city" />
-                      {/* {cities} */}
-                    </SelectField>
-                  </div>
-                </div>
-                <div className="form-group row">
+                <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label2} className="col-md-2 control-label">State *</label>
                   <div className="col-md-10">
                     <SelectField
@@ -219,12 +211,24 @@ const DetailsForm = (props) => {
                       onChange={props.handleChange('state')}
                       disabled={isDisabled}
                     >
-                      <MenuItem value={"1"} primaryText="A state" />
-                      <MenuItem value={"2"} primaryText="B state" />
+                    {_.map(statesList, (val, i) => <MenuItem value={val} primaryText={val} key={i} /> )}
                     </SelectField>
                   </div>
                 </div>
-                <div className="form-group row">
+                <div className="form-group row" style={styles.formGroup}>
+                    <label style={styles.label2} className="col-md-2 control-label">City *</label>
+                    <div className="col-md-10">
+                        <SelectField
+                            floatingLabelText="Select city"
+                            value={props.data.city}
+                            onChange={props.handleChange('city')}
+                            disabled={props.data.state == '' || isDisabled}
+                            >
+                            {_.map(cityList, (val, i) => <MenuItem value={val.city} primaryText={val.city} key={i} />)}
+                        </SelectField>
+                    </div>
+                </div>
+                <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1} className="col-md-2 control-label">Zip Code *</label>
                   <div className="col-md-10">
                     <TextField
@@ -239,7 +243,7 @@ const DetailsForm = (props) => {
                 </div>
                 {props.type != 'add' ?
                 <div>
-                <div className="form-group row">
+                <div className="form-group row" style={styles.formGroup}>
                   <label  className="col-md-2 control-label">Code Redeem Flag</label>
                   <div className="col-md-10">
                     <Toggle
@@ -250,7 +254,7 @@ const DetailsForm = (props) => {
                     />
                   </div>
                 </div>
-                <div className="form-group row">
+                <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1} className="col-md-2 control-label">Redeem Code</label>
                   <div className="col-md-10">
                     <TextField
@@ -262,7 +266,7 @@ const DetailsForm = (props) => {
                     />
                   </div>
                 </div>
-                <div className="form-group row">
+                <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1} className="col-md-2 control-label">Created By</label>
                   <div className="col-md-10">
                     <TextField
@@ -273,7 +277,7 @@ const DetailsForm = (props) => {
                     />
                   </div>
                 </div>
-                <div className="form-group row">
+                <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1} className="col-md-2 control-label">Created Date</label>
                   <div className="col-md-10">
                     <TextField
@@ -284,7 +288,7 @@ const DetailsForm = (props) => {
                     />
                   </div>
                 </div>
-                <div className="form-group row">
+                <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1} className="col-md-2 control-label">Modified By</label>
                   <div className="col-md-10">
                     <TextField
@@ -295,7 +299,7 @@ const DetailsForm = (props) => {
                     />
                   </div>
                 </div>
-                <div className="form-group row">
+                <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1} className="col-md-2 control-label">Last Modified Date</label>
                   <div className="col-md-10">
                     <TextField
@@ -306,7 +310,7 @@ const DetailsForm = (props) => {
                     />
                   </div>
                 </div>
-                <div className="form-group row">
+                <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1} className="col-md-2 control-label">Last Synced Date with Infusionsoft</label>
                   <div className="col-md-10">
                     <TextField
@@ -321,7 +325,7 @@ const DetailsForm = (props) => {
                 :
                 null
               }
-                <div className="form-group row">
+                <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1} className="col-md-2 control-label">Date of Birth *</label>
                   <div className="col-md-10">
                     <DatePicker
@@ -335,7 +339,7 @@ const DetailsForm = (props) => {
                     />
                   </div>
                 </div>
-                <div className="form-group row">
+                <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1}  className="col-md-2 control-label">Anniversary date with Year *</label>
                   <div className="col-md-10">
                     <DatePicker
@@ -349,7 +353,7 @@ const DetailsForm = (props) => {
                     />
                   </div>
                 </div>
-                <div className="form-group row">
+                <div className="form-group row" style={styles.formGroup}>
                   <label  className="col-md-2 control-label">Gender *</label>
                   <div className="col-md-10">
                       <RadioButtonGroup disabled={isDisabled} name="gender" defaultSelected={props.data.gender} onChange={props.handleChange('gender')}>
@@ -368,7 +372,7 @@ const DetailsForm = (props) => {
                     </RadioButtonGroup>
                   </div>
                 </div>
-                <div className="form-group row">
+                <div className="form-group row" style={styles.formGroup}>
                   <label  className="col-md-2 control-label" style={styles.label} >Kids</label>
                   <div className="col-md-10">
                     <Toggle
@@ -379,7 +383,7 @@ const DetailsForm = (props) => {
                     />
                   </div>
                 </div>
-                <div className="form-group row">
+                <div className="form-group row" style={styles.formGroup}>
                   <label  className="col-md-2 control-label" style={styles.label}>Marital status</label>
                   <div className="col-md-10">
                     <SelectField
@@ -394,7 +398,7 @@ const DetailsForm = (props) => {
                     </SelectField>
                   </div>
                 </div>
-                <div className="form-group row">
+                <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1} className="col-md-2 control-label" style={styles.label} >Occupation</label>
                   <div className="col-md-10">
                     <TextField
@@ -407,7 +411,7 @@ const DetailsForm = (props) => {
                     />
                   </div>
                 </div>
-                <div className="form-group row">
+                <div className="form-group row" style={styles.formGroup}>
                   <label className="col-md-2 control-label" style={styles.label}>Source</label>
                   <div className="col-md-10">
                     <SelectField
@@ -425,7 +429,7 @@ const DetailsForm = (props) => {
                   </div>
                 </div>
 
-                <div className="form-group row">
+                <div className="form-group row" style={styles.formGroup}>
                   <div className="col-md-2"></div>
                   <div className="col-md-10">
                   {props.type == 'disable' ?
@@ -474,8 +478,8 @@ class CustomerDetails extends React.Component {
       interests: [],
       address1: '',
       address2: '',
-      city: "1",
-      state: "1",
+      city: '',
+      state: '',
       zipcode: '',
       password:'123',
       birthday: '',
@@ -515,8 +519,8 @@ class CustomerDetails extends React.Component {
       interests: [],
       address1: '',
       address2: '',
-      city: 1,
-      state: 1,
+      city: '',
+      state: '',
       zipcode: '',
       password:'123',
       birthday: '',
@@ -622,6 +626,7 @@ class CustomerDetails extends React.Component {
     this.setState({ data });
   }
   render(){
+     console.log(statecity, '==========');
     return(
       <div className="container-fluid no-breadcrumbs">
         <DetailsForm {...this.props} intrestList={this.state.intrestList} handleSave={this.handleSave} handleEdit={this.handleEdit} handleChange={this.handleChange} {...this.state} />
