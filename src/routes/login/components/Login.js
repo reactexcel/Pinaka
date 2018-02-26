@@ -23,7 +23,7 @@ class Login extends React.Component {
     this.handleSave = this.handleSave.bind(this);
   }
   componentWillMount(){
-    if(localStorage.getItem('userid').length > 0){
+    if(sessionStorage.getItem('user')){
         this.props.history.push('/app/dashboard');
     }
   }
@@ -32,7 +32,10 @@ class Login extends React.Component {
   }
   handleSave(){
     let data = {email:this.state.email,password:this.state.password}
-    this.props.loginUserRequest(data)
+    this.props.loginUserRequest(data);
+  }
+  componentWillReceiveProps(props){
+    props.user.isSuccess ? this.props.history.push('/app/dashboard') : null;
   }
   render() {
     return (

@@ -52,8 +52,8 @@ class App extends Component {
   }
   componentWillReceiveProps(props){
     if(props.user.userLogged.isError){
-      this.setState({isOpen:true,message:props.user.message.message});
-    } else if (props.user.userLogged.isSuccess) {
+      this.setState({isOpen:true,message:'Invalid Email or Password'});
+    } else if (props.user.userLogged.isSuccess && props.location.pathname == '/login') {
       sessionStorage.setItem('user',JSON.stringify(props.user.userLogged));
       this.setState({isOpen:true, message:'Login Successfully'})
     }
