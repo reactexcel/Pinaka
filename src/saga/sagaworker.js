@@ -164,6 +164,7 @@ export function* fetchCustomer(action){
 
 export function* addCustomer(data){
   let params = data.payload.data;
+  console.log(params)
   let token = data.payload.token;
   var formData = new FormData();
     formData.append('name', params.name);
@@ -176,7 +177,7 @@ export function* addCustomer(data){
     if(params.phone != undefined){
         formData.append('phone', '+1' + params.phone);
     }
-    formData.append('interests', params.interests);
+    formData.append('interests', params.interest);
     formData.append('source', params.source);
     formData.append('type', 0);
     formData.append('password', params.password);

@@ -54,9 +54,6 @@ const styles = {
 
 const DetailsForm = (props) => {
   let isDisabled = props.type == 'disable' ? true : false;
-  let cities = _.map(statecity,(value,index) => (
-      <MenuItem value={value.city} key={index} primaryText={value.city} />
-    ));
   const { isLoading, data, errors } = props;
   const statesList = _.sortBy(Object.keys(_.groupBy(statecity, function(o){ return o.state; })), function(o){return o;});
   const cityList = props.data.state == '' ? null : _.filter(statecity, function(o){ return o.state == props.data.state; });
@@ -166,8 +163,8 @@ const DetailsForm = (props) => {
                           key={index}
                           label={value.name}
                           style={styles.checkbox}
-                          onCheck={props.handleChange({props:'interests',item:value._id})}
-                          checked={_.indexOf(props.data.interests, value._id) >= 0}
+                          onCheck={props.handleChange({props:'interests',item:value,index:index})}
+                          checked={_.indexOf(props.data.interest, value._id) >= 0}
                           disabled={isDisabled}
                         />
                       )
@@ -471,6 +468,7 @@ class CustomerDetails extends React.Component {
     this.handleDelete = this.handleDelete.bind(this);
   }
   componentWillMount(){
+    this.props.interestListRequest();    
     const { customer, match, interest } = this.props;
     let data={
       name: '',
@@ -521,6 +519,7 @@ class CustomerDetails extends React.Component {
       sms_option: true,
       app_installed: false,
       interests: [],
+      interest: [],      
       address1: '',
       address2: '',
       city: '',
@@ -536,6 +535,9 @@ class CustomerDetails extends React.Component {
       occupation: '',
       source: 1
     };
+    for(var i = 0; i < interest.interestList.data.length; i++){
+        data.interests.push(false);
+    }
     if(match.params.type == 'add'){
       this.setState({
         data,
@@ -570,11 +572,23 @@ class CustomerDetails extends React.Component {
     this.props.history.push('/app/customer/viewcustomer');
   }
   handleSave(){
-    const { data } = this.state;
+    let { data } = this.state;
     const token = this.props.user.data.token;
+    let intrestList ='';
+    for(var i = 0; i < data.interests.length; i++){
+        if(data.interests[i] == true){
+            intrestList +=this.props.interest.interestList.data[i]._id+":";
+        }
+    }
+    
+    if(intrestList != ''){
+      intrestList  = intrestList.substring(0,intrestList.length -1);
+    }
+    data.interest = intrestList;
+    console.log(data,'done',intrestList);
     const apiData = {token:token,data:data};
     let errors = {};
-    if(data.name != '' && data.lastName != '' && data.email != '' && data.phone != '' && data.interests.length != 0 && data.address1 != '' && data.address2 != '' && data.zipcode != '' && data.birthday != '' && data.anniversary != '' && data.occupation != ''){
+    if(data.name != '' && data.lastName != '' && data.email != '' && data.phone != '' && data.interest.length != 0 && data.address1 != '' && data.address2 != '' && data.zipcode != '' && data.birthday != '' && data.anniversary != '' && data.occupation != ''){
         var pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
         let email = data.email.trim();
         if(data.phone.length != 10){
@@ -605,7 +619,7 @@ class CustomerDetails extends React.Component {
         errors.lastName = data.lastName != '' ? '' : 'Cannot be Empty.';
         errors.email = data.email != '' ? '' : 'Cannot be Empty.';
         errors.phone = data.phone != '' ? '' : 'Cannot be Empty.';
-        errors.interests = data.interests.length != 0 ? '' : 'Cannot be Empty.';
+        errors.interests = data.interest.length != 0 ? '' : 'Cannot be Empty.';
         errors.address1 = data.address1 != '' ? '' : 'Cannot be Empty.';
         errors.address2 = data.address2 != '' ? '' : 'Cannot be Empty.';
         errors.zipcode = data.zipcode != '' ? '' : 'Cannot be Empty.';
@@ -627,9 +641,12 @@ class CustomerDetails extends React.Component {
       data[props] = !data[props];
     } else if (props.props == 'interests') {
       let interestsList = data["interests"];
-      const dataIndex = _.indexOf(interestsList , props.item);
-      index  ? _.indexOf(interestsList , props.item) >=0 ? interestsList: interestsList.push(props.item) : interestsList.splice(dataIndex, 1);
+      let interestList = data["interest"];      
+      const dataIndex = _.indexOf(interestList , props.item._id);
+      interestsList[props.index] = !interestsList[props.index];
+      index  ? _.indexOf(interestList , props.item) >=0 ? interestList: interestList.push(props.item._id) : interestList.splice(dataIndex, 1);
       data[props.props] = interestsList;
+      data['intrest'] = interestList;
     } else if (props == 'birthday' || props == 'anniversary') {
       data[props] = index;
     } else {

@@ -18,8 +18,8 @@ class NavRightList extends React.Component {
   handleChange = (event, value) => {
     if(value == '/login'){
       sessionStorage.removeItem('user');
+      this.props.history.push(value);
     }
-    this.props.history.push(value);
   }
 
   render() {
