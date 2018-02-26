@@ -46,7 +46,7 @@ const styles = {
 
 
 const DetailsForm = (props) => {
-  const { isLoading } = props;
+  const { isLoading, errors } = props;
   let isDisabled = props.type == 'disable' ? true : false;
   return(
   <div className="row">
@@ -81,6 +81,7 @@ const DetailsForm = (props) => {
                       onChange={props.handleChange('redeem_code')}
                       type="text"
                       disabled={isDisabled}
+                      errorText={errors.redeem == '' ? null : errors.redeem}                      
                     />
                   </div>
                 </div>
@@ -134,7 +135,8 @@ class redeemDetails extends React.Component {
       type:'',
       isLoading: false,
       isOpen:false,
-      message:''
+      message:'',
+      errors: {}
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
@@ -193,10 +195,24 @@ class redeemDetails extends React.Component {
   handleSave(){
     const { data } = this.state;
     let token = this.props.user.userLogged.data.token;
-    if(this.state.type == 'add'){
-      this.props.redeemAddRequest({token,data});
-    } else if(this.state.type == 'edit'){
-      this.props.redeemUpdateRequest({token,data});
+    const apiData = {token,data};
+    // if(this.state.type == 'add'){
+    //   this.props.redeemAddRequest({token,data});
+    // } else if(this.state.type == 'edit'){
+    //   this.props.redeemUpdateRequest({token,data});
+    // }
+    let errors = {};
+    if(data.redeem_code != ''){
+      errors.redeem = '';
+      if(this.state.type == 'add'){
+        this.props.redeemAddRequest(apiData);
+      } else if(this.state.type == 'edit'){
+        this.props.redeemUpdateRequest(apiData);
+      }
+      this.setState({errors})
+    } else {
+      errors.redeem = data.redeem_code != '' ? '' : 'Cannot be Empty.';
+      this.setState({errors: errors});      
     }
   }
   handleEdit (data) {
