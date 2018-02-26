@@ -14,14 +14,30 @@ import CHARTCONFIG from 'constants/ChartConfig';
 import * as actions from 'actions';
 
 
+const styles = {
+  loading: {
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: 500,
+  }
+}
+
 class Redeem extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
       search:'',
-      searchType:'name'
+      searchType:'name',
+      isLoading: false,
     };
     this.handleChange = this.handleChange.bind(this);
+  }
+  componentWillReceiveProps(props){
+    if(props.redeem.redeem.isLoading){
+      this.setState({isLoading:true});
+    } else if (props.redeem.redeem.isLoading == false){
+      this.setState({isLoading:false});
+    }
   }
   componentWillMount(){
     console.log('5456456',this.props);
@@ -40,6 +56,7 @@ class Redeem extends React.Component {
     }
   }
   render(){
+    const { isLoading } = this.state;
     let redeemList;
      redeemList = _.map(this.props.redeem.redeem.data, (value, index) => (
       <tr key={index}>
@@ -100,7 +117,13 @@ class Redeem extends React.Component {
                         </tr>
                       </thead>
                       <tbody>
-                        {redeemList}
+                      {isLoading ? 
+                        <tr>
+                          <td colSpan={5} style={styles.loading} >Loading Data..........</td>
+                        </tr>
+                          :
+                          redeemList
+                      }
                       </tbody>
                     </table>
                   </div>

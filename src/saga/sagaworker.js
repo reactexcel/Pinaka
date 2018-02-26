@@ -257,6 +257,7 @@ export function* updateCustomer(data){
 export function* deleteCustomer(data){
   let body = JSON.stringify(data.payload.data);
   let token = data.payload.token;
+  console.log(data);
   try{
     const api = () =>  new Promise((resolve, reject) => {
         return fetch(API.SERVER_DEV_URL+'admin/deleteAdminStaff?accessToken='+token,{
@@ -267,7 +268,7 @@ export function* deleteCustomer(data){
             },
             body,
          })
-         .then((res)=> res.json())
+         .then((res)=> { return res.json()})
          .then(data => {
              resolve(data);
          })
@@ -277,10 +278,11 @@ export function* deleteCustomer(data){
      });
 
      let res = yield call(api);
+     console.log(res)
        if(res.status == 1){
-         yield put( actions.userUpdateSuccess(res.data));
+         yield put( actions.customerDeleteSuccess(res.data));
        } else {
-         yield put (actions.userUpdateError(res));
+         yield put (actions.customerDeleteError(res));
        }
      } catch (e){
        console.log(e);
@@ -429,6 +431,7 @@ export function* updateRedeem(data){
 export function* deleteRedeem(data){
   let body = JSON.stringify(data.payload.data);
   let token = data.payload.token;
+  console.log(data);
   try{
     const api = () =>  new Promise((resolve, reject) => {
         return fetch(API.SERVER_DEV_URL+'RedeemCode/deleteRedeemCode?accessToken='+token,{
@@ -439,7 +442,7 @@ export function* deleteRedeem(data){
             },
             body,
          })
-         .then((res)=> res.json())
+         .then((res)=> { console.log(res); return res.json()})
          .then(data => {
              resolve(data);
          })
@@ -449,6 +452,7 @@ export function* deleteRedeem(data){
      });
 
      let res = yield call(api);
+     console.log(res)
        if(res.status == 1){
          yield put( actions.redeemDeleteSuccess(res.data));
        } else {

@@ -35,18 +35,24 @@ const styles = {
   },
   button:{
     marginLeft: 10,
+  },
+  loading: {
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: 500,
   }
 };
 
 
 const DetailsForm = (props) => {
+  const { isLoading } = props;
   let isDisabled = props.type == 'disable' ? true : false;
   return(
   <div className="row">
     <div className="col-xl-12">
       <div className="box box-default">
         <article className="article">
-        <div className="box-heading"><h3 className="article-title">User Detail</h3></div>
+        <div className="box-heading"><h3 className="article-title">Redeem Code Detail</h3></div>
 
         <div className="box-body">
           {props.type == 'add' ?
@@ -55,12 +61,17 @@ const DetailsForm = (props) => {
               <div>
                 {/* button for add update and delete */}
                 <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-md" />
-                <RaisedButton label="Delete" backgroundColor="#FF0000" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.userDeleteRequest({token:props.user.userLogged.data.token,data:{_id:props.data._id}})}} className="btn-w-md" />
+                <RaisedButton label="Delete" backgroundColor="#FF0000" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.redeemDeleteRequest({token:props.user.userLogged.data.token,data:{_id:props.data._id}})}} className="btn-w-md" />
                 <RaisedButton label="Back"  style={{marginLeft:5}}  onClick={()=>{props.handleEdit('back')}} className="btn-w-md" />
 
               </div>
           }
-              <form role="form">
+            {isLoading? 
+              <div className="col-md-12" style={styles.loading} >
+                Adding New Redeem Code...........
+              </div>        
+              :
+              <form role="form" style={{margin:20}} >
                 <div className="form-group row">
                   <label style={styles.label} className="col-md-2 control-label">Redeem Code</label>
                   <div className="col-md-10">
@@ -73,6 +84,7 @@ const DetailsForm = (props) => {
                     />
                   </div>
                 </div>
+                {props.type == 'edit'?
                 <div className="form-group row">
                   <label className="col-md-2 control-label" style={styles.label1}>Type</label>
                   <div className="col-md-10">
@@ -88,6 +100,9 @@ const DetailsForm = (props) => {
                     </SelectField>
                   </div>
                 </div>
+                : 
+                  null
+                }
                 <div className="form-group row">
                   <div className="col-md-2"></div>
                   <div className="col-md-10">
@@ -103,7 +118,8 @@ const DetailsForm = (props) => {
                   </div>
                 </div>
               </form>
-        </div>
+             }
+              </div>
       </article>
       </div>
     </div>
@@ -115,7 +131,8 @@ class redeemDetails extends React.Component {
     super(props);
     this.state = {
       redeem_code: '',
-      type:''
+      type:'',
+      isLoading: false
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
@@ -139,8 +156,13 @@ class redeemDetails extends React.Component {
       });
     }
     if(props.redeem.updateRedeem.isSuccess == true ){
-      props.userAddReset()
+      props.redeemReset()
       props.history.push('/app/redeem/viewredeem');
+    }
+    if(props.redeem.updateRedeem.isLoading){
+      this.setState({isLoading:true})
+    } else if(props.redeem.isLoading == false){
+      this.setState({isLoading:false})
     }
   }
   componentWillMount(){

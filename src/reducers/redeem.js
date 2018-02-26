@@ -63,13 +63,12 @@ const redeemAddRequest = (state, action) =>{
   }
 });}
 
-const redeemAddReset = (state, action) =>{
+const redeemReset = (state, action) =>{
   return update(state, {
   updateRedeem:{
     isLoading: {$set: false},
     isError:   {$set: false},
     isSuccess: {$set: false},
-    message:   {$set: ''}
   }
 });}
 
@@ -164,7 +163,7 @@ export default handleActions({
   [constants.REDEEM_UPDATE_SUCCESS]: redeemAddSuccess,
   [constants.REDEEM_UPDATE_ERROR]:   redeemAddError,
 
-  [constants.REDEEM_ADD_RESET]: redeemAddReset,
+  [constants.REDEEM_ADD_RESET]: redeemReset,
 
   [constants.REDEEM_DELETE_REQUEST]: redeemDeleteRequest,
   [constants.REDEEM_DELETE_SUCCESS]: redeemDeleteSuccess,

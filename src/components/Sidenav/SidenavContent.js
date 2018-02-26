@@ -109,7 +109,8 @@ class SidebarContent extends React.Component {
           </ul>
         </li>
         <li>
-          <FlatButton href="#/app/redeem"><i className="nav-icon material-icons">card</i><span className="nav-text">Redeem Code</span></FlatButton>
+          <FlatButton href="#/app/redeem"><i className="nav-icon material-icons">credit_card
+          </i><span className="nav-text">Redeem Code</span></FlatButton>
           <ul>
             {/* <li><FlatButton className="prepend-icon" href="#/app/user/viewuserdetails/0/add"><span>Add User</span></FlatButton></li> */}
             <li><FlatButton className="prepend-icon" href="#/app/redeem/viewredeem"><span>View Redeem</span></FlatButton></li>

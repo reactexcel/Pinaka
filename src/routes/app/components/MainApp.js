@@ -5,6 +5,10 @@ import Header from 'components/Header';
 import Sidenav from 'components/Sidenav';
 import Footer from 'components/Footer';
 import Customizer from 'components/Customizer';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {withRouter} from 'react-router';
+import * as actions from 'actions';
 
 
 import Dashboard from '../routes/dashboard/';
@@ -16,8 +20,12 @@ import redeem from '../routes/redeem/';
 
 
 class MainApp extends React.Component {
+  constructor(props){
+    super(props);
+  }
 
   render() {
+    console.log(this.props,'main app')
     const { match, location } = this.props;
 
     return (
@@ -48,4 +56,14 @@ class MainApp extends React.Component {
   }
 }
 
-module.exports = MainApp;
+function mapStateToProps (state) {
+  return {
+    customer: state.customer,
+    user: state.user,
+    redeem: state.redeem,
+  };
+}
+const mapDispatchToProps = (dispatch) => { return bindActionCreators(actions, dispatch); };
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MainApp));
+

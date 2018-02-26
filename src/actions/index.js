@@ -27,7 +27,7 @@ export const userListRequest = createAction(types.USER_LIST_REQUEST);
 export const userListSuccess = createAction(types.USER_LIST_SUCCESS);
 export const userListError = createAction(types.USER_LIST_ERROR);
 
-export const userAddReset = createAction(types.USER_ADD_RESET);
+export const userReset = createAction(types.USER_ADD_RESET);
 export const userAddRequest = createAction(types.USER_ADD_REQUEST);
 export const userAddSuccess = createAction(types.USER_ADD_SUCCESS);
 export const userAddError = createAction(types.USER_ADD_ERROR);
@@ -47,7 +47,7 @@ export const customerListRequest = createAction(types.CUSTOMER_LIST_REQUEST);
 export const customerListSuccess = createAction(types.CUSTOMER_LIST_SUCCESS);
 export const customerListError = createAction(types.CUSTOMER_LIST_ERROR);
 
-export const customerAddReset = createAction(types.CUSTOMER_ADD_RESET);
+export const customerReset = createAction(types.CUSTOMER_ADD_RESET);
 export const customerAddRequest = createAction(types.CUSTOMER_ADD_REQUEST);
 export const customerAddSuccess = createAction(types.CUSTOMER_ADD_SUCCESS);
 export const customerAddError = createAction(types.CUSTOMER_ADD_ERROR);
@@ -67,7 +67,7 @@ export const redeemListRequest = createAction(types.REDEEM_LIST_REQUEST);
 export const redeemListSuccess = createAction(types.REDEEM_LIST_SUCCESS);
 export const redeemListError = createAction(types.REDEEM_LIST_ERROR);
 
-export const redeemAddReset = createAction(types.REDEEM_ADD_RESET);
+export const redeemReset = createAction(types.REDEEM_ADD_RESET);
 export const redeemAddRequest = createAction(types.REDEEM_ADD_REQUEST);
 export const redeemAddSuccess = createAction(types.REDEEM_ADD_SUCCESS);
 export const redeemAddError = createAction(types.REDEEM_ADD_ERROR);

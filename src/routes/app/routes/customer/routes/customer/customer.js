@@ -12,19 +12,34 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 import CHARTCONFIG from 'constants/ChartConfig';
 import * as actions from 'actions';
 
+const styles = {
+  loading: {
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: 500,
+  }
+}
 
 class Customer extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
       search:'',
-      searchType:'email'
+      searchType:'email',
+      isLoading:false
     };
     this.handleChange = this.handleChange.bind(this);
   }
   componentWillMount(){
     let token = this.props.user.userLogged.data.token;
     this.props.customerListRequest(token);
+  }
+  componentWillReceiveProps(props){
+    if(props.customer.isLoading){
+      this.setState({isLoading:true});
+    } else if (props.customer.isLoading == false){
+      this.setState({isLoading:false});
+    }
   }
   handleChange = props => (event, value, index) => {
     if(props == 'searchType'){
@@ -38,6 +53,7 @@ class Customer extends React.Component {
     }
   }
   render(){
+    const { isLoading } = this.state;        
     let CustomerList = _.map(this.props.customer.data, (value, index) => {
       return(
       <tr key={index}>
@@ -99,7 +115,13 @@ class Customer extends React.Component {
                         </tr>
                       </thead>
                       <tbody>
-                        {CustomerList}
+                        {isLoading ? 
+                          <tr>
+                            <td colSpan={7} style={styles.loading} >Loading Data..........</td>
+                          </tr> 
+                        :
+                          CustomerList
+                        }
                       </tbody>
                     </table>
                   </div>

@@ -35,11 +35,17 @@ const styles = {
   },
   button:{
     marginLeft: 10,
+  },
+  loading: {
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: 500,
   }
 };
 
 
 const DetailsForm = (props) => {
+  const { isLoading } = props;
   let isDisabled = props.type == 'disable' ? true : false;
   return(
   <div className="row">
@@ -60,6 +66,11 @@ const DetailsForm = (props) => {
 
               </div>
           }
+          {isLoading? 
+            <div className="col-md-12" style={styles.loading} >
+              Adding New User...........
+            </div>        
+            :
               <form role="form">
                 <div className="form-group row">
                   <label style={styles.label} className="col-md-2 control-label">Full Name</label>
@@ -127,6 +138,7 @@ const DetailsForm = (props) => {
                   </div>
                 </div>
               </form>
+            }
         </div>
       </article>
       </div>
@@ -139,7 +151,8 @@ class UserDetails extends React.Component {
     super(props);
     this.state = {
       data: '',
-      type:''
+      type:'',
+      isLoading:false
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
@@ -165,8 +178,13 @@ class UserDetails extends React.Component {
       });
     }
     if(props.user.updateUser.isSuccess == true ){
-      props.userAddReset()
+      props.userReset()
       props.history.push('/app/user/viewuser');
+    }
+    if(props.user.updateUser.isLoading){
+      this.setState({isLoading:true})
+    } else if(props.user.updateUser.isLoading == false){
+      this.setState({isLoading:false})
     }
   }
   componentWillMount(){

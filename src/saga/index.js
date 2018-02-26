@@ -34,6 +34,8 @@ export function* watchActions () {
     yield takeLatest(constants.REDEEM_LIST_REQUEST, fetchRedeem);
     yield takeLatest(constants.REDEEM_ADD_REQUEST, addRedeem);
     yield takeLatest(constants.REDEEM_UPDATE_REQUEST, updateRedeem);
+    yield takeLatest(constants.REDEEM_DELETE_REQUEST, deleteRedeem);
+    yield takeLatest(constants.CUSTOMER_DELETE_REQUEST, deleteCustomer);    
     
 
 }

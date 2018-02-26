@@ -13,15 +13,30 @@ import SelectField from 'material-ui/SelectField';
 import CHARTCONFIG from 'constants/ChartConfig';
 import * as actions from 'actions';
 
+const styles = {
+  loading: {
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: 500,
+  }
+}
 
 class User extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
       search:'',
-      searchType:'name'
+      searchType:'name',
+      isLoading:false
     };
     this.handleChange = this.handleChange.bind(this);
+  }
+  componentWillReceiveProps(props){
+    if(props.user.user.isLoading){
+      this.setState({isLoading:true});
+    } else if (props.user.user.isLoading == false){
+      this.setState({isLoading:false});
+    }
   }
   componentWillMount(){
     let token = this.props.user.userLogged.data.token;
@@ -39,6 +54,7 @@ class User extends React.Component {
     }
   }
   render(){
+    const { isLoading } = this.state;    
     // console.log(this.props,'***********************');
     let CustomerList = _.map(this.props.user.user.data, (value, index) => (
       <tr key={index}>
@@ -100,7 +116,12 @@ class User extends React.Component {
                         </tr>
                       </thead>
                       <tbody>
-                        {CustomerList}
+                        {isLoading ? 
+                          <tr>
+                            <td colSpan={6} style={styles.loading} >Loading Data..........</td>
+                          </tr>
+                          :
+                          CustomerList}
                       </tbody>
                     </table>
                   </div>

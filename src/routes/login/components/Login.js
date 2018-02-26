@@ -24,15 +24,6 @@ class Login extends React.Component {
     this.handleSave = this.handleSave.bind(this);
     this.handleRequestClose = this.handleRequestClose.bind(this);
   }
-  componentWillReceiveProps(props){
-    console.log(props.user);
-    if(props.user.isError){
-      this.setState({isOpen:true,message:props.user.message.message});
-    } else if (props.user.isSuccess) {
-      sessionStorage.setItem('user',JSON.stringify(props.user));
-      this.setState({isOpen:true, message:'Login Successfully'})
-    }
-  }
   handleChange = props => (event, index, value) =>{
     this.setState({[props]:event.target.value});
   }

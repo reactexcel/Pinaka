@@ -30,9 +30,19 @@ import 'styles/app.scss';
 import lightTheme from './themes/lightTheme';
 import darkTheme from './themes/darkTheme';
 import grayTheme from './themes/grayTheme';
+import Snackbar from 'material-ui/Snackbar';
 
 
 class App extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      isOpen:false,
+      message:''
+    };
+    this.handleRequestClose = this.handleRequestClose.bind(this);    
+  }
+  
   componentWillMount() {
     let data = sessionStorage.getItem('user');
     let user = JSON.parse(data);
@@ -40,7 +50,21 @@ class App extends Component {
       this.props.loginUserSuccess(user.data);
     }
   }
-
+  componentWillReceiveProps(props){
+    if(props.user.userLogged.isError){
+      this.setState({isOpen:true,message:props.user.message.message});
+    } else if (props.user.userLogged.isSuccess) {
+      sessionStorage.setItem('user',JSON.stringify(props.user.userLogged));
+      this.setState({isOpen:true, message:'Login Successfully'})
+    }
+  }
+  handleRequestClose(){
+    this.setState({isOpen:false})
+    if(this.props.user.userLogged.isSuccess){
+      this.props.loginUserReset();      
+      this.props.history.push('/app/dashboard');
+    }
+  }
   render() {
     const { match, location, layoutBoxed, navCollapsed, navBehind, fixedHeader, sidebarWidth, theme } = this.props;
     let materialUITheme;
@@ -77,6 +101,12 @@ class App extends Component {
             }
             style={{backgroundColor:'#1b025c'}}
             >
+            <Snackbar
+              open={this.state.isOpen}
+              message={this.state.message}
+              autoHideDuration={2000}
+              onRequestClose={this.handleRequestClose}
+            />
             <Route exact path="/login" component={PageLogin} />
             <Route path={`${match.url}app`} component={MainApp} />
             <Route exact path="/404" component={Page404} />
@@ -101,6 +131,7 @@ const mapStateToProps = (state, ownProps) => ({
   fixedHeader: state.settings.fixedHeader,
   sidebarWidth: state.settings.sidebarWidth,
   theme: state.settings.theme,
+  user: state.user,
 });
 
 const mapDispatchToProps = (dispatch) => { return bindActionCreators(actions, dispatch); };

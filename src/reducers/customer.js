@@ -65,13 +65,12 @@ const customerAddRequest = (state, action) =>{
     message:   {$set: ''}
   }
 });}
-const customerAddReset = (state, action) =>{
+const customerReset = (state, action) =>{
   return update(state, {
   updateCustomer:{
     isLoading: {$set: false},
     isError:   {$set: false},
     isSuccess: {$set: false},
-    message:   {$set: ''}
   }
 });}
 const customerAddSuccess = (state, action) => update(state, {
@@ -157,7 +156,7 @@ export default handleActions({
   [constants.CUSTOMER_UPDATE_REQUEST]: customerAddRequest,
   [constants.CUSTOMER_UPDATE_SUCCESS]: customerAddSuccess,
   [constants.CUSTOMER_UPDATE_ERROR]:   customerAddError,
-  [constants.CUSTOMER_ADD_RESET]: customerAddReset,
+  [constants.CUSTOMER_ADD_RESET]: customerReset,
 
   [constants.CUSTOMER_DELETE_REQUEST]: customerDeleteRequest,
   [constants.CUSTOMER_DELETE_SUCCESS]: customerDeleteSuccess,

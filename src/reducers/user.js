@@ -71,13 +71,12 @@ const userAddRequest = (state, action) =>{
   }
 });}
 
-const userAddReset = (state, action) =>{
+const userReset = (state, action) =>{
   return update(state, {
   updateUser:{
     isLoading: {$set: false},
     isError:   {$set: false},
     isSuccess: {$set: false},
-    message:   {$set: ''}
   }
 });}
 
@@ -182,11 +181,14 @@ const userSearchError = (state, action) => update(state, {
   }
 });
 
-const loginUserRest = (state,action) => update(state,{
+const loginUserReset = (state,action) => update(state,{
   userLogged:{
-    isError: {$set:false}
+    isError: {$set:false},
+    isSuccess: {$set:false},
+    isLoading: {$set: false}
   }
 });
+
 
 export default handleActions({
   [constants.USER_LIST_REQUEST]: userListRequest,
@@ -205,14 +207,15 @@ export default handleActions({
   [constants.USER_UPDATE_SUCCESS]: userAddSuccess,
   [constants.USER_UPDATE_ERROR]:   userAddError,
 
-  [constants.USER_ADD_RESET]: userAddReset,
+  [constants.USER_ADD_RESET]: userReset,
+  [constants.LOGIN_USER_RESET]: loginUserReset,
+  
 
   [constants.USER_DELETE_REQUEST]: userDeleteRequest,
   [constants.USER_DELETE_SUCCESS]: userDeleteSuccess,
   [constants.USER_DELETE_ERROR]:   userDeleteError,
 
   [constants.LOGIN_USER_REQUEST]: loginUserRequest,
-  [constants.LOGIN_USER_REST]: loginUserRest,
   [constants.LOGIN_USER_SUCCESS]: loginUserSuccess,
   [constants.LOGIN_USER_ERROR]:   loginUserError,
 

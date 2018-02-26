@@ -39,6 +39,11 @@ const styles = {
   },
   button:{
     marginLeft: 10,
+  },
+  loading: {
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: 500,
   }
 };
 
@@ -51,7 +56,8 @@ const DetailsForm = (props) => {
 
     );
   });
-
+  const { isLoading } = props;
+  console.log(props,"asdasd");
   return(
   <div className="row">
     <div className="col-xl-12">
@@ -65,13 +71,17 @@ const DetailsForm = (props) => {
             <div>
               {/* button for add update and delete */}
               <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-md" />
-              <RaisedButton label="Delete" backgroundColor="#FF0000" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.customerDeleteRequest({token:props.user.userLogged.data.token,data:{_id:props.data._id}})}} className="btn-w-md" />
+              <RaisedButton label="Delete" backgroundColor="#FF0000" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.customerDeleteRequest({token:props.user.data.token,data:{_id:props.data._id}})}} className="btn-w-md" />
               <RaisedButton label="Back"  style={{marginLeft:5}}  onClick={()=>{props.handleEdit('back')}} className="btn-w-md" />
 
             </div>
         }
           <article className="article">
-
+          {isLoading? 
+            <div className="col-md-12" style={styles.loading} >
+              Adding New User...........
+            </div>        
+            :
               <form role="form">
                 <div className="form-group row">
                   <label style={styles.label1}  className="col-md-2 control-label">First Name</label>
@@ -424,7 +434,7 @@ const DetailsForm = (props) => {
                   </div>
                 </div>
               </form>
-
+            }
           </article>
         </div>
       </div>
@@ -438,7 +448,8 @@ class CustomerDetails extends React.Component {
     super(props);
     this.state = {
       data: '',
-      type:''
+      type:'',
+      isLoading:false      
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
@@ -518,7 +529,7 @@ class CustomerDetails extends React.Component {
       });
     } else {
       let data = customer.customer.data[match.params.id];
-      data.phone = data.phone.substring(2, data.phone.length);
+      data.phone = data.phone? data.phone.substring(2, data.phone.length) : data.phone;
       this.setState({
         data: data,
         type: match.params.type,
@@ -526,8 +537,13 @@ class CustomerDetails extends React.Component {
       });
     }
     if(props.customer.updateCustomer.isSuccess == true ){
-      props.customerAddReset()
+      props.customerReset()
       props.history.push('/app/customer/viewcustomer');
+    }
+    if(props.customer.updateCustomer.isLoading){
+      this.setState({isLoading:true})
+    } else if(props.customer.updateCustomer.isLoading == false){
+      this.setState({isLoading:false})
     }
   }
   handleSave(){
