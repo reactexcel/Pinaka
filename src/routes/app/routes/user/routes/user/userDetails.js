@@ -15,6 +15,8 @@ import TextField from 'material-ui/TextField';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn, TableFooter} from 'material-ui/Table';
 import CHARTCONFIG from 'constants/ChartConfig';
 import * as actions from 'actions';
+import Snackbar from 'material-ui/Snackbar';
+
 
 const styles = {
   toggle: {
@@ -152,11 +154,14 @@ class UserDetails extends React.Component {
     this.state = {
       data: '',
       type:'',
-      isLoading:false
+      isLoading:false,
+      isOpen:false,
+      message:''
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
     this.handleSave = this.handleSave.bind(this);
+    this.handleRequestClose = this.handleRequestClose.bind(this);        
   }
   componentWillReceiveProps(props){
     const { user, match } = props;
@@ -178,7 +183,7 @@ class UserDetails extends React.Component {
       });
     }
     if(props.user.updateUser.isSuccess == true ){
-      props.userReset()
+      props.userReset();
       props.history.push('/app/user/viewuser');
     }
     if(props.user.updateUser.isLoading){
@@ -235,6 +240,13 @@ class UserDetails extends React.Component {
       data[props] = event.target.value;
     }
     this.setState({ data });
+  }
+  handleRequestClose(){
+    this.setState({isOpen:false})
+    // if(this.props.user.userLogged.isSuccess){
+    //   // this.props.loginUserReset();      
+    //   // this.props.history.push('/app/dashboard');
+    // }
   }
   render(){
     return(

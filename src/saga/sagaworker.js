@@ -260,7 +260,7 @@ export function* deleteCustomer(data){
   console.log(data);
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/deleteAdminStaff?accessToken='+token,{
+        return fetch(API.SERVER_DEV_URL+'admin/deleteCustomer?accessToken='+token,{
              method: 'DELETE',
              cache: 'no-cache',
              headers: {

@@ -7,7 +7,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import QueueAnim from 'rc-queue-anim';
 import * as actions from 'actions';
-import Snackbar from 'material-ui/Snackbar';
 
 
 class Login extends React.Component {
@@ -22,7 +21,6 @@ class Login extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
-    this.handleRequestClose = this.handleRequestClose.bind(this);
   }
   handleChange = props => (event, index, value) =>{
     this.setState({[props]:event.target.value});
@@ -31,21 +29,9 @@ class Login extends React.Component {
     let data = {email:this.state.email,password:this.state.password}
     this.props.loginUserRequest(data)
   }
-  handleRequestClose(){
-    this.setState({isOpen:false})
-    if(this.props.user.isSuccess){
-      this.props.history.push('/app/dashboard');
-    }
-  }
   render() {
     return (
       <div className="body-inner">
-        <Snackbar
-          open={this.state.isOpen}
-          message={this.state.message}
-          autoHideDuration={4000}
-          onRequestClose={this.handleRequestClose}
-        />
         <div className="card bg-white">
           <div className="card-content">
 
