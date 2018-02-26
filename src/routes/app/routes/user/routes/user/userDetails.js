@@ -184,7 +184,11 @@ class UserDetails extends React.Component {
     }
     if(props.user.updateUser.isSuccess == true ){
       props.userReset();
-      props.history.push('/app/user/viewuser');
+      if(this.state.type == 'add'){
+        this.setState({isOpen:true,message:"Added Redeem Code Successfully"});
+      } else if (this.state.type == 'disable'){
+        this.setState({isOpen:true,message:"Redeem Code Updated Successfully"});        
+      }
     }
     if(props.user.updateUser.isLoading){
       this.setState({isLoading:true})
@@ -243,14 +247,17 @@ class UserDetails extends React.Component {
   }
   handleRequestClose(){
     this.setState({isOpen:false})
-    // if(this.props.user.userLogged.isSuccess){
-    //   // this.props.loginUserReset();      
-    //   // this.props.history.push('/app/dashboard');
-    // }
+    this.props.history.push('/app/user/viewuser');    
   }
   render(){
     return(
       <div className="container-fluid no-breadcrumbs">
+      <Snackbar
+          open={this.state.isOpen}
+          message={this.state.message}
+          autoHideDuration={1000}
+          onRequestClose={this.handleRequestClose}
+        />
         <DetailsForm {...this.props} handleSave={this.handleSave} handleEdit={this.handleEdit} handleChange={this.handleChange} {...this.state} />
       </div>
     );

@@ -40,7 +40,6 @@ class Redeem extends React.Component {
     }
   }
   componentWillMount(){
-    console.log('5456456',this.props);
     let token = this.props.user.userLogged.data.token;
     this.props.redeemListRequest(token);
   }

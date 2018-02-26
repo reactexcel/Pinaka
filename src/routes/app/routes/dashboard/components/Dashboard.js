@@ -82,6 +82,7 @@ const Engagement = () => (
       this.props.interestListRequest();
       this.props.userListRequest(token);
       this.props.customerListRequest(token);
+      this.props.redeemListRequest(token);      
     }
     render(){
       return(

@@ -91,7 +91,6 @@ class SidebarContent extends React.Component {
 
 
   render() {
-    console.log(this.props.user.userLogged,'sidebar')
     const {user} = this.props;
     return (
       <ul className="nav" style={{backgroundColor:'#1b025c'}} ref={(c) => { this.nav = c; }}>
@@ -109,7 +108,6 @@ class SidebarContent extends React.Component {
           <ul>
             {/* <li><FlatButton className="prepend-icon" href="#/app/user/viewuserdetails/0/add"><span>Add User</span></FlatButton></li> */}
             <li><FlatButton className="prepend-icon" href="#/app/user/viewuser"><span>View User</span></FlatButton></li>
-            <li><FlatButton className="prepend-icon" href="#/app/customer/viewredeem"><span>View Redeem</span></FlatButton></li>
           </ul>
         </li>
         : 

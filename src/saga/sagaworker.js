@@ -245,9 +245,9 @@ export function* updateCustomer(data){
 
      let res = yield call(api);
        if(res.status == 1){
-         yield put( actions.userUpdateSuccess(res.data));
+         yield put( actions.customerUpdateSuccess(res.data));
        } else {
-         yield put (actions.userUpdateError(res));
+         yield put (actions.customerUpdateError(res));
        }
      } catch (e){
        console.log(e);
