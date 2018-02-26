@@ -69,7 +69,7 @@ const DetailsForm = (props) => {
             <div>
               {/* button for add update and delete */}
               <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-md" />
-              <RaisedButton label="Delete" backgroundColor="#FF0000" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.customerDeleteRequest({token:props.user.data.token,data:{_id:props.data._id}})}} className="btn-w-md" />
+              <RaisedButton label="Delete" backgroundColor="#FF0000" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.handleDelete({token:props.user.data.token,data:{_id:props.data._id}})}} className="btn-w-md" />
               <RaisedButton label="Back"  style={{marginLeft:5}}  onClick={()=>{props.handleEdit('back')}} className="btn-w-md" />
             </div>
         }
@@ -465,6 +465,7 @@ class CustomerDetails extends React.Component {
     this.handleEdit = this.handleEdit.bind(this);
     this.handleRequestClose = this.handleRequestClose.bind(this);        
     this.handleSave = this.handleSave.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
   componentWillMount(){
     const { customer, match, interest } = this.props;
@@ -633,6 +634,10 @@ class CustomerDetails extends React.Component {
     }
     this.setState({ data });
   }
+  handleDelete (data) {
+    this.props.customerDeleteRequest({token:data.token,data:data.data});
+    this.props.history.push('/app/customer/viewcustomer');
+  }
   render(){
     return(
       <div className="container-fluid no-breadcrumbs">
@@ -642,7 +647,7 @@ class CustomerDetails extends React.Component {
           autoHideDuration={1000}
           onRequestClose={this.handleRequestClose}
         />
-        <DetailsForm {...this.props} intrestList={this.state.intrestList} handleSave={this.handleSave} handleEdit={this.handleEdit} handleChange={this.handleChange} {...this.state} />
+        <DetailsForm {...this.props} intrestList={this.state.intrestList} handleDelete={this.handleDelete} handleSave={this.handleSave} handleEdit={this.handleEdit} handleChange={this.handleChange} {...this.state} />
       </div>
     );
   }
