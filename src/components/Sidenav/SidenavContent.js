@@ -2,7 +2,9 @@ import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import FlatButton from 'material-ui/FlatButton';
 import 'jquery-slimscroll/jquery.slimscroll.min';
-
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import * as actions from 'actions';
 
 class SidebarContent extends React.Component {
 
@@ -89,7 +91,8 @@ class SidebarContent extends React.Component {
 
 
   render() {
-
+    console.log(this.props.user.userLogged,'sidebar')
+    const {user} = this.props;
     return (
       <ul className="nav" style={{backgroundColor:'#1b025c'}} ref={(c) => { this.nav = c; }}>
         <li><FlatButton href="#/app/dashboard"><i className="nav-icon material-icons">dashboard</i><span className="nav-text">Dashboard</span></FlatButton></li>
@@ -100,6 +103,7 @@ class SidebarContent extends React.Component {
             <li><FlatButton className="prepend-icon" href="#/app/customer/viewcustomer"><span>View Customer</span></FlatButton></li>
           </ul>
         </li>
+        {user.userLogged.data.data.role == 'Admin'?
         <li>
           <FlatButton href="#/app/user"><i className="nav-icon material-icons">person</i><span className="nav-text">User</span></FlatButton>
           <ul>
@@ -108,6 +112,10 @@ class SidebarContent extends React.Component {
             <li><FlatButton className="prepend-icon" href="#/app/customer/viewredeem"><span>View Redeem</span></FlatButton></li>
           </ul>
         </li>
+        : 
+        null
+        }
+        {user.userLogged.data.data.role == 'Admin'?     
         <li>
           <FlatButton href="#/app/redeem"><i className="nav-icon material-icons">credit_card
           </i><span className="nav-text">Redeem Code</span></FlatButton>
@@ -116,6 +124,9 @@ class SidebarContent extends React.Component {
             <li><FlatButton className="prepend-icon" href="#/app/redeem/viewredeem"><span>View Redeem</span></FlatButton></li>
           </ul>
         </li>
+        :
+        null  
+        }
         {/* <li>
           <FlatButton href="#/app/chart"><i className="nav-icon material-icons">pie_chart_outlined</i><span className="nav-text">Charts</span></FlatButton>
           <ul>
@@ -132,5 +143,13 @@ class SidebarContent extends React.Component {
     );
   }
 }
-
-module.exports = withRouter(SidebarContent);
+function mapStateToProps (state) {
+  return {
+    user: state.user
+  };
+}
+const mapDispatchToProps = (dispatch) => { return bindActionCreators(actions, dispatch); };
+module.exports = withRouter(connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SidebarContent));
