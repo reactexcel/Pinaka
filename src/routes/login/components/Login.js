@@ -22,6 +22,11 @@ class Login extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
   }
+  componentWillMount(){
+    if(localStorage.getItem('userid').length > 0){
+        this.props.history.push('/app/dashboard');
+    }
+  }
   handleChange = props => (event, index, value) =>{
     this.setState({[props]:event.target.value});
   }

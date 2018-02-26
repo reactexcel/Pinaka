@@ -60,7 +60,6 @@ const DetailsForm = (props) => {
   const { isLoading, data, errors } = props;
   const statesList = _.sortBy(Object.keys(_.groupBy(statecity, function(o){ return o.state; })), function(o){return o;});
   const cityList = props.data.state == '' ? null : _.filter(statecity, function(o){ return o.state == props.data.state; });
-  console.log(data, statesList, cityList, '===========');
   return(
   <div className="row">
     <div className="col-xl-12">
@@ -463,11 +462,11 @@ class CustomerDetails extends React.Component {
       isLoading:false,
       errors: {},
       isOpen:false,
-      message:''      
+      message:''
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
-    this.handleRequestClose = this.handleRequestClose.bind(this);        
+    this.handleRequestClose = this.handleRequestClose.bind(this);
     this.handleSave = this.handleSave.bind(this);
   }
   componentWillMount(){
@@ -556,7 +555,7 @@ class CustomerDetails extends React.Component {
       if(this.state.type == 'add'){
         this.setState({isOpen:true,message:"Added User Successfully"});
       } else if (this.state.type == 'disable'){
-        this.setState({isOpen:true,message:"User Data Updated Successfully"});        
+        this.setState({isOpen:true,message:"User Data Updated Successfully"});
       }
     }
     if(props.customer.updateCustomer.isLoading){
@@ -638,7 +637,6 @@ class CustomerDetails extends React.Component {
     this.setState({ data });
   }
   render(){
-     console.log(statecity, '==========');
     return(
       <div className="container-fluid no-breadcrumbs">
         <Snackbar
