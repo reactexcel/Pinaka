@@ -239,23 +239,48 @@ export function* addCustomer(data){
 
 
 export function* updateCustomer(data){
-  let body = JSON.stringify(data.payload.data);
+  console.log("adsda")
+  let params = data.payload.data;
+  console.log(params,'54545454545')
   let token = data.payload.token;
+  var formData = new FormData();
+  formData.append('name', params.name);
+  formData.append('email', params.email);
+  formData.append('birthday', params.birthday);
+  formData.append('zipcode', params.zipcode);
+  formData.append('gender', params.gender?1:0);
+  formData.append('marital', params.marital?1:0);
+  formData.append('kids', params.kids?1:0);
+  if(params.phone != undefined){
+      formData.append('phone', '+1' + params.phone);
+  }
+  formData.append('interests', params.interest);
+  formData.append('source', params.source);
+  formData.append('type', 0);
+  formData.append('password', params.password);
+  formData.append('occupation', params.occupation);
+  formData.append('anniversary', params.anniversary);
+  formData.append('lastName', params.lastName);
+  formData.append('sms_option', params.sms_option);
+  formData.append('app_installed', params.app_installed);
+  formData.append('address1', params.address1);
+  formData.append('address2', params.address2);
+  formData.append('state', params.state);
+  formData.append('city', params.city);
+  console.log(formData,'form');
   try{
     const api = () =>  new Promise((resolve, reject) => {
         return fetch(API.SERVER_DEV_URL+'admin/updateCustomer?accessToken='+token,{
              method: 'PUT',
-             cache: 'no-cache',
-             headers: {
-              'content-type': 'application/json'
-            },
-            body,
+
+            body:formData,
          })
-         .then((res)=> res.json())
+         .then((res)=> { console.log(res); return res.json()})
          .then(data => {
              resolve(data);
          })
          .catch(err => {
+           console.log(err)
              reject(err);
          });
      });

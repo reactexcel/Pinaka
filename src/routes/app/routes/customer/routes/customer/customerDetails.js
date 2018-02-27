@@ -164,7 +164,7 @@ const DetailsForm = (props) => {
                           key={index}
                           label={value.name}
                           style={styles.checkbox}
-                          onCheck={props.handleChange({props:'interests',item:value,index:index})}
+                          onCheck={props.type == 'add'?props.handleChange({props:'interests',item:value,index:index}):props.handleChange({props:'interestsFlag',item:value,index:index})}
                           checked={_.indexOf(props.data.interest, value._id) >= 0}
                           disabled={isDisabled}
                         />
@@ -239,8 +239,6 @@ const DetailsForm = (props) => {
                     />
                   </div>
                 </div>
-                {props.type != 'add' ?
-                <div>
                 <div className="form-group row" style={styles.formGroup}>
                   <label  className="col-md-2 control-label">Code Redeem Flag</label>
                   <div className="col-md-10">
@@ -264,6 +262,8 @@ const DetailsForm = (props) => {
                     />
                   </div>
                 </div>
+              {props.type != 'add' ?
+              <div>
                 <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1} className="col-md-2 control-label">Created By</label>
                   <div className="col-md-10">
@@ -280,7 +280,7 @@ const DetailsForm = (props) => {
                   <div className="col-md-10">
                     <TextField
                       hintText="Created date"
-                      value={props.data.CreatedDate}
+                      value={props.data.createdBy}
                       type="text"
                       disabled={isDisabled}
                     />
@@ -291,7 +291,7 @@ const DetailsForm = (props) => {
                   <div className="col-md-10">
                     <TextField
                       hintText="Modified by"
-                      value={props.data.updatedBy}
+                      value={props.data.modifiedBy}
                       type="text"
                       disabled={isDisabled}
                     />
@@ -462,6 +462,7 @@ class CustomerDetails extends React.Component {
       isOpen:false,
       message:'',
       time: 0,      
+      isApi: false
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
@@ -470,7 +471,6 @@ class CustomerDetails extends React.Component {
     this.handleDelete = this.handleDelete.bind(this);
   }
   componentWillMount(){
-    this.props.interestListRequest();    
     const { customer, match, interest } = this.props;
     let data={
       name: '',
@@ -504,7 +504,7 @@ class CustomerDetails extends React.Component {
         intrestList: interest.interestList.data,
         time : 1
       });
-    }else if(match.params.type == 'disable'){
+    }else if(match.params.type == 'disable' && !this.state.isApi){
       let data = customer.customer.data[match.params.id];
       data.phone = data.phone? data.phone.substring(2, data.phone.length) : data.phone;
       data.interest = [];
@@ -514,10 +514,13 @@ class CustomerDetails extends React.Component {
       for(var i = 0; i < interest.interestList.data.length; i++){
         interests.push(false);
       }
-      const dataIndex = _.indexOf(interest.interestList.data , data.interest[0]);
-      console.log(dataIndex)
+      _.map(data.interest, (value) =>{
+        console.log(value,'will',interest.interestList.data);
+        let dataIndex =  _.findIndex(interest.interestList.data , {_id:value} )
+        console.log(dataIndex,'sadasd');
+        interests[dataIndex] = !interests[dataIndex];
+      })
       data.interestsFlag = interests;
-      console.log(data,'hgdashgdh')
       this.setState({
         data: data,
         type: match.params.type,
@@ -555,7 +558,6 @@ class CustomerDetails extends React.Component {
     for(var i = 0; i < interest.interestList.data.length; i++){
         data.interests.push(false);
     }
-    console.log(data,'sadasd');
     if(match.params.type == 'add' && this.state.time == 0){
       this.setState({
         data,
@@ -563,18 +565,24 @@ class CustomerDetails extends React.Component {
         intrestList: interest.interestList.data,
         time : 1        
       });
-    } else if(match.params.type == 'disable') {
+    } else if(match.params.type == 'disable' && !this.state.isApi) {
       let data = customer.customer.data[match.params.id];
+      const item = customer.customer.data[match.params.id];
       data.phone = data.phone? data.phone.substring(2, data.phone.length) : data.phone;
       data.interest = [];
+      const interest = data.interests;
       _.map(data.interests,(value,index)=>{ console.log(value.id); return data.interest.push(value.id)}); 
       console.log(data.interest,'interesy')
       let interests = [];
       for(var i = 0; i < interest.interestList.data.length; i++){
         interests.push(false);
       }
-      const dataIndex = _.indexOf(interest.interestList.data , data.interest[0]);
-      console.log(dataIndex)
+      _.map(data.interest, (value) =>{
+        console.log(value,'will',interest.interestList.data);
+        let dataIndex =  _.findIndex(interest.interestList.data , {_id:value} )
+        console.log(dataIndex,'sadasd');
+        interests[dataIndex] = !interests[dataIndex];
+      })
       data.interestsFlag = interests;
       console.log(data,'hgdashgdh')
       this.setState({
@@ -630,37 +638,51 @@ class CustomerDetails extends React.Component {
     }
   }
   handleSave(){
+    console.log(this.state,'state')
     let { data } = this.state;
+    let cloneData = _.cloneDeep(data);
     console.log(this.state,'asdasd',data);
+    
     const token = this.props.user.data.token;
     let intrestList ='';
-    for(var i = 0; i < data.interests.length; i++){
-        if(data.interests[i] == true){
-            intrestList +=this.props.interest.interestList.data[i]._id+":";
+    if(this.state.type == 'add'){
+      for(var i = 0; i < cloneData.interests.length; i++){
+        if(cloneData.interests[i] == true){
+          intrestList +=this.props.interest.interestList.data[i]._id+":";
         }
+      }
+    } else {
+      for(var i = 0; i < cloneData.interestsFlag.length; i++){
+        if(cloneData.interestsFlag[i] == true){
+          intrestList +=this.props.interest.interestList.data[i]._id+":";
+        }
+      }
     }
     
     if(intrestList != ''){
       intrestList  = intrestList.substring(0,intrestList.length -1);
     }
-    data.interest = intrestList;
-
-    const apiData = {token:token,data:data};
+    cloneData.interest = intrestList;
+    console.log(cloneData,'asdasd123')
+    const apiData = {token:token,data:cloneData};
+    let interestCheck = this.state.type == 'add' ? cloneData.interest.length != 0 : true;  
     let errors = {};
-    if(data.name != '' && data.lastName != '' && data.email != '' && data.phone != '' && data.interest.length != 0 && data.address1 != '' && data.address2 != '' && data.zipcode != '' && data.birthday != '' && data.anniversary != '' && data.occupation != ''){
-        var pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-        let email = data.email.trim();
-        if(data.phone.length != 10){
+    if(cloneData.name != '' && cloneData.lastName != '' && cloneData.email != ''&& cloneData.interest.length != 0  && cloneData.phone != '' && cloneData.address1 != '' && cloneData.address2 != '' && cloneData.zipcode != '' && cloneData.birthday != '' && cloneData.anniversary != '' && cloneData.occupation != ''){
+      console.log('isvalid') 
+      var pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        let email = cloneData.email.trim();
+        if(cloneData.phone.length != 10){
             errors.phone = 'Phone should be of 10 digits.';
         }
-        if(data.zipcode.length != 5){
+        if(cloneData.zipcode.length != 5){
             errors.zipcode = 'Phone should be of 5 digits.';
         }
         if (_.isEmpty(email)) {
           errors.email = 'Empty field';
-        } else if (!data.email.match(pattern)) {
+        } else if (!cloneData.email.match(pattern)) {
           errors.email = 'Not a valid email';
-        } else if(data.phone.length == 10 && data.zipcode.length == 5) {
+        } else if(cloneData.phone.length == 10 && cloneData.zipcode.length == 5) {
+          console.log('45454',this.state)
             errors.email = '';
             errors.phone = '';
             errors.zipcode = '';
@@ -668,23 +690,25 @@ class CustomerDetails extends React.Component {
             this.setState({errors: errors});
             if(this.state.type == 'add'){
                 this.props.customerAddRequest(apiData);
-            } else if(this.state.type == 'disable'){
+            } else if(this.state.type == 'disable' || this.state.type == "edit" ){
+              console.log('call')
+              this.setState({isApi:true});
                 this.props.customerUpdateRequest(apiData);
             }
         }
         this.setState({errors: errors});
     } else {
-        errors.name = data.name != '' ? '' : 'Cannot be Empty.';
-        errors.lastName = data.lastName != '' ? '' : 'Cannot be Empty.';
-        errors.email = data.email != '' ? '' : 'Cannot be Empty.';
-        errors.phone = data.phone != '' ? '' : 'Cannot be Empty.';
-        errors.interests = data.interest.length != 0 ? '' : 'Cannot be Empty.';
-        errors.address1 = data.address1 != '' ? '' : 'Cannot be Empty.';
-        errors.address2 = data.address2 != '' ? '' : 'Cannot be Empty.';
-        errors.zipcode = data.zipcode != '' ? '' : 'Cannot be Empty.';
-        errors.birthday = data.birthday != '' ? '' : 'Cannot be Empty.';
-        errors.anniversary = data.anniversary != '' ? '' : 'Cannot be Empty.';
-        errors.occupation = data.occupation != '' ? '' : 'Cannot be Empty.';
+        errors.name = cloneData.name != '' ? '' : 'Cannot be Empty.';
+        errors.lastName = cloneData.lastName != '' ? '' : 'Cannot be Empty.';
+        errors.email = cloneData.email != '' ? '' : 'Cannot be Empty.';
+        errors.phone = cloneData.phone != '' ? '' : 'Cannot be Empty.';
+        errors.interests = cloneData.interest.length != 0 ? '' : 'Cannot be Empty.';
+        errors.address1 = cloneData.address1 != '' ? '' : 'Cannot be Empty.';
+        errors.address2 = cloneData.address2 != '' ? '' : 'Cannot be Empty.';
+        errors.zipcode = cloneData.zipcode != '' ? '' : 'Cannot be Empty.';
+        errors.birthday = cloneData.birthday != '' ? '' : 'Cannot be Empty.';
+        errors.anniversary = cloneData.anniversary != '' ? '' : 'Cannot be Empty.';
+        errors.occupation = cloneData.occupation != '' ? '' : 'Cannot be Empty.';
         this.setState({errors: errors});
     }
   }
@@ -706,12 +730,13 @@ class CustomerDetails extends React.Component {
       data[props] = value;
     } else if (props == 'kids' || props == 'sms_option' || props == 'CodeRedeemFlag' || props == 'app_installed') {
       data[props] = !data[props];
-    } else if (props.props == 'interests') {
-      let interestsList = data["interests"];
+    } else if (props.props == 'interests' || props.props == 'interestsFlag' ) {
+      let interestsList = this.state.type== 'add'? data["interests"]:data["interestsFlag"];
       let interestList = data["interest"];
       const dataIndex = _.indexOf(interestList , props.item._id);
       interestsList[props.index] = !interestsList[props.index];
       index  ? _.indexOf(interestList , props.item) >=0 ? interestList: interestList.push(props.item._id) : interestList.splice(dataIndex, 1);
+      console.log(interestList,'asd')
       data[props.props] = interestsList;
       data['interest'] = interestList;
     } else if (props == 'birthday' || props == 'anniversary') {
@@ -726,7 +751,7 @@ class CustomerDetails extends React.Component {
     this.props.history.push('/app/customer/viewcustomer');
   }
   render(){
-    console.log(this.props);
+    console.log(this.state.data);
     return(
       <div className="container-fluid no-breadcrumbs">
         <Snackbar

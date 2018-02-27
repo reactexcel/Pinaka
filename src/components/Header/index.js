@@ -9,6 +9,8 @@ import * as actions from 'actions';
 import {bindActionCreators} from 'redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import {withRouter} from 'react-router';
+
 
 
 class Header extends React.Component {
@@ -44,6 +46,7 @@ class Header extends React.Component {
   }
   render() {
     const { isFixedHeader, colorOption } = this.props;
+    console.log(this.props);
     let CustomerList = _.map(this.props.customer.searchHeader.data, (value, index) => {
       return(
       <tr key={index} >
@@ -126,7 +129,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = (dispatch) => { return bindActionCreators(actions, dispatch); };
 
-module.exports = connect(
+module.exports = withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(Header);
+)(Header));

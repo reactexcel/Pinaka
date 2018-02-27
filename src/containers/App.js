@@ -60,7 +60,6 @@ class App extends Component {
     if(props.user.userToken.isSuccess){
       sessionStorage.removeItem('user');
       this.setState({isOpen:true, message:'Session Expire!!'})
-      this.props.history.push('/login');
     }
   }
   handleRequestClose(){
@@ -70,6 +69,7 @@ class App extends Component {
     }
     if(this.props.user.userToken.isSuccess){
       this.props.loginTokenReset();
+      this.props.history.push('/login');
     }
   }
   render() {
