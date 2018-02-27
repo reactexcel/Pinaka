@@ -19,7 +19,8 @@ import * as actions from 'actions';
       this.props.interestListRequest();
       this.props.userListRequest(token);
       this.props.customerListRequest(token);
-      this.props.redeemListRequest(token);      
+      this.props.redeemListRequest(token);  
+    this.props.searchHeaderCustomerReset();          
     }
     render(){
       return(

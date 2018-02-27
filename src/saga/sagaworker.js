@@ -380,6 +380,41 @@ export function* searchCustomer(data){
      }
 }
 
+export function* searchHeaderCustomer(data){
+  let body = JSON.stringify(data.payload.data);
+  let token = data.payload.token;
+  try{
+    const api = () =>  new Promise((resolve, reject) => {
+        return fetch(API.SERVER_DEV_URL+'admin/search_allCustomers?accessToken='+token,{
+             method: 'POST',
+             cache: 'no-cache',
+             headers: {
+              'content-type': 'application/json'
+            },
+            body,
+         })
+         .then((res)=> res.json())
+         .then(data => {
+             resolve(data);
+         })
+         .catch(err => {
+             reject(err);
+         });
+     });
+
+     let res = yield call(api);
+       if(res.status == 1){
+         yield put( actions.searchHeaderCustomerSuccess(res.data));
+       } else if(res.status == 0) {
+         yield put (actions.searchHeaderCustomerError(res));
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
+     } catch (e){
+       console.log(e);
+     }
+}
+
 
 export function* addRedeem(data){
   let body = JSON.stringify(data.payload.data);

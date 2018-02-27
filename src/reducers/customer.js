@@ -25,6 +25,13 @@ const initialState = {
     isError: false,
     isSuccess: false,
     message : ''
+  },
+  searchHeader:{
+    isLoading:false,
+    data:'',
+    isError: false,
+    isSuccess: false,
+    message : ''
   }
 }
 
@@ -126,9 +133,10 @@ const customerSearchRequest = (state, action) => update(state, {
 
 const customerSearchSuccess = (state, action) => update(state, {
   searchCustomer : {
-    isSuccess: {$set: false},
+    isSuccess: {$set: true},
     isLoading: {$set: false},
-    isError:   {$set: true},
+    isError:   {$set: false},
+    data: {$set:action.payload},
     message:   {$set: 'Search Successfully'}
   },
   customer:{
@@ -144,6 +152,45 @@ const customerSearchError = (state, action) => update(state, {
     message:   {$set: 'Something Went Wrong'}
   }
 });
+
+const customerHeaderSearchRequest = (state, action) => update(state, {
+  searchHeader : {
+    isSuccess: {$set: false},
+    isLoading: {$set: false},
+    isError:   {$set: true},
+    message:   {$set: ''}
+  }
+});
+
+const customerHeaderSearchSuccess = (state, action) => update(state, {
+  searchHeader : {
+    isSuccess: {$set: true},
+    isLoading: {$set: false},
+    isError:   {$set: false},
+    data: {$set:action.payload},
+    message:   {$set: 'Search Successfully'}
+  }
+});
+
+const customerHeaderSearchError = (state, action) => update(state, {
+  searchHeader : {
+    isSuccess: {$set: false},
+    isLoading: {$set: false},
+    isError:   {$set: true},
+    message:   {$set: 'Something Went Wrong'}
+  }
+});
+
+const customerHeaderSearchReset = (state, action) => {
+  console.log(action)
+  return update(state, {
+  searchHeader : {
+    isSuccess: {$set: false},
+    isLoading: {$set: false},
+    isError:   {$set: false},
+    data: {$set:''}
+  }
+});}
 
 export default handleActions({
   [constants.CUSTOMER_LIST_REQUEST]: customerListRequest,
@@ -165,5 +212,11 @@ export default handleActions({
   [constants.SEARCH_CUSTOMER_REQUEST]: customerSearchRequest,
   [constants.SEARCH_CUSTOMER_SUCCESS]: customerSearchSuccess,
   [constants.SEARCH_CUSTOMER_ERROR]: customerSearchError,
+
+  [constants.SEARCH_HEADER_CUSTOMER_REQUEST]: customerHeaderSearchRequest,
+  [constants.SEARCH_HEADER_CUSTOMER_SUCCESS]: customerHeaderSearchSuccess,
+  [constants.SEARCH_HEADER_CUSTOMER_ERROR]: customerHeaderSearchError,
+  [constants.SEARCH_HEADER_CUSTOMER_RESET]: customerHeaderSearchReset,
+  
 
 }, initialState);

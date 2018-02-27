@@ -42,6 +42,7 @@ class Redeem extends React.Component {
   componentWillMount(){
     let token = this.props.user.userLogged.data.token;
     this.props.redeemListRequest(token);
+    this.props.searchHeaderCustomerReset();    
   }
   handleChange = props => (event, value, index) => {
     if(props == 'searchType'){

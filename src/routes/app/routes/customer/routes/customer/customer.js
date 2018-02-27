@@ -33,6 +33,7 @@ class Customer extends React.Component {
   componentWillMount(){
     let token = this.props.user.userLogged.data.token;
     this.props.customerListRequest(token);
+    this.props.searchHeaderCustomerReset();    
   }
   componentWillReceiveProps(props){
     if(props.customer.isLoading){

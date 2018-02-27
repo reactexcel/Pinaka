@@ -39,6 +39,7 @@ class User extends React.Component {
     }
   }
   componentWillMount(){
+    this.props.searchHeaderCustomerReset();
     let token = this.props.user.userLogged.data.token;
     this.props.userListRequest(token);
   }
