@@ -227,7 +227,7 @@ export function* addCustomer(data){
      let res = yield call(api);
         if(res.status == 1){
          yield put( actions.customerAddSuccess(res.data));
-       } else if(res.status == 0) {
+       } else if(res.status == 0 || res.code) {
          yield put (actions.customerAddError(res));
        } else if(res.error == 1){
         yield put (actions.loginTokenExpire(res));

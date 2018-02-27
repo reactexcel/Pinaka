@@ -17,6 +17,7 @@ import CHARTCONFIG from 'constants/ChartConfig';
 import * as actions from 'actions';
 import Snackbar from 'material-ui/Snackbar';
 import {statecity} from 'constants/statecity';
+import {API} from 'constants/api';
 
 const styles = {
   toggle: {
@@ -479,6 +480,7 @@ class CustomerDetails extends React.Component {
       sms_option: true,
       app_installed: false,
       interests: [],
+      interest: [],      
       address1: '',
       address2: '',
       city: '',
@@ -494,6 +496,7 @@ class CustomerDetails extends React.Component {
       occupation: '',
       source: 1,
     };
+    this.setState({intrestList: interest.interestList.data,});
     if(match.params.type == 'add' && this.state.time == 0){
       this.setState({
         data,
@@ -501,7 +504,7 @@ class CustomerDetails extends React.Component {
         intrestList: interest.interestList.data,
         time : 1
       });
-    }else{
+    }else if(match.params.type == 'disable'){
       let data = customer.customer.data[match.params.id];
       data.phone = data.phone? data.phone.substring(2, data.phone.length) : data.phone;
       data.interest = [];
@@ -531,7 +534,7 @@ class CustomerDetails extends React.Component {
       phone: '',
       sms_option: true,
       app_installed: false,
-      interestsFlag: [],
+      interests: [],
       interest: [],      
       address1: '',
       address2: '',
@@ -548,9 +551,11 @@ class CustomerDetails extends React.Component {
       occupation: '',
       source: 1
     };
+    this.setState({intrestList: interest.interestList.data,});    
     for(var i = 0; i < interest.interestList.data.length; i++){
-        data.interestsFlag.push(false);
+        data.interests.push(false);
     }
+    console.log(data,'sadasd');
     if(match.params.type == 'add' && this.state.time == 0){
       this.setState({
         data,
@@ -579,7 +584,6 @@ class CustomerDetails extends React.Component {
       });
     }
     if(props.customer.updateCustomer.isSuccess == true ){ 
-      props.customerReset()
       if(this.state.type == 'add'){
         this.setState({isOpen:true,message:"Added User Successfully"});
       } else if (this.state.type == 'disable'){
@@ -587,7 +591,27 @@ class CustomerDetails extends React.Component {
       }
     } else if(props.customer.updateCustomer.isError){
       if(this.state.type == 'add'){
-        this.setState({isOpen:true,message:props.customer.updateCustomer.message.message});
+        let message = '';
+        const code = props.customer.updateCustomer.message.code;
+        switch(code){
+          case API.RESPONSE.SIGNUP.DUPLICATEEMAIL:
+                  message= 'This email already used, Please try again.';
+                break;
+          case API.RESPONSE.SIGNUP.DUPLICATEPHONE:
+            
+                  message= 'This phone number already used, Pleae try again.';
+                  
+              break;
+          case API.RESPONSE.SIGNUP.INVALIDEMAIL:
+              
+                  message = 'This email is invalid now. Please try again.';
+              
+              break;
+          case API.RESPONSE.SIGNUP.INVALIDZIPCODE:
+                  message= 'This zipcode is invalid now. Please try again';
+              break;
+        }
+        this.setState({isOpen:true,message});
       } else if (this.state.type == 'disable'){
         this.setState({isOpen:true,message:"Somthing went wrong"});        
       }
@@ -600,15 +624,18 @@ class CustomerDetails extends React.Component {
   }
   handleRequestClose(){
     this.setState({isOpen:false})
-    this.props.history.push('/app/customer/viewcustomer');
+    if(this.props.customer.updateCustomer.isSuccess){
+      this.props.customerReset();
+      this.props.history.push('/app/customer/viewcustomer');
+    }
   }
   handleSave(){
     let { data } = this.state;
     console.log(this.state,'asdasd',data);
     const token = this.props.user.data.token;
     let intrestList ='';
-    for(var i = 0; i < data.interestsFlag.length; i++){
-        if(data.interestsFlag[i] == true){
+    for(var i = 0; i < data.interests.length; i++){
+        if(data.interests[i] == true){
             intrestList +=this.props.interest.interestList.data[i]._id+":";
         }
     }
@@ -680,11 +707,11 @@ class CustomerDetails extends React.Component {
     } else if (props == 'kids' || props == 'sms_option' || props == 'CodeRedeemFlag' || props == 'app_installed') {
       data[props] = !data[props];
     } else if (props.props == 'interests') {
-      let interestsList = data["interestsFlag"];
-      let interestList = data["interest"];      
+      let interestsList = data["interests"];
+      let interestList = data["interest"];
       const dataIndex = _.indexOf(interestList , props.item._id);
       interestsList[props.index] = !interestsList[props.index];
-      index  ? _.indexOf(interestList , props.item._id) >=0 ? interestList: interestList.push(props.item._id) : interestList.splice(dataIndex, 1);
+      index  ? _.indexOf(interestList , props.item) >=0 ? interestList: interestList.push(props.item._id) : interestList.splice(dataIndex, 1);
       data[props.props] = interestsList;
       data['interest'] = interestList;
     } else if (props == 'birthday' || props == 'anniversary') {
@@ -699,7 +726,7 @@ class CustomerDetails extends React.Component {
     this.props.history.push('/app/customer/viewcustomer');
   }
   render(){
-    console.log(this.state);
+    console.log(this.props);
     return(
       <div className="container-fluid no-breadcrumbs">
         <Snackbar

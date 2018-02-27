@@ -182,7 +182,6 @@ const customerHeaderSearchError = (state, action) => update(state, {
 });
 
 const customerHeaderSearchReset = (state, action) => {
-  console.log(action)
   return update(state, {
   searchHeader : {
     isSuccess: {$set: false},
