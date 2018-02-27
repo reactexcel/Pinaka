@@ -136,7 +136,8 @@ class redeemDetails extends React.Component {
       isLoading: false,
       isOpen:false,
       message:'',
-      errors: {}
+      errors: {},
+      time: 0
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
@@ -150,12 +151,12 @@ class redeemDetails extends React.Component {
       redeem_code:'',
       type:'General',
     };
-    if(match.params.type == 'add'){
+    if(match.params.type == 'add' && this.state.time == 0 ){
       this.setState({
         data,
         type: match.params.type
       });
-    } else {
+    } else if(match.params.type == 'disable') {
       this.setState({
         data: redeem.redeem.data[match.params.id],
         type: match.params.type

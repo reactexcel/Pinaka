@@ -32,6 +32,10 @@ const initialState = {
     isError: false,
     isSuccess: false,
     message : ''
+  },
+  userToken:{
+    data:'',
+    isSuccess: false
   }
 }
 
@@ -181,14 +185,36 @@ const userSearchError = (state, action) => update(state, {
   }
 });
 
-const loginUserReset = (state,action) => update(state,{
+const loginUserReset = (state,action) =>{
+  console.log(action,'red')
+  return update(state,{
   userLogged:{
     isError: {$set:false},
     isSuccess: {$set:false},
     isLoading: {$set: false}
   }
 });
+}
 
+const loginTokenExpire = (state,action) =>{
+  console.log(action,'red')
+  return update(state,{
+    userToken:{
+    data: {$set:action.payload},
+    isSuccess:{$set:true}
+  }
+});
+}
+
+const loginTokenReset = (state,action) =>{
+  console.log(action,'red')
+  return update(state,{
+    userToken:{
+    data: {$set:''},
+    isSuccess:{$set:false}
+  }
+});
+}
 
 export default handleActions({
   [constants.USER_LIST_REQUEST]: userListRequest,
@@ -219,5 +245,6 @@ export default handleActions({
   [constants.LOGIN_USER_SUCCESS]: loginUserSuccess,
   [constants.LOGIN_USER_ERROR]:   loginUserError,
 
+  [constants.LOGIN_TOKEN_EXPIRE]:   loginTokenExpire,
 
 }, initialState);

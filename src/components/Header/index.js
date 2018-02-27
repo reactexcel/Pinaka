@@ -5,6 +5,10 @@ import { Link } from 'react-router-dom';
 import APPCONFIG from 'constants/Config';
 import NavLeftList from './NavLeftList';
 import NavRightList from './NavRightList';
+import * as actions from 'actions';
+import {bindActionCreators} from 'redux';
+import RaisedButton from 'material-ui/RaisedButton';
+
 
 
 class Header extends React.Component {
@@ -43,6 +47,8 @@ class Header extends React.Component {
           </div>
 
           <div className="top-nav-right">
+          <RaisedButton label="Add Customer" style={{marginTop: 13,}}  onClick={()=>{this.props.history.push('/app/customer/viewcustomerdetails/0/add')}}  primary  />
+          
             <NavRightList />
           </div>
         </div>
@@ -54,9 +60,12 @@ class Header extends React.Component {
 
 const mapStateToProps = state => ({
   colorOption: state.settings.colorOption,
-  isFixedHeader: state.settings.isFixedHeader
+  isFixedHeader: state.settings.isFixedHeader,
+  user: state.user
 });
+const mapDispatchToProps = (dispatch) => { return bindActionCreators(actions, dispatch); };
 
 module.exports = connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(Header);

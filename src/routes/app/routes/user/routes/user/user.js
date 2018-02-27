@@ -47,7 +47,7 @@ class User extends React.Component {
       this.setState({[props]:index});
     } else {
       this.setState({[props]:event.target.value});
-      let searchvalue = this.state.searchType == 'name' ? {type:this.state.searchType,name:event.target.value} : {type:this.state.searchType,email:event.target.value}
+      let searchvalue = {search:event.target.value};
       let token = this.props.user.userLogged.data.token;
       let apiData = {token,data:searchvalue};
       this.props.searchUserRequest(apiData);
@@ -59,14 +59,11 @@ class User extends React.Component {
     let CustomerList = _.map(this.props.user.user.data, (value, index) => (
       <tr key={index}>
         <td className="mdl-data-table__cell--non-numeric">{index+1}</td>
-        <td className="mdl-data-table__cell--non-numeric">{value.name}</td>
+        <td className="mdl-data-table__cell--non-numeric"><a href={`/#/app/user/viewuserdetails/${index}/disable`}>{value.name}</a></td>
         <td className="mdl-data-table__cell--non-numeric">{value.email}</td>
         <td>{value.role}</td>
         {/* <td>{value.lastLogin}</td> */}
-        <td></td>
-        <td>
-          <a href={`/#/app/user/viewuserdetails/${index}/disable`}>More Detail</a>
-        </td>
+        <td>{value.lastLogin}</td>
       </tr>
     ));
     return(
@@ -78,22 +75,11 @@ class User extends React.Component {
                 <article className="article">
                   <div>
                     <h2 className="article-title">User Details</h2>
-                    <div>
-                      {/* button for add update and delete */}
-                      <RaisedButton label="Add User"  onClick={()=>{this.props.history.push('/app/user/viewuserdetails/0/add')}}  primary  />
-
-                    </div>
+                    
                   </div>
                   <div className=" col-xl-12 row" >
-                    <SelectField
-                      hintText="Select a name"
-                      style={{width:'20%',marginRight:5}}
-                      value={this.state.searchType}
-                      onChange={this.handleChange('searchType')}
-                    >
-                      <MenuItem value='name' primaryText="Full Name" />
-                      <MenuItem value='email' primaryText="Email Id" />
-                    </SelectField>
+                  <RaisedButton label="Add User" style={{boxShadow:'none',marginRight:5}}  onClick={()=>{this.props.history.push('/app/user/viewuserdetails/0/add')}}  primary  />
+                   
                     <TextField
                       hintText="Search"
                       style={{width:'75%'}}
@@ -112,7 +98,6 @@ class User extends React.Component {
                           <th className="mdl-data-table__cell--non-numeric">Email Id</th>
                           <th>Role</th>
                           <th>Last Login Time</th>
-                          <th>More Details</th>
                         </tr>
                       </thead>
                       <tbody>

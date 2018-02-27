@@ -14,7 +14,9 @@ import * as actions from 'actions';
 import Dashboard from '../routes/dashboard/';
 import customer from '../routes/customer/';
 import user from '../routes/user/';
-import redeem from '../routes/redeem/';
+import Redeem from '../routes/redeem/routes/redeem/redeem';
+import redeemDetails from '../routes/redeem/routes/redeem/redeemDetails';
+
 
 
 
@@ -40,7 +42,8 @@ class MainApp extends React.Component {
                 <Route path={`${match.url}/dashboard`} component={Dashboard} />
                 <Route path={`${match.url}/customer`} component={customer} />
                 <Route path={`${match.url}/user`} component={user} />
-                <Route path={`${match.url}/redeem`} component={redeem} />
+                <Route path={`${match.url}/redeem/viewredeem`} component={Redeem}/>
+                <Route path={`${match.url}/redeem/viewredeemdetails/:id/:type`} component={redeemDetails}/>
                 {/* <Route path={`${match.url}/chart`} component={AsyncChart} /> */}
               </div>
             </div>
@@ -49,7 +52,6 @@ class MainApp extends React.Component {
           </div>
         </section>
 
-        <Customizer />
       </div>
     );
   }

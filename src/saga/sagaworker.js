@@ -25,9 +25,11 @@ export function* fetchUser(action){
      let res = yield call(api);
        if(res.status == 1){
          yield put( actions.userListSuccess(res.data));
-       } else {
+       } else if(res.status == 0) {
          yield put (actions.userListError(res));
-       }
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
      } catch (e){
        console.log(e);
      }
@@ -56,11 +58,14 @@ export function* addUser(data){
      });
 
      let res = yield call(api);
+     console.log(res)
        if(res.status == 1){
          yield put( actions.userAddSuccess(res.data));
-       } else {
+       } else if(res.status == 0) {
          yield put (actions.userAddError(res));
-       }
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
      } catch (e){
        console.log(e);
      }
@@ -89,11 +94,14 @@ export function* updateUser(data){
      });
 
      let res = yield call(api);
+     console.log(res);
        if(res.status == 1){
          yield put( actions.userUpdateSuccess(res.data));
-       } else {
+       } else if(res.status == 0) {
          yield put (actions.userUpdateError(res));
-       }
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
      } catch (e){
        console.log(e);
      }
@@ -122,11 +130,14 @@ export function* deleteUser(data){
      });
 
      let res = yield call(api);
+     console.log(res);
        if(res.status == 1){
          yield put( actions.userDeleteSuccess(res.data));
-       } else {
+       } else if(res.status == 0) {
          yield put (actions.userDeleteError(res));
-       }
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
      } catch (e){
        console.log(e);
      }
@@ -152,10 +163,13 @@ export function* fetchCustomer(action){
      });
 
      let res = yield call(api);
+     console.log(res)
        if(res.status == 1){
          yield put( actions.customerListSuccess(res.data));
-       } else {
+       } else if(res.status == 0) {
          yield put (actions.customerListError(res));
+       } else if(res.error == 1){
+         yield put (actions.loginTokenExpire(res));
        }
      } catch (e){
        console.log(e);
@@ -213,9 +227,11 @@ export function* addCustomer(data){
      let res = yield call(api);
         if(res.status == 1){
          yield put( actions.customerAddSuccess(res.data));
-       } else {
+       } else if(res.status == 0) {
          yield put (actions.customerAddError(res));
-       }
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
      } catch (e){
        console.log(e);
      }
@@ -247,9 +263,11 @@ export function* updateCustomer(data){
      let res = yield call(api);
        if(res.status == 1){
          yield put( actions.customerUpdateSuccess(res.data));
-       } else {
+       } else if(res.status == 0) {
          yield put (actions.customerUpdateError(res));
-       }
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
      } catch (e){
        console.log(e);
      }
@@ -281,9 +299,11 @@ export function* deleteCustomer(data){
      console.log(res)
        if(res.status == 1){
          yield put( actions.customerDeleteSuccess(res.data));
-       } else {
+       } else if(res.status == 0) {
          yield put (actions.customerDeleteError(res));
-       }
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
      } catch (e){
        console.log(e);
      }
@@ -315,9 +335,11 @@ export function* searchUser(data){
      let res = yield call(api);
        if(res.status == 1){
          yield put( actions.searchUserSuccess(res.data));
-       } else {
+       } else if(res.status == 0) {
          yield put (actions.searchUserError(res));
-       }
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
      } catch (e){
        console.log(e);
      }
@@ -348,9 +370,11 @@ export function* searchCustomer(data){
      let res = yield call(api);
        if(res.status == 1){
          yield put( actions.searchCustomerSuccess(res.data));
-       } else {
+       } else if(res.status == 0) {
          yield put (actions.searchCustomerError(res));
-       }
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
      } catch (e){
        console.log(e);
      }
@@ -380,11 +404,14 @@ export function* addRedeem(data){
      });
 
      let res = yield call(api);
+     console.log(res);
        if(res.status == 1){
          yield put( actions.redeemAddSuccess(res.data));
-       } else {
+       } else if(res.status == 0) {
          yield put (actions.redeemAddError(res));
-       }
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
      } catch (e){
        console.log(e);
      }
@@ -414,11 +441,14 @@ export function* updateRedeem(data){
      });
 
      let res = yield call(api);
+     console.log(res)
        if(res.status == 1){
          yield put( actions.redeemUpdateSuccess(res.data));
-       } else {
+       } else if(res.status == 0) {
          yield put (actions.redeemUpdateError(res));
-       }
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
      } catch (e){
        console.log(e);
      }
@@ -450,9 +480,11 @@ export function* deleteRedeem(data){
      console.log(res)
        if(res.status == 1){
          yield put( actions.redeemDeleteSuccess(res.data));
-       } else {
+       } else if(res.status == 0) {
          yield put (actions.redeemDeleteError(res));
-       }
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
      } catch (e){
        console.log(e);
      }
@@ -485,9 +517,11 @@ export function* loginUser(data){
        if(res.status == 1){
          let payload = {token:res.token,data:res.data};
          yield put( actions.loginUserSuccess(payload));
-       } else {
+       } else if(res.status == 0) {
          yield put (actions.loginUserError(res));
-       }
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
      } catch (e){
        console.log(e);
      }
@@ -516,9 +550,11 @@ export function* fetchRedeem(action){
      let res = yield call(api);
        if(res.status == 1){
          yield put( actions.redeemListSuccess(res.data));
-       } else {
+       } else if(res.status == 0) {
          yield put (actions.redeemListError(res));
-       }
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
      } catch (e){
        console.log(e);
      }
@@ -545,8 +581,10 @@ export function* getInterests(){
     let res = yield call(api);
       if(res){
         yield put( actions.interestListSuccess(res));
-      } else {
+      } else if(res.status == 0) {
         yield put (actions.interestListError(res));
+      } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
       }
     } catch (e){
       console.log(e);

@@ -157,6 +157,7 @@ class UserDetails extends React.Component {
     this.state = {
       data: '',
       type:'',
+      time: 0,
       isLoading:false,
       errors: {},      
       isOpen:false,
@@ -170,18 +171,19 @@ class UserDetails extends React.Component {
   }
   componentWillReceiveProps(props){
     const { user, match } = props;
-    let data=[{
+    let data={
       name:'',
       email:'',
       password:'',
       role:'Admin'
-    }];
-    if(match.params.type == 'add'){
+    };
+    if(match.params.type == 'add' && this.state.time == 0 ){
       this.setState({
         data,
-        type: match.params.type
+        type: match.params.type,
+        time: 1
       });
-    } else {
+    } else if(match.params.type == 'disable') {
       this.setState({
         data: user.user.data[match.params.id],
         type: match.params.type
@@ -193,6 +195,12 @@ class UserDetails extends React.Component {
         this.setState({isOpen:true,message:"Added User Successfully"});
       } else if (this.state.type == 'disable'){
         this.setState({isOpen:true,message:"User Data Updated Successfully"});        
+      }
+    } else if(props.user.updateUser.isError == true){
+      if(this.state.type == 'add'){
+        this.setState({isOpen:true,message:props.user.updateUser.message.message});
+      } else if (this.state.type == 'disable'){
+        this.setState({isOpen:true,message:"Somthing went wrong"});        
       }
     }
     if(props.user.updateUser.isLoading){
@@ -273,8 +281,10 @@ class UserDetails extends React.Component {
     this.setState({ data });
   }
   handleRequestClose(){
-    this.setState({isOpen:false})
-    this.props.history.push('/app/user/viewuser');    
+    this.setState({isOpen:false});
+    if(this.props.user.updateUser.isSuccess){
+      this.props.history.push('/app/user/viewuser');    
+    }
   }
   render(){
     return(

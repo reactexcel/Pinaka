@@ -47,7 +47,7 @@ class Customer extends React.Component {
     } else {
       let token = this.props.user.userLogged.data.token;
       this.setState({[props]:event.target.value});
-      let searchvalue = this.state.searchType == 'phone' ? {type:this.state.searchType,phone:event.target.value} : {type:this.state.searchType,email:event.target.value}
+      let searchvalue = {search:event.target.value};
       let apiData={token,data:searchvalue}
       this.props.searchCustomerRequest(apiData);
     }
@@ -56,17 +56,14 @@ class Customer extends React.Component {
     const { isLoading } = this.state;
     let CustomerList = _.map(this.props.customer.data, (value, index) => {
       return(
-      <tr key={index}>
+      <tr key={index} >
         <td className="mdl-data-table__cell--non-numeric">{index+1}</td>
-        <td className="mdl-data-table__cell--non-numeric">{value.name} {value.lastName}</td>
+        <td className="mdl-data-table__cell--non-numeric"> <a href={`/#/app/customer/viewcustomerdetails/${index}/disable`}>{value.name} {value.lastName}</a></td>
         <td className="mdl-data-table__cell--non-numeric">{value.email}</td>
         <td>{value.phone?value.phone.substring(2, value.phone.length):''}</td>
         <td>{value.sms_option ? "Yes" : "No"}</td>
         <td>{value.app_installed ? "Yes" : "No"}</td>
 
-        <td>
-          <a href={`/#/app/customer/viewcustomerdetails/${index}/disable`}>More Detail</a>
-        </td>
       </tr>
     )} );
     return(
@@ -77,21 +74,11 @@ class Customer extends React.Component {
               <div className="box-body">
                 <article className="article">
                   <h2 className="article-title">Customer Details</h2>
-                  <div>
-                    {/* button for add update and delete */}
-                    <RaisedButton label="Add Customer" style={{marginBottom:5}}  onClick={()=>{this.props.history.push('/app/customer/viewcustomerdetails/0/add')}}  primary  />
-
-                  </div>
+                  
                   <div className=" col-xl-12 row" >
-                    <SelectField
-                      hintText="Select a name"
-                      style={{width:'20%',marginRight:5}}
-                      value={this.state.searchType}
-                      onChange={this.handleChange('searchType')}
-                    >
-                      <MenuItem value='email' primaryText="Email Id" />
-                      <MenuItem value='phone' primaryText="Phone Number" />
-                    </SelectField>
+             
+                    <RaisedButton label="Add Customer"  style={{boxShadow:'none',marginRight:5}}  onClick={()=>{this.props.history.push('/app/customer/viewcustomerdetails/0/add')}}  primary  />
+
                     <TextField
                       hintText="Search"
                       style={{width:'75%'}}
@@ -111,7 +98,6 @@ class Customer extends React.Component {
                           <th>Phone Number</th>
                           <th>SMS Option</th>
                           <th>App Installed</th>
-                          <th>More Details</th>
                         </tr>
                       </thead>
                       <tbody>

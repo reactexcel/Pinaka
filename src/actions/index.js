@@ -104,3 +104,8 @@ export const loginUserRequest = createAction(types.LOGIN_USER_REQUEST);
 export const loginUserSuccess = createAction(types.LOGIN_USER_SUCCESS);
 export const loginUserError = createAction(types.LOGIN_USER_ERROR);
 export const loginUserReset = createAction(types.LOGIN_USER_RESET);
+
+// token expire
+
+export const loginTokenExpire = createAction(types.LOGIN_TOKEN_EXPIRE);
+export const loginTokenReset = createAction(types.LOGIN_TOKEN_RESET);

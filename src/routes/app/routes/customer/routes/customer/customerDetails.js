@@ -459,7 +459,8 @@ class CustomerDetails extends React.Component {
       isLoading:false,
       errors: {},
       isOpen:false,
-      message:''
+      message:'',
+      time: 0,      
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
@@ -493,15 +494,27 @@ class CustomerDetails extends React.Component {
       occupation: '',
       source: 1,
     };
-    if(match.params.type == 'add'){
+    if(match.params.type == 'add' && this.state.time == 0){
       this.setState({
         data,
         type: match.params.type,
         intrestList: interest.interestList.data,
+        time : 1
       });
     }else{
       let data = customer.customer.data[match.params.id];
-      data.phone = data.phone.substring(2, data.phone.length);
+      data.phone = data.phone? data.phone.substring(2, data.phone.length) : data.phone;
+      data.interest = [];
+      _.map(data.interests,(value,index)=>{ console.log(value.id); return data.interest.push(value.id)}); 
+      console.log(data.interest,'interesy')
+      let interests = [];
+      for(var i = 0; i < interest.interestList.data.length; i++){
+        interests.push(false);
+      }
+      const dataIndex = _.indexOf(interest.interestList.data , data.interest[0]);
+      console.log(dataIndex)
+      data.interestsFlag = interests;
+      console.log(data,'hgdashgdh')
       this.setState({
         data: data,
         type: match.params.type,
@@ -518,7 +531,7 @@ class CustomerDetails extends React.Component {
       phone: '',
       sms_option: true,
       app_installed: false,
-      interests: [],
+      interestsFlag: [],
       interest: [],      
       address1: '',
       address2: '',
@@ -536,29 +549,47 @@ class CustomerDetails extends React.Component {
       source: 1
     };
     for(var i = 0; i < interest.interestList.data.length; i++){
-        data.interests.push(false);
+        data.interestsFlag.push(false);
     }
-    if(match.params.type == 'add'){
+    if(match.params.type == 'add' && this.state.time == 0){
       this.setState({
         data,
         type: match.params.type,
         intrestList: interest.interestList.data,
+        time : 1        
       });
-    } else {
+    } else if(match.params.type == 'disable') {
       let data = customer.customer.data[match.params.id];
       data.phone = data.phone? data.phone.substring(2, data.phone.length) : data.phone;
+      data.interest = [];
+      _.map(data.interests,(value,index)=>{ console.log(value.id); return data.interest.push(value.id)}); 
+      console.log(data.interest,'interesy')
+      let interests = [];
+      for(var i = 0; i < interest.interestList.data.length; i++){
+        interests.push(false);
+      }
+      const dataIndex = _.indexOf(interest.interestList.data , data.interest[0]);
+      console.log(dataIndex)
+      data.interestsFlag = interests;
+      console.log(data,'hgdashgdh')
       this.setState({
         data: data,
         type: match.params.type,
         intrestList: interest.interestList.data,
       });
     }
-    if(props.customer.updateCustomer.isSuccess == true ){
+    if(props.customer.updateCustomer.isSuccess == true ){ 
       props.customerReset()
       if(this.state.type == 'add'){
         this.setState({isOpen:true,message:"Added User Successfully"});
       } else if (this.state.type == 'disable'){
         this.setState({isOpen:true,message:"User Data Updated Successfully"});
+      }
+    } else if(props.customer.updateCustomer.isError){
+      if(this.state.type == 'add'){
+        this.setState({isOpen:true,message:props.customer.updateCustomer.message.message});
+      } else if (this.state.type == 'disable'){
+        this.setState({isOpen:true,message:"Somthing went wrong"});        
       }
     }
     if(props.customer.updateCustomer.isLoading){
@@ -573,10 +604,11 @@ class CustomerDetails extends React.Component {
   }
   handleSave(){
     let { data } = this.state;
+    console.log(this.state,'asdasd',data);
     const token = this.props.user.data.token;
     let intrestList ='';
-    for(var i = 0; i < data.interests.length; i++){
-        if(data.interests[i] == true){
+    for(var i = 0; i < data.interestsFlag.length; i++){
+        if(data.interestsFlag[i] == true){
             intrestList +=this.props.interest.interestList.data[i]._id+":";
         }
     }
@@ -585,7 +617,7 @@ class CustomerDetails extends React.Component {
       intrestList  = intrestList.substring(0,intrestList.length -1);
     }
     data.interest = intrestList;
-    console.log(data,'done',intrestList);
+
     const apiData = {token:token,data:data};
     let errors = {};
     if(data.name != '' && data.lastName != '' && data.email != '' && data.phone != '' && data.interest.length != 0 && data.address1 != '' && data.address2 != '' && data.zipcode != '' && data.birthday != '' && data.anniversary != '' && data.occupation != ''){
@@ -609,7 +641,7 @@ class CustomerDetails extends React.Component {
             this.setState({errors: errors});
             if(this.state.type == 'add'){
                 this.props.customerAddRequest(apiData);
-            } else if(this.state.type == 'edit'){
+            } else if(this.state.type == 'disable'){
                 this.props.customerUpdateRequest(apiData);
             }
         }
@@ -631,7 +663,15 @@ class CustomerDetails extends React.Component {
   }
   handleEdit (data) {
     let type = data == "edit" ? 'edit' : this.props.match.params.type  ;
+    console.log(this.state,'edit')
     this.setState({ type });
+    if(data == 'back'){
+      this.props.history.push('/app/customer/viewcustomer');
+    } else if (data == 'cancel' && this.state.type == 'edit') {
+      this.setState({type:'disable'})
+    } else if (data == 'cancel' && this.state.type == 'add') {
+      this.props.history.push('/app/customer/viewcustomer');
+    }
   }
   handleChange = props => (event, index, value) =>{
     let data = this.state.data;
@@ -640,13 +680,13 @@ class CustomerDetails extends React.Component {
     } else if (props == 'kids' || props == 'sms_option' || props == 'CodeRedeemFlag' || props == 'app_installed') {
       data[props] = !data[props];
     } else if (props.props == 'interests') {
-      let interestsList = data["interests"];
+      let interestsList = data["interestsFlag"];
       let interestList = data["interest"];      
       const dataIndex = _.indexOf(interestList , props.item._id);
       interestsList[props.index] = !interestsList[props.index];
-      index  ? _.indexOf(interestList , props.item) >=0 ? interestList: interestList.push(props.item._id) : interestList.splice(dataIndex, 1);
+      index  ? _.indexOf(interestList , props.item._id) >=0 ? interestList: interestList.push(props.item._id) : interestList.splice(dataIndex, 1);
       data[props.props] = interestsList;
-      data['intrest'] = interestList;
+      data['interest'] = interestList;
     } else if (props == 'birthday' || props == 'anniversary') {
       data[props] = index;
     } else {
@@ -659,12 +699,13 @@ class CustomerDetails extends React.Component {
     this.props.history.push('/app/customer/viewcustomer');
   }
   render(){
+    console.log(this.state);
     return(
       <div className="container-fluid no-breadcrumbs">
         <Snackbar
           open={this.state.isOpen}
           message={this.state.message}
-          autoHideDuration={1000}
+          autoHideDuration={900}
           onRequestClose={this.handleRequestClose}
         />
         <DetailsForm {...this.props} intrestList={this.state.intrestList} handleDelete={this.handleDelete} handleSave={this.handleSave} handleEdit={this.handleEdit} handleChange={this.handleChange} {...this.state} />

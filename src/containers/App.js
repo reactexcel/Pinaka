@@ -57,11 +57,19 @@ class App extends Component {
       sessionStorage.setItem('user',JSON.stringify(props.user.userLogged));
       this.setState({isOpen:true, message:'Login Successfully'})
     }
+    if(props.user.userToken.isSuccess){
+      sessionStorage.removeItem('user');
+      this.setState({isOpen:true, message:'Session Expire!!'})
+      this.props.history.push('/login');
+    }
   }
   handleRequestClose(){
     this.setState({isOpen:false})
     if(this.props.user.userLogged.isSuccess){
       this.props.loginUserReset();
+    }
+    if(this.props.user.userToken.isSuccess){
+      this.props.loginTokenReset();
     }
   }
   render() {
