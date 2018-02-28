@@ -66,6 +66,7 @@ const DetailsForm = (props) => {
             <h3 className="article-title">Customer Detail</h3>
         </div>
         <div className="box-body">
+        <div style={{display:'inline-flex'}} >
         {props.type == 'add' ?
             null
           :
@@ -76,12 +77,23 @@ const DetailsForm = (props) => {
               <RaisedButton label="Back"  style={{marginLeft:5}}  onClick={()=>{props.handleEdit('back')}} className="btn-w-md" />
             </div>
         }
+         {props.type == 'disable' ?
+                  null
+                  // <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-md" />
+                :
+                  <div>
+                    <RaisedButton style={{marginLeft:5}} label={props.type =='add'?"Add":"Save"} backgroundColor={"#1b025c"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-md" />
+                    <RaisedButton label="Cancel" style={styles.button} onClick={()=>{props.handleEdit('cancel')}} className="btn-w-md" />
+                  </div>
+                }
+        </div>
           <article className="article">
           {isLoading?
-            <div className="col-md-12" style={styles.loading} >
-              Adding New User...........
+            <div className="col-md-12" style={styles.loading,{marginTop:15}} >
+              {props.type == 'add'?"Adding New User..........." : 'Please Wait.....'}
             </div>
             :
+              
               <form role="form">
                 <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1}  className="col-md-2 control-label">First Name</label>
@@ -134,6 +146,39 @@ const DetailsForm = (props) => {
                     />
                   </div>
                 </div>
+                {props.type == "add" && props.type == 'edit' ? 
+                  null
+               :
+                  <div className="form-group row" style={styles.formGroup}>
+                      <label  className="col-md-2 control-label">Code Redeem Flag</label>
+                      <div className="col-md-10">
+                        <span style={{color:'grey'}} > {props.data.CodeRedeemFlag ? "Yes" : "No"} </span>
+{/*                        
+                        <Toggle
+                          defaultToggled={props.data.CodeRedeemFlag}
+                          onToggle={props.handleChange('CodeRedeemFlag')}
+                          style={styles.toggle}
+                          disabled={isDisabled}
+                          /> */}
+                      </div>
+                    </div>
+                }
+                {props.type == 'edit' ?
+                      null
+                    :
+                    <div className="form-group row" style={styles.formGroup}>
+                      <label style={styles.label1} className="col-md-2 control-label">Redeem Code</label>
+                      <div className="col-md-10">
+                        <TextField
+                          hintText="Redeem Code"
+                          value={props.data.redeemCode}
+                          onChange={props.handleChange('redeemCode')}
+                          type="text"
+                          disabled={isDisabled}
+                          />
+                      </div>
+                    </div>
+                }
                 <div className="form-group row" style={styles.formGroup}>
                   <label className="col-md-2 control-label">SMS Option</label>
                   <div className="col-md-10">
@@ -239,90 +284,7 @@ const DetailsForm = (props) => {
                     />
                   </div>
                 </div>
-                <div className="form-group row" style={styles.formGroup}>
-                  <label  className="col-md-2 control-label">Code Redeem Flag</label>
-                  <div className="col-md-10">
-                    <Toggle
-                      defaultToggled={props.data.CodeRedeemFlag}
-                      onToggle={props.handleChange('CodeRedeemFlag')}
-                      style={styles.toggle}
-                      disabled={isDisabled}
-                    />
-                  </div>
-                </div>
-                <div className="form-group row" style={styles.formGroup}>
-                  <label style={styles.label1} className="col-md-2 control-label">Redeem Code</label>
-                  <div className="col-md-10">
-                    <TextField
-                      hintText="Redeem Code"
-                      value={props.data.redeemCode}
-                      onChange={props.handleChange('redeemCode')}
-                      type="text"
-                      disabled={isDisabled}
-                    />
-                  </div>
-                </div>
-              {props.type != 'add' ?
-              <div>
-                <div className="form-group row" style={styles.formGroup}>
-                  <label style={styles.label1} className="col-md-2 control-label">Created By</label>
-                  <div className="col-md-10">
-                    <TextField
-                      hintText="Created By"
-                      value={props.data.createdBy}
-                      type="text"
-                      disabled={isDisabled}
-                    />
-                  </div>
-                </div>
-                <div className="form-group row" style={styles.formGroup}>
-                  <label style={styles.label1} className="col-md-2 control-label">Created Date</label>
-                  <div className="col-md-10">
-                    <TextField
-                      hintText="Created date"
-                      value={props.data.createdBy}
-                      type="text"
-                      disabled={isDisabled}
-                    />
-                  </div>
-                </div>
-                <div className="form-group row" style={styles.formGroup}>
-                  <label style={styles.label1} className="col-md-2 control-label">Modified By</label>
-                  <div className="col-md-10">
-                    <TextField
-                      hintText="Modified by"
-                      value={props.data.modifiedBy}
-                      type="text"
-                      disabled={isDisabled}
-                    />
-                  </div>
-                </div>
-                <div className="form-group row" style={styles.formGroup}>
-                  <label style={styles.label1} className="col-md-2 control-label">Last Modified Date</label>
-                  <div className="col-md-10">
-                    <TextField
-                      hintText="Last Modified Date"
-                      type="text"
-                      value={props.data.updated_at}
-                      disabled={isDisabled}
-                    />
-                  </div>
-                </div>
-                <div className="form-group row" style={styles.formGroup}>
-                  <label style={styles.label1} className="col-md-2 control-label">Last Synced Date with Infusionsoft</label>
-                  <div className="col-md-10">
-                    <TextField
-                      hintText="Sync"
-                      value={props.data.Infusion_synced_date}
-                      type="text"
-                      disabled={isDisabled}
-                    />
-                  </div>
-                </div>
-                </div>
-                :
-                null
-              }
+              
                 <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1} className="col-md-2 control-label">Date of Birth *</label>
                   <div className="col-md-10">
@@ -461,8 +423,7 @@ class CustomerDetails extends React.Component {
       errors: {},
       isOpen:false,
       message:'',
-      time: 0,      
-      isApi: false
+      time: 0
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
@@ -484,6 +445,8 @@ class CustomerDetails extends React.Component {
       address1: '',
       address2: '',
       city: '',
+      redeemCode:'',
+      CodeRedeemFlag:false,
       state: '',
       zipcode: '',
       password:'123',
@@ -504,20 +467,17 @@ class CustomerDetails extends React.Component {
         intrestList: interest.interestList.data,
         time : 1
       });
-    }else if(match.params.type == 'disable' && !this.state.isApi){
+    }else if(match.params.type == 'disable' ){
       let data = customer.customer.data[match.params.id];
       data.phone = data.phone? data.phone.substring(2, data.phone.length) : data.phone;
       data.interest = [];
       _.map(data.interests,(value,index)=>{ console.log(value.id); return data.interest.push(value.id)}); 
-      console.log(data.interest,'interesy')
       let interests = [];
       for(var i = 0; i < interest.interestList.data.length; i++){
         interests.push(false);
       }
       _.map(data.interest, (value) =>{
-        console.log(value,'will',interest.interestList.data);
         let dataIndex =  _.findIndex(interest.interestList.data , {_id:value} )
-        console.log(dataIndex,'sadasd');
         interests[dataIndex] = !interests[dataIndex];
       })
       data.interestsFlag = interests;
@@ -538,7 +498,9 @@ class CustomerDetails extends React.Component {
       sms_option: true,
       app_installed: false,
       interests: [],
-      interest: [],      
+      interest: [],    
+      redeemCode:'',
+      CodeRedeemFlag:false,  
       address1: '',
       address2: '',
       city: '',
@@ -565,36 +527,35 @@ class CustomerDetails extends React.Component {
         intrestList: interest.interestList.data,
         time : 1        
       });
-    } else if(match.params.type == 'disable' && !this.state.isApi) {
+    } else if(match.params.type == 'disable') {
       let data = customer.customer.data[match.params.id];
       const item = customer.customer.data[match.params.id];
       data.phone = data.phone? data.phone.substring(2, data.phone.length) : data.phone;
       data.interest = [];
       const interest = data.interests;
-      _.map(data.interests,(value,index)=>{ console.log(value.id); return data.interest.push(value.id)}); 
-      console.log(data.interest,'interesy')
+      _.map(data.interests,(value,index)=>{ return data.interest.push(value.id)}); 
       let interests = [];
-      for(var i = 0; i < interest.interestList.data.length; i++){
-        interests.push(false);
+      if(interest.interestList != undefined) {
+
+        for(var i = 0; i < interest.interestList.data.length; i++){
+          interests.push(false);
+        }
+        _.map(data.interest, (value) =>{
+          let dataIndex =  _.findIndex(interest.interestList.data , {_id:value} )
+          interests[dataIndex] = !interests[dataIndex];
+        })
+        data.interestsFlag = interests;
       }
-      _.map(data.interest, (value) =>{
-        console.log(value,'will',interest.interestList.data);
-        let dataIndex =  _.findIndex(interest.interestList.data , {_id:value} )
-        console.log(dataIndex,'sadasd');
-        interests[dataIndex] = !interests[dataIndex];
-      })
-      data.interestsFlag = interests;
-      console.log(data,'hgdashgdh')
       this.setState({
         data: data,
         type: match.params.type,
-        intrestList: interest.interestList.data,
+        intrestList: interest.interestList != undefined? interest.interestList.data : '',
       });
     }
-    if(props.customer.updateCustomer.isSuccess == true ){ 
+    if(props.customer.updateCustomer.isSuccess == true ){
       if(this.state.type == 'add'){
         this.setState({isOpen:true,message:"Added User Successfully"});
-      } else if (this.state.type == 'disable'){
+      } else if (this.state.type == 'disable' || this.state.type == 'edit' ){
         this.setState({isOpen:true,message:"User Data Updated Successfully"});
       }
     } else if(props.customer.updateCustomer.isError){
@@ -603,20 +564,16 @@ class CustomerDetails extends React.Component {
         const code = props.customer.updateCustomer.message.code;
         switch(code){
           case API.RESPONSE.SIGNUP.DUPLICATEEMAIL:
-                  message= 'This email already used, Please try again.';
-                break;
+              message= 'This email already used, Please try again.';
+              break;
           case API.RESPONSE.SIGNUP.DUPLICATEPHONE:
-            
-                  message= 'This phone number already used, Pleae try again.';
-                  
+              message= 'This phone number already used, Pleae try again.';
               break;
           case API.RESPONSE.SIGNUP.INVALIDEMAIL:
-              
-                  message = 'This email is invalid now. Please try again.';
-              
+              message = 'This email is invalid now. Please try again.';
               break;
           case API.RESPONSE.SIGNUP.INVALIDZIPCODE:
-                  message= 'This zipcode is invalid now. Please try again';
+              message= 'This zipcode is invalid now. Please try again';
               break;
         }
         this.setState({isOpen:true,message});
@@ -638,10 +595,8 @@ class CustomerDetails extends React.Component {
     }
   }
   handleSave(){
-    console.log(this.state,'state')
     let { data } = this.state;
     let cloneData = _.cloneDeep(data);
-    console.log(this.state,'asdasd',data);
     
     const token = this.props.user.data.token;
     let intrestList ='';
@@ -663,12 +618,10 @@ class CustomerDetails extends React.Component {
       intrestList  = intrestList.substring(0,intrestList.length -1);
     }
     cloneData.interest = intrestList;
-    console.log(cloneData,'asdasd123')
     const apiData = {token:token,data:cloneData};
     let interestCheck = this.state.type == 'add' ? cloneData.interest.length != 0 : true;  
     let errors = {};
     if(cloneData.name != '' && cloneData.lastName != '' && cloneData.email != ''&& cloneData.interest.length != 0  && cloneData.phone != '' && cloneData.address1 != '' && cloneData.address2 != '' && cloneData.zipcode != '' && cloneData.birthday != '' && cloneData.anniversary != '' && cloneData.occupation != ''){
-      console.log('isvalid') 
       var pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
         let email = cloneData.email.trim();
         if(cloneData.phone.length != 10){
@@ -682,19 +635,16 @@ class CustomerDetails extends React.Component {
         } else if (!cloneData.email.match(pattern)) {
           errors.email = 'Not a valid email';
         } else if(cloneData.phone.length == 10 && cloneData.zipcode.length == 5) {
-          console.log('45454',this.state)
-            errors.email = '';
-            errors.phone = '';
-            errors.zipcode = '';
-            errors.others = '';
-            this.setState({errors: errors});
-            if(this.state.type == 'add'){
-                this.props.customerAddRequest(apiData);
-            } else if(this.state.type == 'disable' || this.state.type == "edit" ){
-              console.log('call')
-              this.setState({isApi:true});
-                this.props.customerUpdateRequest(apiData);
-            }
+          errors.email = '';
+          errors.phone = '';
+          errors.zipcode = '';
+          errors.others = '';
+          this.setState({errors: errors});
+          if(this.state.type == 'add'){
+              this.props.customerAddRequest(apiData);
+          } else if(this.state.type == 'disable' || this.state.type == "edit" ){
+            this.props.customerUpdateRequest(apiData);
+          }
         }
         this.setState({errors: errors});
     } else {
@@ -714,7 +664,6 @@ class CustomerDetails extends React.Component {
   }
   handleEdit (data) {
     let type = data == "edit" ? 'edit' : this.props.match.params.type  ;
-    console.log(this.state,'edit')
     this.setState({ type });
     if(data == 'back'){
       this.props.history.push('/app/customer/viewcustomer');
@@ -736,7 +685,6 @@ class CustomerDetails extends React.Component {
       const dataIndex = _.indexOf(interestList , props.item._id);
       interestsList[props.index] = !interestsList[props.index];
       index  ? _.indexOf(interestList , props.item) >=0 ? interestList: interestList.push(props.item._id) : interestList.splice(dataIndex, 1);
-      console.log(interestList,'asd')
       data[props.props] = interestsList;
       data['interest'] = interestList;
     } else if (props == 'birthday' || props == 'anniversary') {
@@ -751,7 +699,6 @@ class CustomerDetails extends React.Component {
     this.props.history.push('/app/customer/viewcustomer');
   }
   render(){
-    console.log(this.state.data);
     return(
       <div className="container-fluid no-breadcrumbs">
         <Snackbar
@@ -760,7 +707,7 @@ class CustomerDetails extends React.Component {
           autoHideDuration={900}
           onRequestClose={this.handleRequestClose}
         />
-        <DetailsForm {...this.props} intrestList={this.state.intrestList} handleDelete={this.handleDelete} handleSave={this.handleSave} handleEdit={this.handleEdit} handleChange={this.handleChange} {...this.state} />
+        <DetailsForm {...this.props} intrestList={this.state.intrestList} handleDelete={this.handleDelete} handleSave={this.handleSave} handleEdit={this.handleEdit} handleChange={this.handleChange}  {...this.state} />
       </div>
     );
   }

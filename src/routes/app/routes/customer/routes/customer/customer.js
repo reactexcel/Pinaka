@@ -26,13 +26,14 @@ class Customer extends React.Component {
     this.state = {
       search:'',
       searchType:'email',
-      isLoading:false
+      isLoading:false,
+      page:0
     };
     this.handleChange = this.handleChange.bind(this);
   }
   componentWillMount(){
     let token = this.props.user.userLogged.data.token;
-    this.props.customerListRequest(token);
+    this.props.customerListRequest({token,page:0});
     this.props.interestListRequest();        
     this.props.searchHeaderCustomerReset();    
   }
@@ -54,6 +55,17 @@ class Customer extends React.Component {
       this.props.searchCustomerRequest(apiData);
     }
   }
+  handleNext(val){
+    const { page } = this.state;
+    let token = this.props.user.userLogged.data.token;    
+    if(val == 'next'){
+      this.setState({page:page+1});
+      this.props.customerListRequest({token,page:page+1});    
+    } else if(val == 'prev'){
+      this.setState({page:page-1});
+      this.props.customerListRequest({token,page:page-1});      
+    }
+  }
   render(){
     const { isLoading } = this.state;
     let CustomerList = _.map(this.props.customer.data, (value, index) => {
@@ -62,7 +74,8 @@ class Customer extends React.Component {
         <td className="mdl-data-table__cell--non-numeric">{index+1}</td>
         <td className="mdl-data-table__cell--non-numeric"> <a href={`/#/app/customer/viewcustomerdetails/${index}/disable`}>{value.name} {value.lastName}</a></td>
         <td className="mdl-data-table__cell--non-numeric">{value.email}</td>
-        <td>{value.phone?value.phone.substring(2, value.phone.length):''}</td>
+        <td><a href={`/#/app/customer/viewcustomerdetails/${index}/disable`}>{value.phone?value.phone.substring(2, value.phone.length):''}</a></td>
+        <td>{value.CodeRedeemFlag ? "Yes" : "No"}</td>        
         <td>{value.sms_option ? "Yes" : "No"}</td>
         <td>{value.app_installed ? "Yes" : "No"}</td>
 
@@ -90,6 +103,10 @@ class Customer extends React.Component {
                       fullWidth
                     />
                   </div>
+                  <div>
+                    {this.state.page != 0 ? <a style={{color:'#00bcd6',cursor:'pointer'}} onClick={()=>{this.handleNext('prev')}} > Previous </a>: null  }
+                    {this.props.customer.data.length < 20 ? null : <a style={{color:'#00bcd6',cursor:'pointer'}} onClick={()=>{this.handleNext('next')}} > Next </a>}
+                  </div>
                   <div className="box box-default table-box mdl-shadow--2dp">
                     <table className="mdl-data-table table-responsive">
                       <thead>
@@ -98,6 +115,7 @@ class Customer extends React.Component {
                           <th className="mdl-data-table__cell--non-numeric">Name</th>
                           <th className="mdl-data-table__cell--non-numeric">Email Id</th>
                           <th>Phone Number</th>
+                          <th>Redeem Code</th>
                           <th>SMS Option</th>
                           <th>App Installed</th>
                         </tr>
