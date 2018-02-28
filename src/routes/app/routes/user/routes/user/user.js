@@ -6,43 +6,65 @@ import { Link } from 'react-router';
 import * as _ from 'lodash';
 import ReactEcharts from 'components/ReactECharts';
 import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn, TableFooter} from 'material-ui/Table';
 import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
 import CHARTCONFIG from 'constants/ChartConfig';
 import * as actions from 'actions';
 
+const styles = {
+  loading: {
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: 500,
+  }
+}
 
 class User extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
       search:'',
-      searchType:'name'
+      searchType:'name',
+      isLoading:false
     };
     this.handleChange = this.handleChange.bind(this);
   }
+  componentWillReceiveProps(props){
+    if(props.user.user.isLoading){
+      this.setState({isLoading:true});
+    } else if (props.user.user.isLoading == false){
+      this.setState({isLoading:false});
+    }
+  }
   componentWillMount(){
-    this.props.userListRequest();
+    this.props.searchHeaderCustomerReset();
+    let token = this.props.user.userLogged.data.token;
+    this.props.userListRequest(token);
   }
   handleChange = props => (event, value, index) => {
     if(props == 'searchType'){
       this.setState({[props]:index});
     } else {
       this.setState({[props]:event.target.value});
+      let searchvalue = {search:event.target.value};
+      let token = this.props.user.userLogged.data.token;
+      let apiData = {token,data:searchvalue};
+      this.props.searchUserRequest(apiData);
     }
   }
   render(){
-    console.log(this.props,'***********************');
+    const { isLoading } = this.state;    
+    // console.log(this.props,'***********************');
     let CustomerList = _.map(this.props.user.user.data, (value, index) => (
       <tr key={index}>
         <td className="mdl-data-table__cell--non-numeric">{index+1}</td>
-        <td className="mdl-data-table__cell--non-numeric">{value.name}</td>
+        <td className="mdl-data-table__cell--non-numeric"><a href={`/#/app/user/viewuserdetails/${index}/disable`}>{value.name}</a></td>
         <td className="mdl-data-table__cell--non-numeric">{value.email}</td>
         <td>{value.role}</td>
-        <td>
-          <a href={`/#/app/user/viewuserdetails/${index}/disable`}>More Detail</a>
-        </td>
+        {/* <td>{value.lastLogin}</td> */}
+        <td>{value.lastLogin}</td>
       </tr>
     ));
     return(
@@ -52,17 +74,13 @@ class User extends React.Component {
             <div className="box box-default">
               <div className="box-body">
                 <article className="article">
-                  <h2 className="article-title">User Details</h2>
+                  <div>
+                    <h2 className="article-title">User Details</h2>
+                    
+                  </div>
                   <div className=" col-xl-12 row" >
-                    <SelectField
-                      hintText="Select a name"
-                      style={{width:'20%',marginRight:5}}
-                      value={this.state.searchType}
-                      onChange={this.handleChange('searchType')}
-                    >
-                      <MenuItem value='name' primaryText="Full Name" />
-                      <MenuItem value='email' primaryText="Email Id" />
-                    </SelectField>
+                  <RaisedButton label="Add User" style={{boxShadow:'none',marginRight:5}}  onClick={()=>{this.props.history.push('/app/user/viewuserdetails/0/add')}}  primary  />
+                   
                     <TextField
                       hintText="Search"
                       style={{width:'75%'}}
@@ -80,11 +98,16 @@ class User extends React.Component {
                           <th className="mdl-data-table__cell--non-numeric">Name</th>
                           <th className="mdl-data-table__cell--non-numeric">Email Id</th>
                           <th>Role</th>
-                          <th>More Details</th>
+                          <th>Last Login Time</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {CustomerList}
+                        {isLoading ? 
+                          <tr>
+                            <td colSpan={6} style={styles.loading} >Loading Data..........</td>
+                          </tr>
+                          :
+                          CustomerList}
                       </tbody>
                     </table>
                   </div>

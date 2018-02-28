@@ -14,6 +14,9 @@ import PageFullscreen from 'routes/fullscreen/';
 import PageLockScreen from 'routes/lock-screen/';
 import PageLogin from 'routes/login/';
 import PageSignUp from 'routes/sign-up/';
+import * as actions from 'actions';
+import {bindActionCreators} from 'redux';
+import {withRouter} from 'react-router';
 
 // = styles =
 // 3rd
@@ -27,11 +30,48 @@ import 'styles/app.scss';
 import lightTheme from './themes/lightTheme';
 import darkTheme from './themes/darkTheme';
 import grayTheme from './themes/grayTheme';
+import Snackbar from 'material-ui/Snackbar';
 
 
 class App extends Component {
-  componentDidMount() {}
+  constructor(props){
+    super(props);
+    this.state = {
+      isOpen:false,
+      message:''
+    };
+    this.handleRequestClose = this.handleRequestClose.bind(this);
+  }
 
+  componentWillMount() {
+    let data = sessionStorage.getItem('user');
+    let user = JSON.parse(data);
+    if( user && user.data.token && user.data.data){
+      this.props.loginUserSuccess(user.data);
+    }
+  }
+  componentWillReceiveProps(props){
+    if(props.user.userLogged.isError){
+      this.setState({isOpen:true,message:'Invalid Email or Password'});
+    } else if (props.user.userLogged.isSuccess && props.location.pathname == '/login') {
+      sessionStorage.setItem('user',JSON.stringify(props.user.userLogged));
+      this.setState({isOpen:true, message:'Login Successfully'})
+    }
+    if(props.user.userToken.isSuccess){
+      sessionStorage.removeItem('user');
+      this.setState({isOpen:true, message:'Session Expire!!'})
+    }
+  }
+  handleRequestClose(){
+    this.setState({isOpen:false})
+    if(this.props.user.userLogged.isSuccess){
+      this.props.loginUserReset();
+    }
+    if(this.props.user.userToken.isSuccess){
+      this.props.loginTokenReset();
+      this.props.history.push('/login');
+    }
+  }
   render() {
     const { match, location, layoutBoxed, navCollapsed, navBehind, fixedHeader, sidebarWidth, theme } = this.props;
     let materialUITheme;
@@ -68,6 +108,12 @@ class App extends Component {
             }
             style={{backgroundColor:'#1b025c'}}
             >
+            <Snackbar
+              open={this.state.isOpen}
+              message={this.state.message}
+              autoHideDuration={2000}
+              onRequestClose={this.handleRequestClose}
+            />
             <Route exact path="/login" component={PageLogin} />
             <Route path={`${match.url}app`} component={MainApp} />
             <Route exact path="/404" component={Page404} />
@@ -85,14 +131,20 @@ class App extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
+  user: state.user.userLogged,
   layoutBoxed: state.settings.layoutBoxed,
   navCollapsed: state.settings.navCollapsed,
   navBehind: state.settings.navBehind,
   fixedHeader: state.settings.fixedHeader,
   sidebarWidth: state.settings.sidebarWidth,
   theme: state.settings.theme,
+  user: state.user,
 });
 
-module.exports = connect(
-  mapStateToProps
-)(App);
+const mapDispatchToProps = (dispatch) => { return bindActionCreators(actions, dispatch); };
+
+
+module.exports = withRouter(connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App));

@@ -27,7 +27,7 @@ export const userListRequest = createAction(types.USER_LIST_REQUEST);
 export const userListSuccess = createAction(types.USER_LIST_SUCCESS);
 export const userListError = createAction(types.USER_LIST_ERROR);
 
-export const userAddReset = createAction(types.USER_ADD_RESET);
+export const userReset = createAction(types.USER_ADD_RESET);
 export const userAddRequest = createAction(types.USER_ADD_REQUEST);
 export const userAddSuccess = createAction(types.USER_ADD_SUCCESS);
 export const userAddError = createAction(types.USER_ADD_ERROR);
@@ -47,7 +47,7 @@ export const customerListRequest = createAction(types.CUSTOMER_LIST_REQUEST);
 export const customerListSuccess = createAction(types.CUSTOMER_LIST_SUCCESS);
 export const customerListError = createAction(types.CUSTOMER_LIST_ERROR);
 
-export const customerAddReset = createAction(types.CUSTOMER_ADD_RESET);
+export const customerReset = createAction(types.CUSTOMER_ADD_RESET);
 export const customerAddRequest = createAction(types.CUSTOMER_ADD_REQUEST);
 export const customerAddSuccess = createAction(types.CUSTOMER_ADD_SUCCESS);
 export const customerAddError = createAction(types.CUSTOMER_ADD_ERROR);
@@ -67,7 +67,7 @@ export const redeemListRequest = createAction(types.REDEEM_LIST_REQUEST);
 export const redeemListSuccess = createAction(types.REDEEM_LIST_SUCCESS);
 export const redeemListError = createAction(types.REDEEM_LIST_ERROR);
 
-export const redeemAddReset = createAction(types.REDEEM_ADD_RESET);
+export const redeemReset = createAction(types.REDEEM_ADD_RESET);
 export const redeemAddRequest = createAction(types.REDEEM_ADD_REQUEST);
 export const redeemAddSuccess = createAction(types.REDEEM_ADD_SUCCESS);
 export const redeemAddError = createAction(types.REDEEM_ADD_ERROR);
@@ -81,14 +81,36 @@ export const redeemDeleteSuccess = createAction(types.REDEEM_DELETE_SUCCESS);
 export const redeemDeleteError = createAction(types.REDEEM_DELETE_ERROR);
 
 
+// interest list
+
+export const interestListRequest = createAction(types.INTEREST_LIST_REQUEST);
+export const interestListSuccess = createAction(types.INTEREST_LIST_SUCCESS);
+export const interestListError = createAction(types.INTEREST_LIST_ERROR);
+
+
 // searchUser
 
 export const searchUserRequest = createAction(types.SEARCH_USER_REQUEST);
 export const searchUserSuccess = createAction(types.SEARCH_USER_SUCCESS);
 export const searchUserError = createAction(types.SEARCH_USER_ERROR);
 
+export const searchCustomerRequest = createAction(types.SEARCH_CUSTOMER_REQUEST);
+export const searchCustomerSuccess = createAction(types.SEARCH_CUSTOMER_SUCCESS);
+export const searchCustomerError = createAction(types.SEARCH_CUSTOMER_ERROR);
+
+export const searchHeaderCustomerRequest = createAction(types.SEARCH_HEADER_CUSTOMER_REQUEST);
+export const searchHeaderCustomerSuccess = createAction(types.SEARCH_HEADER_CUSTOMER_SUCCESS);
+export const searchHeaderCustomerError = createAction(types.SEARCH_HEADER_CUSTOMER_ERROR);
+export const searchHeaderCustomerReset = createAction(types.SEARCH_HEADER_CUSTOMER_RESET);
+
 // loginUser
 
 export const loginUserRequest = createAction(types.LOGIN_USER_REQUEST);
 export const loginUserSuccess = createAction(types.LOGIN_USER_SUCCESS);
 export const loginUserError = createAction(types.LOGIN_USER_ERROR);
+export const loginUserReset = createAction(types.LOGIN_USER_RESET);
+
+// token expire
+
+export const loginTokenExpire = createAction(types.LOGIN_TOKEN_EXPIRE);
+export const loginTokenReset = createAction(types.LOGIN_TOKEN_RESET);

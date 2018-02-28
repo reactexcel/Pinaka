@@ -2,10 +2,11 @@ import { API } from '../constants';
 import * as actions from 'actions';
 import {call, put} from 'redux-saga/effects';
 
-export function* fetchUser(){
+export function* fetchUser(action){
+  let token = action.payload;
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/getAllAdminStaff',{
+        return fetch(API.SERVER_DEV_URL+'admin/getAllAdminStaff?accessToken='+token,{
              method: 'GET',
              cache: 'no-cache',
              headers: {
@@ -17,7 +18,6 @@ export function* fetchUser(){
              resolve(data);
          })
          .catch(err => {
-             console.log("Deleting Card API Error", err);
              reject(err);
          });
      });
@@ -25,19 +25,22 @@ export function* fetchUser(){
      let res = yield call(api);
        if(res.status == 1){
          yield put( actions.userListSuccess(res.data));
-       } else {
+       } else if(res.status == 0) {
          yield put (actions.userListError(res));
-       }
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
      } catch (e){
        console.log(e);
      }
 }
 
 export function* addUser(data){
-  let body = JSON.stringify(data.payload);
+  let body = JSON.stringify(data.payload.data);
+  let token = data.payload.token;
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/addAdminStaff',{
+        return fetch(API.SERVER_DEV_URL+'admin/addAdminStaff?accessToken='+token,{
              method: 'POST',
              cache: 'no-cache',
              headers: {
@@ -50,27 +53,30 @@ export function* addUser(data){
              resolve(data);
          })
          .catch(err => {
-             console.log("Add api error", err);
              reject(err);
          });
      });
 
      let res = yield call(api);
+     console.log(res)
        if(res.status == 1){
          yield put( actions.userAddSuccess(res.data));
-       } else {
+       } else if(res.status == 0) {
          yield put (actions.userAddError(res));
-       }
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
      } catch (e){
        console.log(e);
      }
 }
 
 export function* updateUser(data){
-  let body = JSON.stringify(data.payload);
+  let body = JSON.stringify(data.payload.data);
+  let token = data.payload.token;
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/updateAdminStaff',{
+        return fetch(API.SERVER_DEV_URL+'admin/updateAdminStaff?accessToken='+token,{
              method: 'PUT',
              cache: 'no-cache',
              headers: {
@@ -83,27 +89,30 @@ export function* updateUser(data){
              resolve(data);
          })
          .catch(err => {
-             console.log("Add api error", err);
              reject(err);
          });
      });
 
      let res = yield call(api);
+     console.log(res);
        if(res.status == 1){
          yield put( actions.userUpdateSuccess(res.data));
-       } else {
+       } else if(res.status == 0) {
          yield put (actions.userUpdateError(res));
-       }
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
      } catch (e){
        console.log(e);
      }
 }
 
 export function* deleteUser(data){
-  let body = JSON.stringify(data.payload);
+  let body = JSON.stringify(data.payload.data);
+  let token = data.payload.token;
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/deleteAdminStaff',{
+        return fetch(API.SERVER_DEV_URL+'admin/deleteAdminStaff?accessToken='+token,{
              method: 'DELETE',
              cache: 'no-cache',
              headers: {
@@ -116,47 +125,51 @@ export function* deleteUser(data){
              resolve(data);
          })
          .catch(err => {
-             console.log("Add api error", err);
              reject(err);
          });
      });
 
      let res = yield call(api);
+     console.log(res);
        if(res.status == 1){
-         yield put( actions.userUpdateSuccess(res.data));
-       } else {
-         yield put (actions.userUpdateError(res));
-       }
+         yield put( actions.userDeleteSuccess(res.data));
+       } else if(res.status == 0) {
+         yield put (actions.userDeleteError(res));
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
      } catch (e){
        console.log(e);
      }
 }
 
-export function* fetchCustomer(){
+export function* fetchCustomer(action){
+  let token = action.payload;
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/getAllAdminStaff',{
-             method: 'GET',
-             cache: 'no-cache',
-             headers: {
-              'content-type': 'application/json'
-            },
+        return fetch(API.SERVER_DEV_URL+'admin/getAllCustomer?accessToken='+token,{
+          method: 'GET',
+          headers: {
+           'content-type': 'application/json'
+         },
          })
          .then((res)=> res.json())
          .then(data => {
              resolve(data);
          })
          .catch(err => {
-             console.log("Deleting Card API Error", err);
              reject(err);
          });
      });
 
      let res = yield call(api);
+     console.log(res)
        if(res.status == 1){
-         yield put( actions.userListSuccess(res.data));
-       } else {
-         yield put (actions.userListError(res));
+         yield put( actions.customerListSuccess(res.data));
+       } else if(res.status == 0) {
+         yield put (actions.customerListError(res));
+       } else if(res.error == 1){
+         yield put (actions.loginTokenExpire(res));
        }
      } catch (e){
        console.log(e);
@@ -164,33 +177,61 @@ export function* fetchCustomer(){
 }
 
 export function* addCustomer(data){
-  let body = JSON.stringify(data.payload);
+  let params = data.payload.data;
+  console.log(params)
+  let token = data.payload.token;
+  var formData = new FormData();
+    formData.append('name', params.name);
+    formData.append('email', params.email);
+    formData.append('birthday', params.birthday);
+    formData.append('zipcode', params.zipcode);
+    formData.append('gender', params.gender?1:0);
+    formData.append('marital', params.marital?1:0);
+    formData.append('kids', params.kids?1:0);
+    if(params.phone != undefined){
+        formData.append('phone', '+1' + params.phone);
+    }
+    formData.append('interests', params.interest);
+    formData.append('source', params.source);
+    formData.append('type', 0);
+    formData.append('password', params.password);
+    formData.append('occupation', params.occupation);
+    formData.append('anniversary', params.anniversary);
+    formData.append('lastName', params.lastName);
+    formData.append('sms_option', params.sms_option);
+    formData.append('app_installed', params.app_installed);
+    formData.append('address1', params.address1);
+    formData.append('address2', params.address2);
+    formData.append('state', params.state);
+    formData.append('city', params.city);
+
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/addCustomer',{
+        return fetch(API.SERVER_DEV_URL+'admin/addCustomer?accessToken='+token,{
              method: 'POST',
-             cache: 'no-cache',
-             headers: {
-              'content-type': 'application/json'
-            },
-            body,
+            body:formData,
          })
-         .then((res)=> res.json())
+         .then((res)=> {
+           return res.json()
+         })
          .then(data => {
              resolve(data);
          })
          .catch(err => {
-             console.log("Add api error", err);
              reject(err);
          });
      });
 
+
+
      let res = yield call(api);
-       if(res.status == 1){
-         yield put( actions.userAddSuccess(res.data));
-       } else {
-         yield put (actions.userAddError(res));
-       }
+        if(res.status == 1){
+         yield put( actions.customerAddSuccess(res.data));
+       } else if(res.status == 0 || res.code) {
+         yield put (actions.customerAddError(res));
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
      } catch (e){
        console.log(e);
      }
@@ -198,43 +239,71 @@ export function* addCustomer(data){
 
 
 export function* updateCustomer(data){
-  let body = JSON.stringify(data.payload);
+  console.log("adsda")
+  let params = data.payload.data;
+  console.log(params,'54545454545')
+  let token = data.payload.token;
+  var formData = new FormData();
+  formData.append('name', params.name);
+  formData.append('email', params.email);
+  formData.append('birthday', params.birthday);
+  formData.append('zipcode', params.zipcode);
+  formData.append('gender', params.gender?1:0);
+  formData.append('marital', params.marital?1:0);
+  formData.append('kids', params.kids?1:0);
+  if(params.phone != undefined){
+      formData.append('phone', '+1' + params.phone);
+  }
+  formData.append('interests', params.interest);
+  formData.append('source', params.source);
+  formData.append('type', 0);
+  formData.append('password', params.password);
+  formData.append('occupation', params.occupation);
+  formData.append('anniversary', params.anniversary);
+  formData.append('lastName', params.lastName);
+  formData.append('sms_option', params.sms_option);
+  formData.append('app_installed', params.app_installed);
+  formData.append('address1', params.address1);
+  formData.append('address2', params.address2);
+  formData.append('state', params.state);
+  formData.append('city', params.city);
+  console.log(formData,'form');
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/updateCustomer',{
+        return fetch(API.SERVER_DEV_URL+'admin/updateCustomer?accessToken='+token,{
              method: 'PUT',
-             cache: 'no-cache',
-             headers: {
-              'content-type': 'application/json'
-            },
-            body,
+
+            body:formData,
          })
-         .then((res)=> res.json())
+         .then((res)=> { console.log(res); return res.json()})
          .then(data => {
              resolve(data);
          })
          .catch(err => {
-             console.log("Add api error", err);
+           console.log(err)
              reject(err);
          });
      });
 
      let res = yield call(api);
        if(res.status == 1){
-         yield put( actions.userUpdateSuccess(res.data));
-       } else {
-         yield put (actions.userUpdateError(res));
-       }
+         yield put( actions.customerUpdateSuccess(res.data));
+       } else if(res.status == 0) {
+         yield put (actions.customerUpdateError(res));
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
      } catch (e){
        console.log(e);
      }
 }
 
 export function* deleteCustomer(data){
-  let body = JSON.stringify(data.payload);
+  let body = JSON.stringify(data.payload.data);
+  let token = data.payload.token;
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/deleteAdminStaff',{
+        return fetch(API.SERVER_DEV_URL+'admin/deleteCustomer?accessToken='+token,{
              method: 'DELETE',
              cache: 'no-cache',
              headers: {
@@ -242,22 +311,24 @@ export function* deleteCustomer(data){
             },
             body,
          })
-         .then((res)=> res.json())
+         .then((res)=> { return res.json()})
          .then(data => {
              resolve(data);
          })
          .catch(err => {
-             console.log("Add api error", err);
              reject(err);
          });
      });
 
      let res = yield call(api);
+     console.log(res)
        if(res.status == 1){
-         yield put( actions.userUpdateSuccess(res.data));
-       } else {
-         yield put (actions.userUpdateError(res));
-       }
+         yield put( actions.customerDeleteSuccess(res.data));
+       } else if(res.status == 0) {
+         yield put (actions.customerDeleteError(res));
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
      } catch (e){
        console.log(e);
      }
@@ -265,10 +336,11 @@ export function* deleteCustomer(data){
 
 
 export function* searchUser(data){
-  let body = JSON.stringify(data.payload);
+  let body = JSON.stringify(data.payload.data);
+  let token = data.payload.token;
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/search_allCustomers',{
+        return fetch(API.SERVER_DEV_URL+'admin/searchAdminStaff?accessToken='+token,{
              method: 'POST',
              cache: 'no-cache',
              headers: {
@@ -281,17 +353,88 @@ export function* searchUser(data){
              resolve(data);
          })
          .catch(err => {
-             console.log("Add api error", err);
              reject(err);
          });
      });
 
      let res = yield call(api);
        if(res.status == 1){
-         yield put( actions.userAddSuccess(res.data));
-       } else {
-         yield put (actions.userAddError(res));
-       }
+         yield put( actions.searchUserSuccess(res.data));
+       } else if(res.status == 0) {
+         yield put (actions.searchUserError(res));
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
+     } catch (e){
+       console.log(e);
+     }
+}
+
+export function* searchCustomer(data){
+  let body = JSON.stringify(data.payload.data);
+  let token = data.payload.token;
+  try{
+    const api = () =>  new Promise((resolve, reject) => {
+        return fetch(API.SERVER_DEV_URL+'admin/search_allCustomers?accessToken='+token,{
+             method: 'POST',
+             cache: 'no-cache',
+             headers: {
+              'content-type': 'application/json'
+            },
+            body,
+         })
+         .then((res)=> res.json())
+         .then(data => {
+             resolve(data);
+         })
+         .catch(err => {
+             reject(err);
+         });
+     });
+
+     let res = yield call(api);
+       if(res.status == 1){
+         yield put( actions.searchCustomerSuccess(res.data));
+       } else if(res.status == 0) {
+         yield put (actions.searchCustomerError(res));
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
+     } catch (e){
+       console.log(e);
+     }
+}
+
+export function* searchHeaderCustomer(data){
+  let body = JSON.stringify(data.payload.data);
+  let token = data.payload.token;
+  try{
+    const api = () =>  new Promise((resolve, reject) => {
+        return fetch(API.SERVER_DEV_URL+'admin/search_allCustomers?accessToken='+token,{
+             method: 'POST',
+             cache: 'no-cache',
+             headers: {
+              'content-type': 'application/json'
+            },
+            body,
+         })
+         .then((res)=> res.json())
+         .then(data => {
+             resolve(data);
+         })
+         .catch(err => {
+             reject(err);
+         });
+     });
+
+     let res = yield call(api);
+       if(res.status == 1){
+         yield put( actions.searchHeaderCustomerSuccess(res.data));
+       } else if(res.status == 0) {
+         yield put (actions.searchHeaderCustomerError(res));
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
      } catch (e){
        console.log(e);
      }
@@ -299,10 +442,11 @@ export function* searchUser(data){
 
 
 export function* addRedeem(data){
-  let body = JSON.stringify(data.payload);
+  let body = JSON.stringify(data.payload.data);
+  let token = data.payload.token;
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/addCustomer',{
+        return fetch(API.SERVER_DEV_URL+'RedeemCode/AddRedeemCode?accessToken='+token,{
              method: 'POST',
              cache: 'no-cache',
              headers: {
@@ -315,17 +459,19 @@ export function* addRedeem(data){
              resolve(data);
          })
          .catch(err => {
-             console.log("Add api error", err);
              reject(err);
          });
      });
 
      let res = yield call(api);
+     console.log(res);
        if(res.status == 1){
-         yield put( actions.userAddSuccess(res.data));
-       } else {
-         yield put (actions.userAddError(res));
-       }
+         yield put( actions.redeemAddSuccess(res.data));
+       } else if(res.status == 0) {
+         yield put (actions.redeemAddError(res));
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
      } catch (e){
        console.log(e);
      }
@@ -333,10 +479,11 @@ export function* addRedeem(data){
 
 
 export function* updateRedeem(data){
-  let body = JSON.stringify(data.payload);
+  let body = JSON.stringify(data.payload.data);
+  let token = data.payload.token
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/updateCustomer',{
+        return fetch(API.SERVER_DEV_URL+'RedeemCode/updateRedeemCode?accessToken='+token,{
              method: 'PUT',
              cache: 'no-cache',
              headers: {
@@ -344,32 +491,35 @@ export function* updateRedeem(data){
             },
             body,
          })
-         .then((res)=> res.json())
+         .then((res)=>{ return res.json()})
          .then(data => {
              resolve(data);
          })
          .catch(err => {
-             console.log("Add api error", err);
              reject(err);
          });
      });
 
      let res = yield call(api);
+     console.log(res)
        if(res.status == 1){
-         yield put( actions.userUpdateSuccess(res.data));
-       } else {
-         yield put (actions.userUpdateError(res));
-       }
+         yield put( actions.redeemUpdateSuccess(res.data));
+       } else if(res.status == 0) {
+         yield put (actions.redeemUpdateError(res));
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
      } catch (e){
        console.log(e);
      }
 }
 
 export function* deleteRedeem(data){
-  let body = JSON.stringify(data.payload);
+  let body = JSON.stringify(data.payload.data);
+  let token = data.payload.token;
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/deleteAdminStaff',{
+        return fetch(API.SERVER_DEV_URL+'RedeemCode/deleteRedeemCode?accessToken='+token,{
              method: 'DELETE',
              cache: 'no-cache',
              headers: {
@@ -377,22 +527,24 @@ export function* deleteRedeem(data){
             },
             body,
          })
-         .then((res)=> res.json())
+         .then((res)=> { return res.json()})
          .then(data => {
              resolve(data);
          })
          .catch(err => {
-             console.log("Add api error", err);
              reject(err);
          });
      });
 
      let res = yield call(api);
+     console.log(res)
        if(res.status == 1){
-         yield put( actions.userUpdateSuccess(res.data));
-       } else {
-         yield put (actions.userUpdateError(res));
-       }
+         yield put( actions.redeemDeleteSuccess(res.data));
+       } else if(res.status == 0) {
+         yield put (actions.redeemDeleteError(res));
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
      } catch (e){
        console.log(e);
      }
@@ -403,39 +555,43 @@ export function* loginUser(data){
   let body = JSON.stringify(data.payload);
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/addCustomer',{
+        return fetch(API.SERVER_DEV_URL+'admin/Adminlogin',{
+
              method: 'POST',
-             cache: 'no-cache',
+
              headers: {
               'content-type': 'application/json'
             },
             body,
          })
-         .then((res)=> res.json())
+         .then((res)=> {  return res.json()})
          .then(data => {
              resolve(data);
          })
          .catch(err => {
-             console.log("Add api error", err);
              reject(err);
          });
      });
 
      let res = yield call(api);
        if(res.status == 1){
-         yield put( actions.userAddSuccess(res.data));
-       } else {
-         yield put (actions.userAddError(res));
-       }
+         let payload = {token:res.token,data:res.data};
+         yield put( actions.loginUserSuccess(payload));
+       } else if(res.status == 0) {
+         yield put (actions.loginUserError(res));
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
      } catch (e){
        console.log(e);
      }
 }
 
-export function* fetchRedeem(){
+export function* fetchRedeem(action){
+  let token = action.payload;
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/getAllAdminStaff',{
+        return fetch(API.SERVER_DEV_URL+'RedeemCode/getAllRedeemCode?accessToken='+token,{
              method: 'GET',
              cache: 'no-cache',
              headers: {
@@ -447,18 +603,50 @@ export function* fetchRedeem(){
              resolve(data);
          })
          .catch(err => {
-             console.log("Deleting Card API Error", err);
              reject(err);
          });
      });
 
      let res = yield call(api);
        if(res.status == 1){
-         yield put( actions.userListSuccess(res.data));
-       } else {
-         yield put (actions.userListError(res));
-       }
+         yield put( actions.redeemListSuccess(res.data));
+       } else if(res.status == 0) {
+         yield put (actions.redeemListError(res));
+       } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
      } catch (e){
        console.log(e);
      }
+}
+
+
+export function* getInterests(){
+  try{
+    const api = () => new Promise((resolve, reject) => {
+        fetch(API.SERVER_DEV_URL + 'interest', {
+            method: "GET",
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+        .then((res) => res.json())
+        .then(data => {
+            resolve(data);
+        })
+        .catch(err => {
+            reject(err);
+        });
+    });
+    let res = yield call(api);
+      if(res){
+        yield put( actions.interestListSuccess(res));
+      } else if(res.status == 0) {
+        yield put (actions.interestListError(res));
+      } else if(res.error == 1){
+        yield put (actions.loginTokenExpire(res));
+      }
+    } catch (e){
+      console.log(e);
+    }
 }

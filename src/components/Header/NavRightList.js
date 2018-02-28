@@ -16,7 +16,10 @@ const listItemStyle = {
 class NavRightList extends React.Component {
 
   handleChange = (event, value) => {
-    this.props.history.push(value);
+    if(value == '/login'){
+      sessionStorage.removeItem('user');
+      this.props.history.push(value);
+    }
   }
 
   render() {
@@ -37,13 +40,13 @@ class NavRightList extends React.Component {
               innerDivStyle={listItemStyle}
               leftIcon={<i className="material-icons">home</i>}
                         />
-            <MenuItem
+            {/* <MenuItem
               value="/app/page/about"
               primaryText="About"
               innerDivStyle={listItemStyle}
               style={{fontSize: '14px', lineHeight: '48px'}}
               leftIcon={<i className="material-icons">person_outline</i>}
-                        />
+                        /> */}
             <MenuItem
               value="/login"
               primaryText="Log Out"
