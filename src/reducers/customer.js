@@ -234,7 +234,7 @@ const customerListChartError = (state, action) => update(state, {
 
 const redemptionChartRequest = (state, action) =>{
   return update(state, {
-    customerList:{
+    redemption:{
     isLoading: {$set: true},
     isError:   {$set: false},
     isSuccess: {$set: false},
@@ -242,7 +242,7 @@ const redemptionChartRequest = (state, action) =>{
   }
 });}
 const redemptionChartSuccess = (state, action) => update(state, {
-  customerList:{
+  redemption:{
     data:       {$set: action.payload},
     isLoading:  {$set: false},
     isError:    {$set: false},
@@ -251,7 +251,7 @@ const redemptionChartSuccess = (state, action) => update(state, {
   }
 });
 const redemptionChartError = (state, action) => update(state, {
-  customerList:{
+  redemption:{
     isSuccess: {$set: false},
     isLoading: {$set: false},
     isError:   {$set: true},

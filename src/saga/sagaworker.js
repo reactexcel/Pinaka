@@ -705,15 +705,18 @@ export function* fetchAllDashBoardCustomer(action){
 
 
 export function* fetchRedemption(action){
-  let token = action.payload;
+  console.log(action);
+  let token = action.payload.token;
+  let body = JSON.stringify(action.payload.data);
   try{
     const api = () =>  new Promise((resolve, reject) => {
         return fetch(API.SERVER_DEV_URL+'dashBoard/redemption_data?accessToken='+token,{
-             method: 'GET',
+             method: 'POST',
              cache: 'no-cache',
              headers: {
               'content-type': 'application/json'
             },
+            body,
          })
          .then((res)=> res.json())
          .then(data => {
@@ -725,6 +728,7 @@ export function* fetchRedemption(action){
      });
 
      let res = yield call(api);
+     console.log(res,'asdasdasdasdasdas')
        if(res.status == 1){
          yield put( actions.redemptionChartSuccess(res.data));
        } else if(res.error == 1) {
