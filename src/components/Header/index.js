@@ -32,7 +32,7 @@ class Header extends React.Component {
     });
   }
   handleChange = props => (event, value, index) => {
-    console.log(event.target.value);
+    console.log(event.target.value=="");
    if(event.target.value != ""){
      let token = this.props.user.userLogged.data.token;
      let searchvalue = {search:event.target.value};
@@ -46,17 +46,12 @@ class Header extends React.Component {
   }
   render() {
     const { isFixedHeader, colorOption } = this.props;
-    console.log(this.props);
     let CustomerList = _.map(this.props.customer.searchHeader.data, (value, index) => {
       return(
       <tr key={index} >
-        <td className="mdl-data-table__cell--non-numeric">{index+1}</td>
         <td className="mdl-data-table__cell--non-numeric"> <a href={`/#/app/customer/viewcustomerdetails/${index}/disable`}>{value.name} {value.lastName}</a></td>
         <td className="mdl-data-table__cell--non-numeric">{value.email}</td>
         <td>{value.phone?value.phone.substring(2, value.phone.length):''}</td>
-        <td>{value.sms_option ? "Yes" : "No"}</td>
-        <td>{value.app_installed ? "Yes" : "No"}</td>
-
       </tr>
     )} );
     return (
@@ -88,18 +83,9 @@ class Header extends React.Component {
             type="text"
           />
             {this.props.customer.searchHeader.isSuccess ?  
-            <div className="box box-default table-box mdl-shadow--2dp" style={{width:"79%",marginLeft:"20%"}} >
+            <div className="box box-default table-box mdl-shadow--2dp" style={{width:"45%",marginLeft:"25%"}} >
             <table className="mdl-data-table table-responsive">
-              <thead>
-                <tr>
-                  <th className="mdl-data-table__cell--non-numeric">#</th>
-                  <th className="mdl-data-table__cell--non-numeric">Name</th>
-                  <th className="mdl-data-table__cell--non-numeric">Email Id</th>
-                  <th>Phone Number</th>
-                  <th>SMS Option</th>
-                  <th>App Installed</th>
-                </tr>
-              </thead>
+              
               <tbody>
                   {CustomerList}
               </tbody>

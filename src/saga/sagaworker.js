@@ -25,11 +25,12 @@ export function* fetchUser(action){
      let res = yield call(api);
        if(res.status == 1){
          yield put( actions.userListSuccess(res.data));
-       } else if(res.status == 0) {
+       } else if(res.error == 1) {
          yield put (actions.userListError(res));
-       } else if(res.error == 1){
-        yield put (actions.loginTokenExpire(res));
-      }
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+          yield put (actions.loginTokenExpire(res));
+        }
+       } 
      } catch (e){
        console.log(e);
      }
@@ -63,9 +64,10 @@ export function* addUser(data){
          yield put( actions.userAddSuccess(res.data));
        } else if(res.status == 0) {
          yield put (actions.userAddError(res));
-       } else if(res.error == 1){
-        yield put (actions.loginTokenExpire(res));
-      }
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+          yield put (actions.loginTokenExpire(res));
+        }
+       } 
      } catch (e){
        console.log(e);
      }
@@ -97,11 +99,12 @@ export function* updateUser(data){
      console.log(res);
        if(res.status == 1){
          yield put( actions.userUpdateSuccess(res.data));
-       } else if(res.status == 0) {
+       } else if(res.error == 1) {
          yield put (actions.userUpdateError(res));
-       } else if(res.error == 1){
-        yield put (actions.loginTokenExpire(res));
-      }
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+          yield put (actions.loginTokenExpire(res));
+        }
+       } 
      } catch (e){
        console.log(e);
      }
@@ -133,21 +136,22 @@ export function* deleteUser(data){
      console.log(res);
        if(res.status == 1){
          yield put( actions.userDeleteSuccess(res.data));
-       } else if(res.status == 0) {
+       } else if(res.error == 1) {
          yield put (actions.userDeleteError(res));
-       } else if(res.error == 1){
-        yield put (actions.loginTokenExpire(res));
-      }
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+          yield put (actions.loginTokenExpire(res));
+        }
+       } 
      } catch (e){
        console.log(e);
      }
 }
 
 export function* fetchCustomer(action){
-  let token = action.payload;
+  let token = action.payload.token;
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/getAllCustomer?accessToken='+token,{
+        return fetch(API.SERVER_DEV_URL+'admin/getAllCustomer/'+action.payload.page+'?accessToken='+token,{          
           method: 'GET',
           headers: {
            'content-type': 'application/json'
@@ -166,11 +170,12 @@ export function* fetchCustomer(action){
      console.log(res)
        if(res.status == 1){
          yield put( actions.customerListSuccess(res.data));
-       } else if(res.status == 0) {
+       } else if(res.error == 1) {
          yield put (actions.customerListError(res));
-       } else if(res.error == 1){
-         yield put (actions.loginTokenExpire(res));
-       }
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+          yield put (actions.loginTokenExpire(res));
+        }
+       } 
      } catch (e){
        console.log(e);
      }
@@ -178,7 +183,6 @@ export function* fetchCustomer(action){
 
 export function* addCustomer(data){
   let params = data.payload.data;
-  console.log(params)
   let token = data.payload.token;
   var formData = new FormData();
     formData.append('name', params.name);
@@ -199,6 +203,8 @@ export function* addCustomer(data){
     formData.append('anniversary', params.anniversary);
     formData.append('lastName', params.lastName);
     formData.append('sms_option', params.sms_option);
+    formData.append('redeemCode', params.redeemCode);    
+    formData.append('CodeRedeemFlag', params.CodeRedeemFlag);    
     formData.append('app_installed', params.app_installed);
     formData.append('address1', params.address1);
     formData.append('address2', params.address2);
@@ -227,11 +233,12 @@ export function* addCustomer(data){
      let res = yield call(api);
         if(res.status == 1){
          yield put( actions.customerAddSuccess(res.data));
-       } else if(res.status == 0 || res.code) {
+       } else if(res.error == 1 || res.code) {
          yield put (actions.customerAddError(res));
-       } else if(res.error == 1){
-        yield put (actions.loginTokenExpire(res));
-      }
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+          yield put (actions.loginTokenExpire(res));
+        }
+       } 
      } catch (e){
        console.log(e);
      }
@@ -241,9 +248,9 @@ export function* addCustomer(data){
 export function* updateCustomer(data){
   console.log("adsda")
   let params = data.payload.data;
-  console.log(params,'54545454545')
   let token = data.payload.token;
   var formData = new FormData();
+  formData.append('_id', params._id);  
   formData.append('name', params.name);
   formData.append('email', params.email);
   formData.append('birthday', params.birthday);
@@ -255,19 +262,18 @@ export function* updateCustomer(data){
       formData.append('phone', '+1' + params.phone);
   }
   formData.append('interests', params.interest);
-  formData.append('source', params.source);
+  formData.append('source', params.source != undefined ? params.source : 1);
   formData.append('type', 0);
   formData.append('password', params.password);
   formData.append('occupation', params.occupation);
   formData.append('anniversary', params.anniversary);
-  formData.append('lastName', params.lastName);
+  formData.append('lastName', params.lastName);   
   formData.append('sms_option', params.sms_option);
   formData.append('app_installed', params.app_installed);
   formData.append('address1', params.address1);
   formData.append('address2', params.address2);
   formData.append('state', params.state);
   formData.append('city', params.city);
-  console.log(formData,'form');
   try{
     const api = () =>  new Promise((resolve, reject) => {
         return fetch(API.SERVER_DEV_URL+'admin/updateCustomer?accessToken='+token,{
@@ -286,13 +292,15 @@ export function* updateCustomer(data){
      });
 
      let res = yield call(api);
+     console.log(res);
        if(res.status == 1){
          yield put( actions.customerUpdateSuccess(res.data));
-       } else if(res.status == 0) {
+       } else if(res.error == 1) {
          yield put (actions.customerUpdateError(res));
-       } else if(res.error == 1){
-        yield put (actions.loginTokenExpire(res));
-      }
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+          yield put (actions.loginTokenExpire(res));
+        }
+       } 
      } catch (e){
        console.log(e);
      }
@@ -324,10 +332,11 @@ export function* deleteCustomer(data){
      console.log(res)
        if(res.status == 1){
          yield put( actions.customerDeleteSuccess(res.data));
-       } else if(res.status == 0) {
+       } else if(res.error == 1) {
          yield put (actions.customerDeleteError(res));
-       } else if(res.error == 1){
-        yield put (actions.loginTokenExpire(res));
+        if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+          yield put (actions.loginTokenExpire(res));
+        }
       }
      } catch (e){
        console.log(e);
@@ -360,11 +369,12 @@ export function* searchUser(data){
      let res = yield call(api);
        if(res.status == 1){
          yield put( actions.searchUserSuccess(res.data));
-       } else if(res.status == 0) {
+       } else if(res.error == 1) {
          yield put (actions.searchUserError(res));
-       } else if(res.error == 1){
-        yield put (actions.loginTokenExpire(res));
-      }
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+          yield put (actions.loginTokenExpire(res));
+        }
+       }
      } catch (e){
        console.log(e);
      }
@@ -395,11 +405,12 @@ export function* searchCustomer(data){
      let res = yield call(api);
        if(res.status == 1){
          yield put( actions.searchCustomerSuccess(res.data));
-       } else if(res.status == 0) {
+       } else if(res.error == 1) {
          yield put (actions.searchCustomerError(res));
-       } else if(res.error == 1){
-        yield put (actions.loginTokenExpire(res));
-      }
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+          yield put (actions.loginTokenExpire(res));
+        }
+       }
      } catch (e){
        console.log(e);
      }
@@ -430,11 +441,12 @@ export function* searchHeaderCustomer(data){
      let res = yield call(api);
        if(res.status == 1){
          yield put( actions.searchHeaderCustomerSuccess(res.data));
-       } else if(res.status == 0) {
+       } else if(res.error == 1) {
          yield put (actions.searchHeaderCustomerError(res));
-       } else if(res.error == 1){
-        yield put (actions.loginTokenExpire(res));
-      }
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+          yield put (actions.loginTokenExpire(res));
+        }
+       }
      } catch (e){
        console.log(e);
      }
@@ -467,11 +479,12 @@ export function* addRedeem(data){
      console.log(res);
        if(res.status == 1){
          yield put( actions.redeemAddSuccess(res.data));
-       } else if(res.status == 0) {
+       } else if(res.error == 1) {
          yield put (actions.redeemAddError(res));
-       } else if(res.error == 1){
-        yield put (actions.loginTokenExpire(res));
-      }
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+          yield put (actions.loginTokenExpire(res));
+        }
+       } 
      } catch (e){
        console.log(e);
      }
@@ -504,11 +517,12 @@ export function* updateRedeem(data){
      console.log(res)
        if(res.status == 1){
          yield put( actions.redeemUpdateSuccess(res.data));
-       } else if(res.status == 0) {
+       } else if(res.error == 1) {
          yield put (actions.redeemUpdateError(res));
-       } else if(res.error == 1){
-        yield put (actions.loginTokenExpire(res));
-      }
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+          yield put (actions.loginTokenExpire(res));
+        }
+       } 
      } catch (e){
        console.log(e);
      }
@@ -540,11 +554,12 @@ export function* deleteRedeem(data){
      console.log(res)
        if(res.status == 1){
          yield put( actions.redeemDeleteSuccess(res.data));
-       } else if(res.status == 0) {
+       } else if(res.error == 1) {
          yield put (actions.redeemDeleteError(res));
-       } else if(res.error == 1){
-        yield put (actions.loginTokenExpire(res));
-      }
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+          yield put (actions.loginTokenExpire(res));
+        }
+       } 
      } catch (e){
        console.log(e);
      }
@@ -577,11 +592,12 @@ export function* loginUser(data){
        if(res.status == 1){
          let payload = {token:res.token,data:res.data};
          yield put( actions.loginUserSuccess(payload));
-       } else if(res.status == 0) {
+       } else if(res.error == 1) {
          yield put (actions.loginUserError(res));
-       } else if(res.error == 1){
-        yield put (actions.loginTokenExpire(res));
-      }
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+          yield put (actions.loginTokenExpire(res));
+        }
+       } 
      } catch (e){
        console.log(e);
      }
@@ -610,11 +626,12 @@ export function* fetchRedeem(action){
      let res = yield call(api);
        if(res.status == 1){
          yield put( actions.redeemListSuccess(res.data));
-       } else if(res.status == 0) {
+       } else if(res.error == 1) {
          yield put (actions.redeemListError(res));
-       } else if(res.error == 1){
-        yield put (actions.loginTokenExpire(res));
-      }
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+          yield put (actions.loginTokenExpire(res));
+        }
+       } 
      } catch (e){
        console.log(e);
      }
@@ -641,10 +658,11 @@ export function* getInterests(){
     let res = yield call(api);
       if(res){
         yield put( actions.interestListSuccess(res));
-      } else if(res.status == 0) {
+      } else if(res.error == 1) {
         yield put (actions.interestListError(res));
-      } else if(res.error == 1){
-        yield put (actions.loginTokenExpire(res));
+        if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+          yield put (actions.loginTokenExpire(res));
+        }
       }
     } catch (e){
       console.log(e);

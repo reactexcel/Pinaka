@@ -53,7 +53,7 @@ class App extends Component {
   componentWillReceiveProps(props){
     if(props.user.userLogged.isError){
       this.setState({isOpen:true,message:'Invalid Email or Password'});
-    } else if (props.user.userLogged.isSuccess && props.location.pathname == '/login') {
+    } else if (props.user.userLogged.isSuccess && props.location.pathname == '/login' && !props.user.userToken.isSuccess) {
       sessionStorage.setItem('user',JSON.stringify(props.user.userLogged));
       this.setState({isOpen:true, message:'Login Successfully'})
     }
@@ -69,7 +69,6 @@ class App extends Component {
     }
     if(this.props.user.userToken.isSuccess){
       this.props.loginTokenReset();
-      this.props.history.push('/login');
     }
   }
   render() {

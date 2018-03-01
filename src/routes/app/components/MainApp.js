@@ -25,6 +25,11 @@ class MainApp extends React.Component {
   constructor(props){
     super(props);
   }
+  componentWillReceiveProps(props){
+    if(props.user.userToken.isSuccess){
+      this.props.history.push('/login');
+    }
+  }
 
   render() {
     const { match, location } = this.props;
