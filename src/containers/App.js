@@ -51,13 +51,14 @@ class App extends Component {
     }
   }
   componentWillReceiveProps(props){
+    console.log(props,'app')
     if(props.user.userLogged.isError){
       this.setState({isOpen:true,message:'Invalid Email or Password'});
     } else if (props.user.userLogged.isSuccess && props.location.pathname == '/login' && !props.user.userToken.isSuccess) {
       sessionStorage.setItem('user',JSON.stringify(props.user.userLogged));
       this.setState({isOpen:true, message:'Login Successfully'})
     }
-    if(props.user.userToken.isSuccess){
+    if(props.user.userToken.isSuccess ){
       sessionStorage.removeItem('user');
       this.setState({isOpen:true, message:'Session Expire!!'})
     }
@@ -138,6 +139,7 @@ const mapStateToProps = (state, ownProps) => ({
   sidebarWidth: state.settings.sidebarWidth,
   theme: state.settings.theme,
   user: state.user,
+  customer: state.customer,
 });
 
 const mapDispatchToProps = (dispatch) => { return bindActionCreators(actions, dispatch); };

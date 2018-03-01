@@ -291,10 +291,10 @@ const DetailsForm = (props) => {
                       errorText={errors.birthday == '' ? null : errors.birthday}
                     />
                   </div> */}
-                </div>
-                <div className="form-group row" style={styles.formGroup}>
+                {/* </div>
+                <div className="form-group row" style={styles.formGroup}> */}
                   <label style={styles.label1}  className="col-md-2 control-label">Anniversary Date/Year *</label>
-                  <div className="col-md-10">
+                  <div className="col-md-4">
                     <DatePicker
                       hintText="Select date"
                       container="inline"
