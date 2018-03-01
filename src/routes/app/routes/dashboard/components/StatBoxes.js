@@ -21,7 +21,7 @@ const Statboxes = (props) =>{
     </div>
 
     {props.user.userLogged.data.data.role == 'Admin'? 
-      <div className="col-xl-3 col-sm-6">
+      <div className="col-xl-3 col-sm-6" onClick={()=>{props.handleSelect('')}} >
         <div className="box box-default">
           <div className="box-top">
             <span>{props.user.user.data.length}</span>
@@ -39,7 +39,7 @@ const Statboxes = (props) =>{
       }
 
       {props.user.userLogged.data.data.role == 'Admin'? 
-      <div className="col-xl-3 col-sm-6" onClick={()=>{props.handleSelect('redemption')}} >
+      <div className="col-xl-3 col-sm-6" onClick={()=>{props.handleSelect('resdemption')}} >
         <div className="box box-default">
           <div className="box-top">
             <span>{props.customer.redemption.data.length}</span>

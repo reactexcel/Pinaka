@@ -99,7 +99,7 @@ const DetailsForm = (props) => {
           </div>
           <article className="article">
           {isLoading?
-            <div className="col-md-12" style={styles.loading,{marginTop:15}}>
+            <div className="col-md-12" style={{marginTop:40,fontSize:20,fontWeight:600,textAlign:'center'}}>
               {props.type == 'add'?"Adding New User..........." : 'Please Wait.....'}
             </div>
             :
@@ -631,6 +631,7 @@ class CustomerDetails extends React.Component {
           if(this.state.type == 'add'){
               this.props.customerAddRequest(apiData);
           } else if(this.state.type == 'disable' || this.state.type == "edit" ){
+            this.setState({isLoading:true})
             this.props.customerUpdateRequest(apiData);
           }
         }

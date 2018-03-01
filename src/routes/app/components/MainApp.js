@@ -24,6 +24,9 @@ import redeemDetails from '../routes/redeem/routes/redeem/redeemDetails';
 class MainApp extends React.Component {
   constructor(props){
     super(props);
+    this.state = {
+      loaded: true
+    };
   }
   componentWillMount(){
     let token = this.props.user.userLogged.data.token;
@@ -35,7 +38,10 @@ class MainApp extends React.Component {
     this.props.customerListChartRequest(token);
   }
   componentWillReceiveProps(props){
-    if(props.user.userToken.isSuccess){
+    const {userToken} = props.user;
+    const {data} = userToken;
+    if(userToken.isSuccess && data.error == 1 && data.message == 'Invalid Token' && this.state.loaded){
+      this.setState({loaded: false});
       this.props.history.push('/login');
     }
   }

@@ -64,7 +64,6 @@ import RaisedButton from 'material-ui/RaisedButton';
         }
       }
       this.props.redemptionChartRequest(apiData)
-      console.log(this.props);
     }
     render(){
       let CustomerList = _.map(this.props.customer.customerList.data, (value, index) => (
@@ -106,7 +105,7 @@ import RaisedButton from 'material-ui/RaisedButton';
               <Chart {...this.props} />
             </div>
           </div> */}
-          { this.state.selector != ''?
+          { this.state.selector == 'customer' || this.state.selector == 'redemption' ?
             <div  className="row box box-default" >
               <div className="col-md-12" >
                 <h3>{this.state.selector == 'customer'? "Customer List" : this.state.selector == 'redemption'? "Redemption List" : null}</h3>
@@ -124,7 +123,7 @@ import RaisedButton from 'material-ui/RaisedButton';
                 customerData
                 :
                 this.state.selector == 'redemption' ? 
-                "redemptionData"
+                <Chart {...this.props} />
                 :
                 null
               }
