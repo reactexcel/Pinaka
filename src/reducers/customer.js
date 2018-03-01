@@ -32,6 +32,13 @@ const initialState = {
     isError: false,
     isSuccess: false,
     message : ''
+  },
+  customerList:{
+    isLoading:false,
+    data:'',
+    isError: false,
+    isSuccess: false,
+    message : ''
   }
 }
 
@@ -191,6 +198,33 @@ const customerHeaderSearchReset = (state, action) => {
   }
 });}
 
+const customerListChartRequest = (state, action) =>{
+  return update(state, {
+    customerList:{
+    isLoading: {$set: true},
+    isError:   {$set: false},
+    isSuccess: {$set: false},
+    message:   {$set: ''}
+  }
+});}
+const customerListChartSuccess = (state, action) => update(state, {
+  customerList:{
+    data:       {$set: action.payload},
+    isLoading:  {$set: false},
+    isError:    {$set: false},
+    isSuccess:  {$set: true},
+    message:    {$set: 'Login success'}
+  }
+});
+const customerListChartError = (state, action) => update(state, {
+  customerList:{
+    isSuccess: {$set: false},
+    isLoading: {$set: false},
+    isError:   {$set: true},
+    message:   {$set: action.payload}
+  }
+});
+
 export default handleActions({
   [constants.CUSTOMER_LIST_REQUEST]: customerListRequest,
   [constants.CUSTOMER_LIST_SUCCESS]: customerListSuccess,
@@ -217,5 +251,8 @@ export default handleActions({
   [constants.SEARCH_HEADER_CUSTOMER_ERROR]: customerHeaderSearchError,
   [constants.SEARCH_HEADER_CUSTOMER_RESET]: customerHeaderSearchReset,
   
+  [constants.CUSTOMER_LIST_CHART_REQUEST]: customerListChartRequest,
+  [constants.CUSTOMER_LIST_CHART_SUCCESS]: customerListChartSuccess,
+  [constants.CUSTOMER_LIST_CHART_ERROR]: customerListChartError,
 
 }, initialState);

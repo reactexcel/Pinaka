@@ -21,7 +21,8 @@ import Chart from './chart';
       this.props.userListRequest(token);
       this.props.customerListRequest({token,page:0});
       this.props.redeemListRequest(token);  
-    this.props.searchHeaderCustomerReset();          
+      this.props.searchHeaderCustomerReset();   
+      this.props.customerListChartRequest(token);
     }
     render(){
       return(
@@ -29,12 +30,12 @@ import Chart from './chart';
           <QueueAnim type="bottom" className="ui-animate">
             <div key="2"><StatBoxes {...this.props} /></div>
           </QueueAnim>
-          <div className="row box box-default" >
+          {/* <div className="row box box-default" >
             <div style={{margin:30}}>
               <div className="row" style={{fontSize:21,fontWeight:600,marginBottom:30,marginLeft:"6%"}} > Total No. of Customer </div>
               <Chart {...this.props} />
             </div>
-          </div>
+          </div> */}
           
         </div>
       );

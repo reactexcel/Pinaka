@@ -80,7 +80,7 @@ const DetailsForm = (props) => {
               <div className='col-md-6'>
                 <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-md" />
                 <RaisedButton label="Delete" backgroundColor="#FF0000" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.handleDelete({token:props.user.data.token,data:{_id:props.data._id}})}} className="btn-w-md" />
-                <RaisedButton label="Back"  style={{marginLeft:5}}  onClick={()=>{props.handleEdit('back')}} className="btn-w-md" />
+                <RaisedButton label={props.type == 'disable'?"Back":"cancel"}  style={{marginLeft:5}}  onClick={()=>{props.type=='diable'? props.handleEdit('back'):props.handleEdit('cancel')}} className="btn-w-md" />
               </div>
             }
           <div className="col-md-2"></div>
@@ -89,7 +89,11 @@ const DetailsForm = (props) => {
               :
                 <div className='col-md-4'>
                   <RaisedButton style={{marginLeft:5}} label={props.type =='add'?"Add":"Save"} backgroundColor={"#1b025c"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-md" />
-                  <RaisedButton label="Cancel" style={styles.button} onClick={()=>{props.handleEdit('cancel')}} className="btn-w-md" />
+                  {props.type == 'edit' ?
+                    null
+                    :
+                    <RaisedButton label="Cancel" style={styles.button} onClick={()=>{props.handleEdit('cancel')}} className="btn-w-md" />
+                  }
                 </div>
             }
           </div>
@@ -151,10 +155,22 @@ const DetailsForm = (props) => {
                   null
                :
                   <div className="form-group row" style={styles.formGroup}>
-                    <label  className="col-md-2 control-label" style={{paddingTop: 14, paddingBottom: 20}}>Code Redeem Flag</label>
-                    <div className="col-md-4">
+                    {/* <label  className="col-md-2 control-label" style={{paddingTop: 14, paddingBottom: 20}}>Code Redeem Flag</label> */}
+                    {/* <div className="col-md-4">
                       <div style={{paddingTop: 14, paddingBottom: 20, color: 'grey'}} > {props.data.CodeRedeemFlag ? "Yes" : "No"} </div>
-                    </div>
+                    </div> */}
+                    <label style={styles.label1} className="col-md-2 control-label">Date of Birth *</label>
+                  <div className="col-md-4">
+                    <DatePicker
+                      hintText="Select date"
+                      container="inline"
+                      mode="landscape"
+                      value={props.data.birthday}
+                      onChange={props.handleChange('birthday')}
+                      disabled={isDisabled}
+                      errorText={errors.birthday == '' ? null : errors.birthday}
+                    />
+                  </div>
                     <label style={styles.label1} className="col-md-2 control-label">Redeem Code</label>
                     <div className="col-md-4">
                       <TextField
@@ -263,7 +279,7 @@ const DetailsForm = (props) => {
                       errorText={errors.zipcode == '' ? null : errors.zipcode}
                     />
                   </div>
-                  <label style={styles.label1} className="col-md-2 control-label">Date of Birth *</label>
+                  {/* <label style={styles.label1} className="col-md-2 control-label">Date of Birth *</label>
                   <div className="col-md-4">
                     <DatePicker
                       hintText="Select date"
@@ -274,7 +290,7 @@ const DetailsForm = (props) => {
                       disabled={isDisabled}
                       errorText={errors.birthday == '' ? null : errors.birthday}
                     />
-                  </div>
+                  </div> */}
                 </div>
                 <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1}  className="col-md-2 control-label">Anniversary Date/Year *</label>
@@ -367,7 +383,11 @@ const DetailsForm = (props) => {
                 :
                   <div>
                     <RaisedButton label={props.type =='add'?"Add":"Save"} backgroundColor={"#1b025c"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-md" />
-                    <RaisedButton label="Cancel" style={styles.button} onClick={()=>{props.handleEdit('cancel')}} className="btn-w-md" />
+                    {props.type == 'edit'?
+                      null
+                    :
+                      <RaisedButton label="Cancel" style={styles.button} onClick={()=>{props.handleEdit('cancel')}} className="btn-w-md" />
+                    }
                   </div>
                 }
                   </div>

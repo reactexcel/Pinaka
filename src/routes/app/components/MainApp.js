@@ -25,6 +25,15 @@ class MainApp extends React.Component {
   constructor(props){
     super(props);
   }
+  componentWillMount(){
+    let token = this.props.user.userLogged.data.token;
+    this.props.interestListRequest();
+    this.props.userListRequest(token);
+    this.props.customerListRequest({token,page:0});
+    this.props.redeemListRequest(token);  
+    this.props.searchHeaderCustomerReset();   
+    this.props.customerListChartRequest(token);
+  }
   componentWillReceiveProps(props){
     if(props.user.userToken.isSuccess){
       this.props.history.push('/login');

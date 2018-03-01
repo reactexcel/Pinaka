@@ -27,7 +27,7 @@ export function* fetchUser(action){
          yield put( actions.userListSuccess(res.data));
        } else if(res.error == 1) {
          yield put (actions.userListError(res));
-         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'|| res.message == "Invalid Token"){
           yield put (actions.loginTokenExpire(res));
         }
        } 
@@ -64,7 +64,7 @@ export function* addUser(data){
          yield put( actions.userAddSuccess(res.data));
        } else if(res.status == 0) {
          yield put (actions.userAddError(res));
-         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'|| res.message == "Invalid Token"){
           yield put (actions.loginTokenExpire(res));
         }
        } 
@@ -101,7 +101,7 @@ export function* updateUser(data){
          yield put( actions.userUpdateSuccess(res.data));
        } else if(res.error == 1) {
          yield put (actions.userUpdateError(res));
-         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'|| res.message == "Invalid Token"){
           yield put (actions.loginTokenExpire(res));
         }
        } 
@@ -138,7 +138,7 @@ export function* deleteUser(data){
          yield put( actions.userDeleteSuccess(res.data));
        } else if(res.error == 1) {
          yield put (actions.userDeleteError(res));
-         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'|| res.message == "Invalid Token"){
           yield put (actions.loginTokenExpire(res));
         }
        } 
@@ -172,7 +172,7 @@ export function* fetchCustomer(action){
          yield put( actions.customerListSuccess(res.data));
        } else if(res.error == 1) {
          yield put (actions.customerListError(res));
-         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'|| res.message == "Invalid Token"){
           yield put (actions.loginTokenExpire(res));
         }
        } 
@@ -235,7 +235,7 @@ export function* addCustomer(data){
          yield put( actions.customerAddSuccess(res.data));
        } else if(res.error == 1 || res.code) {
          yield put (actions.customerAddError(res));
-         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'|| res.message == "Invalid Token"){
           yield put (actions.loginTokenExpire(res));
         }
        } 
@@ -297,7 +297,7 @@ export function* updateCustomer(data){
          yield put( actions.customerUpdateSuccess(res.data));
        } else if(res.error == 1) {
          yield put (actions.customerUpdateError(res));
-         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'|| res.message == "Invalid Token"){
           yield put (actions.loginTokenExpire(res));
         }
        } 
@@ -334,7 +334,7 @@ export function* deleteCustomer(data){
          yield put( actions.customerDeleteSuccess(res.data));
        } else if(res.error == 1) {
          yield put (actions.customerDeleteError(res));
-        if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+        if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'|| res.message == "Invalid Token"){
           yield put (actions.loginTokenExpire(res));
         }
       }
@@ -371,7 +371,7 @@ export function* searchUser(data){
          yield put( actions.searchUserSuccess(res.data));
        } else if(res.error == 1) {
          yield put (actions.searchUserError(res));
-         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'|| res.message == "Invalid Token"){
           yield put (actions.loginTokenExpire(res));
         }
        }
@@ -407,7 +407,7 @@ export function* searchCustomer(data){
          yield put( actions.searchCustomerSuccess(res.data));
        } else if(res.error == 1) {
          yield put (actions.searchCustomerError(res));
-         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'|| res.message == "Invalid Token"){
           yield put (actions.loginTokenExpire(res));
         }
        }
@@ -443,7 +443,7 @@ export function* searchHeaderCustomer(data){
          yield put( actions.searchHeaderCustomerSuccess(res.data));
        } else if(res.error == 1) {
          yield put (actions.searchHeaderCustomerError(res));
-         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'|| res.message == "Invalid Token"){
           yield put (actions.loginTokenExpire(res));
         }
        }
@@ -481,7 +481,7 @@ export function* addRedeem(data){
          yield put( actions.redeemAddSuccess(res.data));
        } else if(res.error == 1) {
          yield put (actions.redeemAddError(res));
-         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'|| res.message == "Invalid Token"){
           yield put (actions.loginTokenExpire(res));
         }
        } 
@@ -519,7 +519,7 @@ export function* updateRedeem(data){
          yield put( actions.redeemUpdateSuccess(res.data));
        } else if(res.error == 1) {
          yield put (actions.redeemUpdateError(res));
-         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'|| res.message == "Invalid Token"){
           yield put (actions.loginTokenExpire(res));
         }
        } 
@@ -556,7 +556,7 @@ export function* deleteRedeem(data){
          yield put( actions.redeemDeleteSuccess(res.data));
        } else if(res.error == 1) {
          yield put (actions.redeemDeleteError(res));
-         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized' || res.message == "Invalid Token" ){
           yield put (actions.loginTokenExpire(res));
         }
        } 
@@ -594,7 +594,7 @@ export function* loginUser(data){
          yield put( actions.loginUserSuccess(payload));
        } else if(res.error == 1) {
          yield put (actions.loginUserError(res));
-         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'|| res.message == "Invalid Token"){
           yield put (actions.loginTokenExpire(res));
         }
        } 
@@ -628,7 +628,7 @@ export function* fetchRedeem(action){
          yield put( actions.redeemListSuccess(res.data));
        } else if(res.error == 1) {
          yield put (actions.redeemListError(res));
-         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'|| res.message == "Invalid Token"){
           yield put (actions.loginTokenExpire(res));
         }
        } 
@@ -660,11 +660,113 @@ export function* getInterests(){
         yield put( actions.interestListSuccess(res));
       } else if(res.error == 1) {
         yield put (actions.interestListError(res));
-        if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'){
+        if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'|| res.message == "Invalid Token"){
           yield put (actions.loginTokenExpire(res));
         }
       }
     } catch (e){
       console.log(e);
     }
+}
+
+export function* fetchAllCustomer(action){
+  let token = action.payload;
+  try{
+    const api = () =>  new Promise((resolve, reject) => {
+        return fetch(API.SERVER_DEV_URL+'dashBoard/dashBoardAllCustomers?accessToken='+token,{
+             method: 'GET',
+             cache: 'no-cache',
+             headers: {
+              'content-type': 'application/json'
+            },
+         })
+         .then((res)=> res.json())
+         .then(data => {
+             resolve(data);
+         })
+         .catch(err => {
+             reject(err);
+         });
+     });
+
+     let res = yield call(api);
+       if(res.status == 1){
+         yield put( actions.customerListChartSuccess(res.data));
+       } else if(res.error == 1) {
+         yield put (actions.customerListChartError(res));
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'|| res.message == "Invalid Token"){
+          yield put (actions.loginTokenExpire(res));
+        }
+       } 
+     } catch (e){
+       console.log(e);
+     }
+}
+
+export function* fetchAllCustomer(action){
+  let token = action.payload;
+  try{
+    const api = () =>  new Promise((resolve, reject) => {
+        return fetch(API.SERVER_DEV_URL+'dashBoard/dashBoardAllCustomers?accessToken='+token,{
+             method: 'GET',
+             cache: 'no-cache',
+             headers: {
+              'content-type': 'application/json'
+            },
+         })
+         .then((res)=> res.json())
+         .then(data => {
+             resolve(data);
+         })
+         .catch(err => {
+             reject(err);
+         });
+     });
+
+     let res = yield call(api);
+       if(res.status == 1){
+         yield put( actions.customerListChartSuccess(res.data));
+       } else if(res.error == 1) {
+         yield put (actions.customerListChartError(res));
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'|| res.message == "Invalid Token"){
+          yield put (actions.loginTokenExpire(res));
+        }
+       } 
+     } catch (e){
+       console.log(e);
+     }
+}
+
+export function* fetchRedemption(action){
+  let token = action.payload;
+  try{
+    const api = () =>  new Promise((resolve, reject) => {
+        return fetch(API.SERVER_DEV_URL+'dashBoard/redemption_data?accessToken='+token,{
+             method: 'GET',
+             cache: 'no-cache',
+             headers: {
+              'content-type': 'application/json'
+            },
+         })
+         .then((res)=> res.json())
+         .then(data => {
+             resolve(data);
+         })
+         .catch(err => {
+             reject(err);
+         });
+     });
+
+     let res = yield call(api);
+       if(res.status == 1){
+         yield put( actions.redemptionChartSuccess(res.data));
+       } else if(res.error == 1) {
+         yield put (actions.redemptionChartError(res));
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'|| res.message == "Invalid Token"){
+          yield put (actions.loginTokenExpire(res));
+        }
+       } 
+     } catch (e){
+       console.log(e);
+     }
 }

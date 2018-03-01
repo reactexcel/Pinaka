@@ -9,7 +9,7 @@ const Statboxes = (props) =>{
     <div className="col-xl-3 col-sm-6">
       <div className="box box-default">
         <div className="box-top">
-          <span>{props.customer.customer.data.length}</span>
+          <span>{props.customer.customerList.data.length}</span>
         </div>
         <div className="box-info">
           <span>Customer</span>
