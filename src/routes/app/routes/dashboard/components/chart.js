@@ -31,7 +31,7 @@ constructor(props){
 
   componentWillReceiveProps(props){
       console.log(props,'asdasd');
-      this.setState({customer:props.customer.customer.data.length});
+      this.setState({customer:props.customer.customerList.data.length});
       this.initChart();      
   }
 
@@ -42,6 +42,7 @@ constructor(props){
       data: {
         labels: ["Total No. of Customer"],
         datasets: [{
+          label:'time',
             data: [this.state.customer],
             backgroundColor: [
                 'rgba(54, 162, 235, 0.2)',

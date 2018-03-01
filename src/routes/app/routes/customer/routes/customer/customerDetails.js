@@ -80,7 +80,7 @@ const DetailsForm = (props) => {
               <div className='col-md-6'>
                 <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-md" />
                 <RaisedButton label="Delete" backgroundColor="#FF0000" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.handleDelete({token:props.user.data.token,data:{_id:props.data._id}})}} className="btn-w-md" />
-                <RaisedButton label={props.type == 'disable'?"Back":"cancel"}  style={{marginLeft:5}}  onClick={()=>{props.type=='diable'? props.handleEdit('back'):props.handleEdit('cancel')}} className="btn-w-md" />
+                <RaisedButton label={props.type == 'disable'?"Back":"cancel"}  style={{marginLeft:5}}  onClick={()=>{props.type == 'disable'? props.handleEdit('back'):props.handleEdit('cancel')}} className="btn-w-md" />
               </div>
             }
           <div className="col-md-2"></div>
@@ -655,11 +655,11 @@ class CustomerDetails extends React.Component {
     let type = data == "edit" ? 'edit' : this.props.match.params.type  ;
     this.setState({ type });
     if(data == 'back'){
-      this.props.history.push('/app/customer/viewcustomer');
+      this.props.history.goBack();
     } else if (data == 'cancel' && this.state.type == 'edit') {
       this.setState({type:'disable'})
     } else if (data == 'cancel' && this.state.type == 'add') {
-      this.props.history.push('/app/customer/viewcustomer');
+      this.props.history.goBack();
     }
   }
   handleChange = props => (event, index, value) =>{

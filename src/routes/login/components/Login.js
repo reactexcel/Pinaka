@@ -23,6 +23,7 @@ class Login extends React.Component {
     this.handleSave = this.handleSave.bind(this);
   }
   componentWillMount(){
+    console.log(sessionStorage.getItem('user'))
     if(sessionStorage.getItem('user')){
         this.props.history.push('/app/dashboard');
     }
@@ -35,7 +36,8 @@ class Login extends React.Component {
     this.props.loginUserRequest(data);
   }
   componentWillReceiveProps(props){
-    props.user.isSuccess ? this.props.history.push('/app/dashboard') : null;
+    console.log(props)
+    props.user.userLogged.isSuccess ? this.props.history.push('/app/dashboard') : null;
   }
   render() {
     return (
@@ -96,7 +98,7 @@ const Page = (props) => (
 );
 function mapStateToProps (state) {
   return {
-    user: state.user.userLogged
+    user: state.user
   };
 }
 const mapDispatchToProps = (dispatch) => { return bindActionCreators(actions, dispatch); };

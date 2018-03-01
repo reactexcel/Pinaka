@@ -93,7 +93,6 @@ import RaisedButton from 'material-ui/RaisedButton';
         {CustomerList}
       </tbody>  
     </table>);
-
       return(
         <div className="container-fluid no-breadcrumbs page-dashboard">
           <QueueAnim type="bottom" className="ui-animate">
