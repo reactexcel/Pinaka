@@ -9,6 +9,7 @@ import StatBoxes from './StatBoxes';
 import EngagementStats from './EngagementStats';
 import BenchmarkChart from './BenchmarkChart';
 import * as actions from 'actions';
+import Chart from './chart';
 
   class Dashboard extends React.Component {
     constructor (props) {
@@ -18,7 +19,7 @@ import * as actions from 'actions';
       let token = this.props.user.userLogged.data.token;
       this.props.interestListRequest();
       this.props.userListRequest(token);
-      this.props.customerListRequest(token);
+      this.props.customerListRequest({token,page:0});
       this.props.redeemListRequest(token);  
     this.props.searchHeaderCustomerReset();          
     }
@@ -28,6 +29,13 @@ import * as actions from 'actions';
           <QueueAnim type="bottom" className="ui-animate">
             <div key="2"><StatBoxes {...this.props} /></div>
           </QueueAnim>
+          <div className="row box box-default" >
+            <div style={{margin:30}}>
+              <div className="row" style={{fontSize:21,fontWeight:600,marginBottom:30,marginLeft:"6%"}} > Total No. of Customer </div>
+              <Chart {...this.props} />
+            </div>
+          </div>
+          
         </div>
       );
     }

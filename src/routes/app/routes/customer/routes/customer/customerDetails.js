@@ -22,19 +22,26 @@ import {API} from 'constants/api';
 const styles = {
   toggle: {
     maxWidth: 250,
-    marginBottom: 16
+    marginTop: 8
   },
   radioButton: {
     marginBottom: 16,
+    float: 'left',
+    width: '41%'
+  },
+  checkbox: {
+    width: '20%',
+    float: 'left',
   },
   dropFeild:{
-    marginTop: -30,
+    marginTop: 0,
   },
   label:{
     marginTop: 10,
   },
   label1:{
     marginTop: 14,
+    paddingRight: 0
   },
   label2:{
     marginTop: 38,
@@ -66,38 +73,36 @@ const DetailsForm = (props) => {
             <h3 className="article-title">Customer Detail</h3>
         </div>
         <div className="box-body">
-        <div style={{display:'inline-flex'}} >
-        {props.type == 'add' ?
-            null
-          :
-            <div>
-              {/* button for add update and delete */}
-              <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-md" />
-              <RaisedButton label="Delete" backgroundColor="#FF0000" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.handleDelete({token:props.user.data.token,data:{_id:props.data._id}})}} className="btn-w-md" />
-              <RaisedButton label="Back"  style={{marginLeft:5}}  onClick={()=>{props.handleEdit('back')}} className="btn-w-md" />
-            </div>
-        }
-         {props.type == 'disable' ?
-                  null
-                  // <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-md" />
-                :
-                  <div>
-                    <RaisedButton style={{marginLeft:5}} label={props.type =='add'?"Add":"Save"} backgroundColor={"#1b025c"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-md" />
-                    <RaisedButton label="Cancel" style={styles.button} onClick={()=>{props.handleEdit('cancel')}} className="btn-w-md" />
-                  </div>
-                }
-        </div>
+          <div className="form-group row" style={styles.formGroup}>
+            {props.type == 'add' ?
+              null
+              :
+              <div className='col-md-6'>
+                <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-md" />
+                <RaisedButton label="Delete" backgroundColor="#FF0000" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.handleDelete({token:props.user.data.token,data:{_id:props.data._id}})}} className="btn-w-md" />
+                <RaisedButton label="Back"  style={{marginLeft:5}}  onClick={()=>{props.handleEdit('back')}} className="btn-w-md" />
+              </div>
+            }
+          <div className="col-md-2"></div>
+          {props.type == 'disable' ?
+              null
+              :
+                <div className='col-md-4'>
+                  <RaisedButton style={{marginLeft:5}} label={props.type =='add'?"Add":"Save"} backgroundColor={"#1b025c"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-md" />
+                  <RaisedButton label="Cancel" style={styles.button} onClick={()=>{props.handleEdit('cancel')}} className="btn-w-md" />
+                </div>
+            }
+          </div>
           <article className="article">
           {isLoading?
-            <div className="col-md-12" style={styles.loading,{marginTop:15}} >
+            <div className="col-md-12" style={styles.loading,{marginTop:15}}>
               {props.type == 'add'?"Adding New User..........." : 'Please Wait.....'}
             </div>
             :
-              
-              <form role="form">
+              <form role="form" >
                 <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1}  className="col-md-2 control-label">First Name</label>
-                  <div className="col-md-10">
+                  <div className="col-md-4">
                     <TextField
                       hintText="First name *"
                       value={props.data.name}
@@ -107,10 +112,8 @@ const DetailsForm = (props) => {
                       errorText={errors.name == '' ? null : errors.name}
                     />
                   </div>
-                </div>
-                <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1} className="col-md-2 control-label">Last Name</label>
-                  <div className="col-md-10">
+                  <div className="col-md-4">
                     <TextField
                       hintText="Last Name *"
                       value={props.data.lastName}
@@ -123,7 +126,7 @@ const DetailsForm = (props) => {
                 </div>
                 <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1} className="col-md-2 control-label">Email Id</label>
-                  <div className="col-md-10">
+                  <div className="col-md-4">
                     <TextField
                       hintText="Email Id *"
                       value={props.data.email} onChange={props.handleChange('email')}
@@ -132,10 +135,8 @@ const DetailsForm = (props) => {
                       errorText={errors.email == '' ? null : errors.email}
                     />
                   </div>
-                </div>
-                <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1} className="col-md-2 control-label">Phone Number</label>
-                  <div className="col-md-10">
+                  <div className="col-md-4">
                     <TextField
                       hintText="Phone Number *"
                       value={props.data.phone?props.data.phone:''}
@@ -150,53 +151,36 @@ const DetailsForm = (props) => {
                   null
                :
                   <div className="form-group row" style={styles.formGroup}>
-                      <label  className="col-md-2 control-label">Code Redeem Flag</label>
-                      <div className="col-md-10">
-                        <span style={{color:'grey'}} > {props.data.CodeRedeemFlag ? "Yes" : "No"} </span>
-{/*                        
-                        <Toggle
-                          defaultToggled={props.data.CodeRedeemFlag}
-                          onToggle={props.handleChange('CodeRedeemFlag')}
-                          style={styles.toggle}
-                          disabled={isDisabled}
-                          /> */}
-                      </div>
+                    <label  className="col-md-2 control-label" style={{paddingTop: 14, paddingBottom: 20}}>Code Redeem Flag</label>
+                    <div className="col-md-4">
+                      <div style={{paddingTop: 14, paddingBottom: 20, color: 'grey'}} > {props.data.CodeRedeemFlag ? "Yes" : "No"} </div>
                     </div>
-                }
-                {props.type == 'edit' ?
-                      null
-                    :
-                    <div className="form-group row" style={styles.formGroup}>
-                      <label style={styles.label1} className="col-md-2 control-label">Redeem Code</label>
-                      <div className="col-md-10">
-                        <TextField
-                          hintText="Redeem Code"
-                          value={props.data.redeemCode}
-                          onChange={props.handleChange('redeemCode')}
-                          type="text"
-                          disabled={isDisabled}
-                          />
-                      </div>
+                    <label style={styles.label1} className="col-md-2 control-label">Redeem Code</label>
+                    <div className="col-md-4">
+                      <TextField
+                        hintText="Redeem Code"
+                        value={props.data.redeemCode}
+                        onChange={props.handleChange('redeemCode')}
+                        type="text"
+                        disabled={isDisabled}
+                        />
                     </div>
+                  </div>
                 }
                 <div className="form-group row" style={styles.formGroup}>
-                  <label className="col-md-2 control-label">SMS Option</label>
-                  <div className="col-md-10">
+                  <label className="col-md-2 control-label" style={{paddingTop: 14, paddingBottom: 20}}>SMS Option</label>
+                  <div className="col-md-4" style={{paddingTop: 14, paddingBottom: 20}}>
                     <Toggle
                       defaultToggled={props.data.sms_option}
                       onToggle={props.handleChange('sms_option')}
-                      style={styles.toggle}
                       disabled={isDisabled}
                     />
                   </div>
-                </div>
-                <div className="form-group row" style={styles.formGroup}>
-                  <label  className="col-md-2 control-label">App Installed Status</label>
-                  <div className="col-md-10">
+                  <label  className="col-md-2 control-label" style={{paddingTop: 14, paddingBottom: 20}}>App Installed Status</label>
+                  <div className="col-md-4" style={{paddingTop: 14, paddingBottom: 20}}>
                     <Toggle
                       defaultToggled={props.data.app_installed}
                       onToggle={props.handleChange('app_installed')}
-                      style={styles.toggle}
                       disabled={isDisabled}
                     />
                   </div>
@@ -219,7 +203,7 @@ const DetailsForm = (props) => {
                 </div>
                 <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1} className="col-md-2 control-label">Address Line 1 *</label>
-                  <div className="col-md-10">
+                  <div className="col-md-4">
                     <TextField
                       hintText="Address Line 1"
                       value={props.data.address1}
@@ -230,10 +214,8 @@ const DetailsForm = (props) => {
                       errorText={errors.address1 == '' ? null : errors.address1}
                     />
                   </div>
-                </div>
-                <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1} className="col-md-2 control-label">Address Line 2</label>
-                  <div className="col-md-10">
+                  <div className="col-md-4">
                     <TextField
                       hintText="Address Line 2"
                       value={props.data.address2}
@@ -247,7 +229,7 @@ const DetailsForm = (props) => {
                 </div>
                 <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label2} className="col-md-2 control-label">State *</label>
-                  <div className="col-md-10">
+                  <div className="col-md-4">
                     <SelectField
                       floatingLabelText="Select State"
                       value={props.data.state}
@@ -257,23 +239,21 @@ const DetailsForm = (props) => {
                     {_.map(statesList, (val, i) => <MenuItem value={val} primaryText={val} key={i} /> )}
                     </SelectField>
                   </div>
-                </div>
-                <div className="form-group row" style={styles.formGroup}>
                     <label style={styles.label2} className="col-md-2 control-label">City *</label>
-                    <div className="col-md-10">
-                        <SelectField
-                            floatingLabelText="Select city"
-                            value={props.data.city}
-                            onChange={props.handleChange('city')}
-                            disabled={props.data.state == '' || isDisabled}
-                            >
-                            {_.map(cityList, (val, i) => <MenuItem value={val.city} primaryText={val.city} key={i} />)}
-                        </SelectField>
+                    <div className="col-md-4">
+                      <SelectField
+                        floatingLabelText="Select city"
+                        value={props.data.city}
+                        onChange={props.handleChange('city')}
+                        disabled={props.data.state == '' || isDisabled}
+                        >
+                        {_.map(cityList, (val, i) => <MenuItem value={val.city} primaryText={val.city} key={i} />)}
+                      </SelectField>
                     </div>
                 </div>
                 <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1} className="col-md-2 control-label">Zip Code *</label>
-                  <div className="col-md-10">
+                  <div className="col-md-4">
                     <TextField
                       hintText="Zip code"
                       value={props.data.zipcode}
@@ -283,11 +263,8 @@ const DetailsForm = (props) => {
                       errorText={errors.zipcode == '' ? null : errors.zipcode}
                     />
                   </div>
-                </div>
-              
-                <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1} className="col-md-2 control-label">Date of Birth *</label>
-                  <div className="col-md-10">
+                  <div className="col-md-4">
                     <DatePicker
                       hintText="Select date"
                       container="inline"
@@ -300,7 +277,7 @@ const DetailsForm = (props) => {
                   </div>
                 </div>
                 <div className="form-group row" style={styles.formGroup}>
-                  <label style={styles.label1}  className="col-md-2 control-label">Anniversary date with Year *</label>
+                  <label style={styles.label1}  className="col-md-2 control-label">Anniversary Date/Year *</label>
                   <div className="col-md-10">
                     <DatePicker
                       hintText="Select date"
@@ -314,9 +291,9 @@ const DetailsForm = (props) => {
                   </div>
                 </div>
                 <div className="form-group row" style={styles.formGroup}>
-                  <label  className="col-md-2 control-label">Gender *</label>
-                  <div className="col-md-10">
-                      <RadioButtonGroup disabled={isDisabled} name="gender" defaultSelected={props.data.gender} onChange={props.handleChange('gender')}>
+                  <label className="col-md-2 control-label" style={{'paddingTop': 14}}>Gender *</label>
+                  <div className='col-md-10' style={{'paddingTop': 14}}>
+                    <RadioButtonGroup disabled={isDisabled} name="gender" defaultSelected={props.data.gender} onChange={props.handleChange('gender')}>
                       <RadioButton
                         value={false}
                         label="Male"
@@ -334,7 +311,7 @@ const DetailsForm = (props) => {
                 </div>
                 <div className="form-group row" style={styles.formGroup}>
                   <label  className="col-md-2 control-label" style={styles.label} >Kids</label>
-                  <div className="col-md-10">
+                  <div className="col-md-4">
                     <Toggle
                       defaultToggled={props.data.kids}
                       onToggle={props.handleChange('kids')}
@@ -342,12 +319,9 @@ const DetailsForm = (props) => {
                       disabled={isDisabled}
                     />
                   </div>
-                </div>
-                <div className="form-group row" style={styles.formGroup}>
                   <label  className="col-md-2 control-label" style={styles.label}>Marital status</label>
-                  <div className="col-md-10">
+                  <div className="col-md-4">
                     <SelectField
-                      floatingLabelText="Select Source"
                       style={styles.dropFeild}
                       value={props.data.marital}
                       onChange={props.handleChange('marital')}
@@ -360,7 +334,7 @@ const DetailsForm = (props) => {
                 </div>
                 <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1} className="col-md-2 control-label" style={styles.label} >Occupation</label>
-                  <div className="col-md-10">
+                  <div className="col-md-4">
                     <TextField
                       hintText="Occupation"
                       value={props.data.occupation}
@@ -370,12 +344,9 @@ const DetailsForm = (props) => {
                       errorText={errors.occupation == '' ? null : errors.occupation}
                     />
                   </div>
-                </div>
-                <div className="form-group row" style={styles.formGroup}>
                   <label className="col-md-2 control-label" style={styles.label}>Source</label>
-                  <div className="col-md-10">
+                  <div className="col-md-4">
                     <SelectField
-                      floatingLabelText="Select Source"
                       value={props.data.source}
                       style={styles.dropFeild}
                       onChange={props.handleChange('source')}
@@ -388,13 +359,11 @@ const DetailsForm = (props) => {
                     </SelectField>
                   </div>
                 </div>
-
                 <div className="form-group row" style={styles.formGroup}>
                   <div className="col-md-2"></div>
                   <div className="col-md-10">
                   {props.type == 'disable' ?
                   null
-                  // <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-md" />
                 :
                   <div>
                     <RaisedButton label={props.type =='add'?"Add":"Save"} backgroundColor={"#1b025c"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-md" />
@@ -408,7 +377,6 @@ const DetailsForm = (props) => {
           </article>
         </div>
       </div>
-
     </div>
   </div>
 );
