@@ -719,7 +719,6 @@ export function* fetchRedemption(action){
      });
 
      let res = yield call(api);
-     console.log(res,'asdasdasdasdasdas')
        if(res.status == 1){
          yield put( actions.redemptionChartSuccess(res.data));
        } else if(res.error == 1) {

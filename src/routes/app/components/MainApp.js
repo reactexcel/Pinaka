@@ -40,7 +40,6 @@ class MainApp extends React.Component {
   componentWillReceiveProps(props){
     const {userToken} = props.user;
     const {data} = userToken;
-    console.log(data,'asasdsad')
     const message = (data.message == 'User is not logged in' ||data.message == 'You Are Not Authorized'|| data.message == "Invalid Token");
     if(userToken.isSuccess && data.error == 1 && message && this.state.loaded){
       this.setState({loaded: false});

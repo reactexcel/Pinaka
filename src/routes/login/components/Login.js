@@ -23,7 +23,7 @@ class Login extends React.Component {
     this.handleSave = this.handleSave.bind(this);
   }
   componentWillMount(){
-    if(sessionStorage.getItem('user')){
+    if(sessionStorage.getItem('user') && !this.props.user.userLogged.isSuccess){
         this.props.history.push('/app/dashboard');
     }
   }

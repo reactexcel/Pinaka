@@ -51,7 +51,6 @@ class App extends Component {
     }
   }
   componentWillReceiveProps(props){
-    console.log(props,'app')
     if(props.user.userLogged.isError){
       this.setState({isOpen:true,message:'Invalid Email or Password'});
     } else if (props.user.userLogged.isSuccess && props.location.pathname == '/login' && !props.user.userToken.isSuccess) {
