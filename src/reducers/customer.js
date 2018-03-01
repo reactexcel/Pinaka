@@ -39,6 +39,13 @@ const initialState = {
     isError: false,
     isSuccess: false,
     message : ''
+  },
+  redemption:{
+    isLoading:false,
+    data:'',
+    isError: false,
+    isSuccess: false,
+    message : ''
   }
 }
 
@@ -225,6 +232,33 @@ const customerListChartError = (state, action) => update(state, {
   }
 });
 
+const redemptionChartRequest = (state, action) =>{
+  return update(state, {
+    customerList:{
+    isLoading: {$set: true},
+    isError:   {$set: false},
+    isSuccess: {$set: false},
+    message:   {$set: ''}
+  }
+});}
+const redemptionChartSuccess = (state, action) => update(state, {
+  customerList:{
+    data:       {$set: action.payload},
+    isLoading:  {$set: false},
+    isError:    {$set: false},
+    isSuccess:  {$set: true},
+    message:    {$set: 'Login success'}
+  }
+});
+const redemptionChartError = (state, action) => update(state, {
+  customerList:{
+    isSuccess: {$set: false},
+    isLoading: {$set: false},
+    isError:   {$set: true},
+    message:   {$set: action.payload}
+  }
+});
+
 export default handleActions({
   [constants.CUSTOMER_LIST_REQUEST]: customerListRequest,
   [constants.CUSTOMER_LIST_SUCCESS]: customerListSuccess,
@@ -254,5 +288,9 @@ export default handleActions({
   [constants.CUSTOMER_LIST_CHART_REQUEST]: customerListChartRequest,
   [constants.CUSTOMER_LIST_CHART_SUCCESS]: customerListChartSuccess,
   [constants.CUSTOMER_LIST_CHART_ERROR]: customerListChartError,
+
+  [constants.REDEMPTION_CHART_REQUEST]: redemptionChartRequest,
+  [constants.REDEMPTION_CHART_SUCCESS]: redemptionChartSuccess,
+  [constants.REDEMPTION_CHART_ERROR]: redemptionChartError,
 
 }, initialState);

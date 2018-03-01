@@ -669,7 +669,7 @@ export function* getInterests(){
     }
 }
 
-export function* fetchAllCustomer(action){
+export function* fetchAllDashBoardCustomer(action){
   let token = action.payload;
   try{
     const api = () =>  new Promise((resolve, reject) => {
@@ -703,39 +703,6 @@ export function* fetchAllCustomer(action){
      }
 }
 
-export function* fetchAllCustomer(action){
-  let token = action.payload;
-  try{
-    const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'dashBoard/dashBoardAllCustomers?accessToken='+token,{
-             method: 'GET',
-             cache: 'no-cache',
-             headers: {
-              'content-type': 'application/json'
-            },
-         })
-         .then((res)=> res.json())
-         .then(data => {
-             resolve(data);
-         })
-         .catch(err => {
-             reject(err);
-         });
-     });
-
-     let res = yield call(api);
-       if(res.status == 1){
-         yield put( actions.customerListChartSuccess(res.data));
-       } else if(res.error == 1) {
-         yield put (actions.customerListChartError(res));
-         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'|| res.message == "Invalid Token"){
-          yield put (actions.loginTokenExpire(res));
-        }
-       } 
-     } catch (e){
-       console.log(e);
-     }
-}
 
 export function* fetchRedemption(action){
   let token = action.payload;

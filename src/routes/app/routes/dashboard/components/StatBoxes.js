@@ -6,7 +6,7 @@ const Statboxes = (props) =>{
   return (
   <div className="row">
     
-    <div className="col-xl-3 col-sm-6">
+    <div className="col-xl-3 col-sm-6" onClick={()=>{props.handleSelect('customer')}} > 
       <div className="box box-default">
         <div className="box-top">
           <span>{props.customer.customerList.data.length}</span>
