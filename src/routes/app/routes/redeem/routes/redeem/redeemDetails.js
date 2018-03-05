@@ -83,7 +83,7 @@ const DetailsForm = (props) => {
         </div>
             {isLoading? 
               <div className="col-md-12" style={styles.loading} >
-                Adding New Redeem Code...........
+                {props.type == 'add' ? "Adding New Redeem Code...........":'Please wait........'}
               </div>        
               :
               <form role="form" style={{margin:20}} >
@@ -174,6 +174,7 @@ class redeemDetails extends React.Component {
     } else if(match.params.type == 'disable') {
       this.setState({
         data: redeem.redeem.data[match.params.id],
+        orData: redeem.redeem.data[match.params.id],
         type: match.params.type
       });
     }
@@ -189,6 +190,8 @@ class redeemDetails extends React.Component {
       } else if (this.state.type == 'disable'){
         this.setState({isOpen:true,message:"Redeem Code Updated Successfully"});        
       }
+    } else if(props.redeem.updateRedeem.isError){
+      this.setState({isLoading:false,message:props.redeem.updateRedeem.message.message,isOpen:true})
     }
   }
   componentWillMount(){
@@ -205,6 +208,7 @@ class redeemDetails extends React.Component {
     }else{
       this.setState({
         data: redeem.redeem.data[match.params.id],
+        orData: redeem.redeem.data[match.params.id],
         type: match.params.type
       });
     }
@@ -236,7 +240,7 @@ class redeemDetails extends React.Component {
     this.setState({ type });
     if(data == 'back'){
       this.props.history.goBack();
-    } else if (data == 'cancel' && this.state.type == 'edit') {
+    } else if (data == 'cancel' || this.state.type == 'edit') {
       this.setState({type:'disable'})
     } else if (data == 'cancel' && this.state.type == 'add') {
       this.props.history.goBack();
@@ -253,7 +257,9 @@ class redeemDetails extends React.Component {
   }
   handleRequestClose(){
     this.setState({isOpen:false})
-    this.props.history.push('/app/redeem/viewredeem');
+    if(this.props.redeem.updateRedeem.isSuccess){
+      this.props.history.push('/app/redeem/viewredeem');
+    }
   }
   render(){
     return(
@@ -261,7 +267,7 @@ class redeemDetails extends React.Component {
       <Snackbar
           open={this.state.isOpen}
           message={this.state.message}
-          autoHideDuration={1000}
+          autoHideDuration={2000}
           onRequestClose={this.handleRequestClose}
         />
         <DetailsForm {...this.props} handleSave={this.handleSave} handleDelete={this.handleDelete} handleEdit={this.handleEdit} handleChange={this.handleChange} {...this.state} />

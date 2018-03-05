@@ -84,7 +84,7 @@ const DetailsForm = (props) => {
         </div>
           {isLoading? 
             <div className="col-md-12" style={styles.loading} >
-              Adding New User...........
+              {props.type == 'add' ? "Adding New User...........":'Please wait..'}
             </div>        
             :
               <form role="form">

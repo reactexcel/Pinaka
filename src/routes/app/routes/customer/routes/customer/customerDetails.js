@@ -177,10 +177,10 @@ const DetailsForm = (props) => {
                     <div className="col-md-4">
                       <TextField
                         hintText="Redeem Code"
-                        value={props.data.CodeRedeemFlag ? 'Yes': 'No'}
+                        value={props.type =='add'?props.data.redeemCode:props.data.CodeRedeemFlag ? 'Yes': 'No'}
                         onChange={props.handleChange('redeemCode')}
                         type="text"
-                        disabled
+                        disabled = {props.type == 'add'? false:true}
                         />
                     </div>
                   </div>
