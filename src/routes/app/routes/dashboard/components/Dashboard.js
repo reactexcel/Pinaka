@@ -96,7 +96,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 
     let redemptionList = _.map(this.props.customer.redemption.data, (value, index) => {
       let date = new Date(value.reddeemed_date);
-      console.log(date.getDate(),' ',date.getMonth(),' ',date.getFullYear())
       return(
       <tr key={index}>
         <td className="mdl-data-table__cell--non-numeric">{index+1}</td>

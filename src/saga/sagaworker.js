@@ -700,7 +700,6 @@ export function* fetchAllDashBoardCustomer(action){
 
 export function* fetchRedemption(action){
   let token = action.payload.token;
-  console.log(action,'redemptionapi')
   let body = JSON.stringify(action.payload.data);
   try{
     const api = () =>  new Promise((resolve, reject) => {
@@ -722,7 +721,6 @@ export function* fetchRedemption(action){
      });
 
      let res = yield call(api);
-     console.log(res,'asdsa')
        if(res.status == 1){
          yield put( actions.redemptionChartSuccess(res.data));
        } else if(res.error == 1) {
