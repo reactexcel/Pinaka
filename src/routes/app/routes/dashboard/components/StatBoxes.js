@@ -6,10 +6,10 @@ const Statboxes = (props) =>{
   return (
   <div className="row">
     
-    <div className="col-xl-3 col-sm-6">
+    <div className="col-xl-3 col-sm-6" onClick={()=>{props.handleSelect('customer')}} > 
       <div className="box box-default">
         <div className="box-top">
-          <span>{props.customer.customer.data.length}</span>
+          <span>{props.customer.customerList.data.length}</span>
         </div>
         <div className="box-info">
           <span>Customer</span>
@@ -19,9 +19,9 @@ const Statboxes = (props) =>{
         </div>
       </div>
     </div>
+
     {props.user.userLogged.data.data.role == 'Admin'? 
-    
-      <div className="col-xl-3 col-sm-6">
+      <div className="col-xl-3 col-sm-6" onClick={()=>{props.handleSelect('')}} >
         <div className="box box-default">
           <div className="box-top">
             <span>{props.user.user.data.length}</span>
@@ -31,6 +31,24 @@ const Statboxes = (props) =>{
           </div>
           <div className="box-bottom">
             <i className="material-icons color-info">person</i>
+          </div>
+        </div>
+      </div>
+      :
+      null
+      }
+
+      {props.user.userLogged.data.data.role == 'Admin'? 
+      <div className="col-xl-3 col-sm-6" onClick={()=>{props.handleSelect('redemption')}} >
+        <div className="box box-default">
+          <div className="box-top">
+            <span>{props.customer.redemption.data.length}</span>
+          </div>
+          <div className="box-info">
+            <span>Redemption</span>
+          </div>
+          <div className="box-bottom">
+            <i className="material-icons color-info">card_membership</i>
           </div>
         </div>
       </div>

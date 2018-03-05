@@ -114,3 +114,14 @@ export const loginUserReset = createAction(types.LOGIN_USER_RESET);
 
 export const loginTokenExpire = createAction(types.LOGIN_TOKEN_EXPIRE);
 export const loginTokenReset = createAction(types.LOGIN_TOKEN_RESET);
+
+
+// all customer
+export const customerListChartRequest = createAction(types.CUSTOMER_LIST_CHART_REQUEST);
+export const customerListChartSuccess = createAction(types.CUSTOMER_LIST_CHART_SUCCESS);
+export const customerListChartError = createAction(types.CUSTOMER_LIST_CHART_ERROR);
+
+// redemption
+export const redemptionChartRequest = createAction(types.REDEMPTION_CHART_REQUEST);
+export const redemptionChartSuccess = createAction(types.REDEMPTION_CHART_SUCCESS);
+export const redemptionChartError = createAction(types.REDEMPTION_CHART_ERROR);

@@ -24,9 +24,25 @@ import redeemDetails from '../routes/redeem/routes/redeem/redeemDetails';
 class MainApp extends React.Component {
   constructor(props){
     super(props);
+    this.state = {
+      loaded: true
+    };
+  }
+  componentWillMount(){
+    let token = this.props.user.userLogged.data.token;
+    this.props.interestListRequest();
+    this.props.userListRequest(token);
+    this.props.customerListRequest({token,page:0});
+    this.props.redeemListRequest(token);  
+    this.props.searchHeaderCustomerReset();   
+    this.props.customerListChartRequest(token);
   }
   componentWillReceiveProps(props){
-    if(props.user.userToken.isSuccess){
+    const {userToken} = props.user;
+    const {data} = userToken;
+    const message = (data.message == 'User is not logged in' ||data.message == 'You Are Not Authorized'|| data.message == "Invalid Token");
+    if(userToken.isSuccess && data.error == 1 && message && this.state.loaded){
+      this.setState({loaded: false});
       this.props.history.push('/login');
     }
   }

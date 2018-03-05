@@ -186,7 +186,6 @@ const userSearchError = (state, action) => update(state, {
 });
 
 const loginUserReset = (state,action) =>{
-  console.log(action,'red')
   return update(state,{
   userLogged:{
     isError: {$set:false},

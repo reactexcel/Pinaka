@@ -17,7 +17,9 @@ import {
   updateRedeem,
   addRedeem,
   fetchRedeem,
-  searchHeaderCustomer
+  searchHeaderCustomer,
+  fetchAllDashBoardCustomer,
+  fetchRedemption
 } from './sagaworker';
 
 export function* watchActions () {
@@ -38,8 +40,8 @@ export function* watchActions () {
     yield takeLatest(constants.REDEEM_UPDATE_REQUEST, updateRedeem);
     yield takeLatest(constants.REDEEM_DELETE_REQUEST, deleteRedeem);
     yield takeLatest(constants.CUSTOMER_DELETE_REQUEST, deleteCustomer);    
-    
-
+    yield takeLatest(constants.CUSTOMER_LIST_CHART_REQUEST, fetchAllDashBoardCustomer);   
+    yield takeLatest(constants.REDEMPTION_CHART_REQUEST, fetchRedemption);                 
 }
 
 export default function* rootSaga () {

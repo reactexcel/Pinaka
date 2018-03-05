@@ -73,7 +73,7 @@ class Header extends React.Component {
           <div className="top-nav-left d-none d-lg-inline-block d-xl-inline-block">
             <NavLeftList />
           </div>
-          <TextField
+          {/* <TextField
             hintText="Search"
             style={{width:'60%'}}
             value={this.state.search}
@@ -93,12 +93,11 @@ class Header extends React.Component {
           </div>
           :
           null
-          }
+          } */}
 
           <div className="top-nav-right">
-          <RaisedButton label="Add Customer" style={{marginTop: 13,}}  onClick={()=>{this.props.history.push('/app/customer/viewcustomerdetails/0/add')}}  primary  />
-          
-            <NavRightList />
+            <RaisedButton label="Add Customer" style={{marginTop: 13,}}  onClick={()=>{this.props.history.push('/app/customer/viewcustomerdetails/0/add')}}  primary  />
+            <NavRightList {...this.props} />
           </div>
         </div>
       </section>
