@@ -180,6 +180,7 @@ export function* fetchCustomer(action){
 export function* addCustomer(data){
   let params = data.payload.data;
   let token = data.payload.token;
+  console.log(params,'add data')
   var formData = new FormData();
     formData.append('name', params.name);
     formData.append('email', params.email);
@@ -397,6 +398,7 @@ export function* searchCustomer(data){
      });
 
      let res = yield call(api);
+     console.log(res,'search')
        if(res.status == 1){
          yield put( actions.searchCustomerSuccess(res.data));
        } else if(res.error == 1) {
@@ -698,6 +700,7 @@ export function* fetchAllDashBoardCustomer(action){
 
 export function* fetchRedemption(action){
   let token = action.payload.token;
+  console.log(action,'redemptionapi')
   let body = JSON.stringify(action.payload.data);
   try{
     const api = () =>  new Promise((resolve, reject) => {
@@ -719,6 +722,7 @@ export function* fetchRedemption(action){
      });
 
      let res = yield call(api);
+     console.log(res,'asdsa')
        if(res.status == 1){
          yield put( actions.redemptionChartSuccess(res.data));
        } else if(res.error == 1) {

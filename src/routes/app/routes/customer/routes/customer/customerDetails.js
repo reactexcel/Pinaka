@@ -459,7 +459,7 @@ class CustomerDetails extends React.Component {
       let data = customer.customer.data[match.params.id];
       data.phone = data.phone? data.phone.substring(2, data.phone.length) : data.phone;
       data.interest = [];
-      _.map(data.interests,(value,index)=>{ console.log(value.id); return data.interest.push(value.id)}); 
+      _.map(data.interests,(value,index)=>{ return data.interest.push(value.id)}); 
       let interests = [];
       for(var i = 0; i < interest.interestList.data.length; i++){
         interests.push(false);
