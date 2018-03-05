@@ -84,7 +84,7 @@ class Customer extends React.Component {
     return(
       <div className="container-fluid no-breadcrumbs"  >
         <div className="row">
-          <div className="col-xl-12">
+          <div className="col-xl-12 no-padding">
             <div className="box box-default">
               <div className="box-body">
                 <article className="article">

@@ -69,7 +69,7 @@ const DetailsForm = (props) => {
   const anniversaryDate = props.type == 'disable' || props.type == 'edit' ? new Date(props.data.anniversary) : '';
   return(
   <div className="row">
-    <div className="col-xl-12">
+    <div className="col-xl-12 no-padding">
       <div className="box box-default">
         <div className="box-heading">
             <h3 className="article-title">Customer Detail</h3>
@@ -79,22 +79,22 @@ const DetailsForm = (props) => {
             {props.type == 'add' ?
               null
               :
-              <div className='col-md-6'>
-                <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-md" />
-                <RaisedButton label="Delete" backgroundColor="#FF0000" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.handleDelete({token:props.user.data.token,data:{_id:props.data._id}})}} className="btn-w-md" />
-                <RaisedButton label={props.type == 'disable'?"Back":"cancel"}  style={{marginLeft:5}}  onClick={()=>{props.type == 'disable'? props.handleEdit('back'):props.handleEdit('cancel')}} className="btn-w-md" />
+              <div className='col-md-6 col-xs-9 resp-p-x-0'>
+                <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-xs" />
+                <RaisedButton label="Delete" backgroundColor="#FF0000" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.handleDelete({token:props.user.data.token,data:{_id:props.data._id}})}} className="btn-w-xs" />
+                <RaisedButton label={props.type == 'disable'?"Back":"cancel"}  style={{marginLeft:5}}  onClick={()=>{props.type == 'disable'? props.handleEdit('back'):props.handleEdit('cancel')}} className="btn-w-xs" />
               </div>
             }
-          <div className="col-md-2"></div>
+          <div className="col-md-2 col-xs-0 hidden-xs resp-p-x-0"></div>
           {props.type == 'disable' ?
               null
               :
-                <div className='col-md-4'>
-                  <RaisedButton style={{marginLeft:5}} label={props.type =='add'?"Add":"Save"} backgroundColor={"#1b025c"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-md" />
+                <div className='col-md-4 col-xs-3 resp-p-x-0'>
+                  <RaisedButton style={{marginLeft:5}} label={props.type =='add'?"Add":"Save"} backgroundColor={"#1b025c"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-xs" />
                   {props.type == 'edit' ?
                     null
                     :
-                    <RaisedButton label="Cancel" style={styles.button} onClick={()=>{props.handleEdit('cancel')}} className="btn-w-md" />
+                    <RaisedButton label="Cancel" style={styles.button} onClick={()=>{props.handleEdit('cancel')}} className="btn-w-xs" />
                   }
                 </div>
             }

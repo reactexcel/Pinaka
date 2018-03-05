@@ -112,6 +112,10 @@ class WebpackBaseConfig {
             loader: 'file-loader'
           },
           {
+            test: /\.(png|jpg|gif|mp4|ogg|svg|woff|woff2|ttf|eot|ico)$/,
+            loader: 'url-loader?limit=100000'
+          },
+          {
             test: /^.((?!cssmodule).)*\.styl$/,
             loaders: [
               { loader: 'style-loader' },
