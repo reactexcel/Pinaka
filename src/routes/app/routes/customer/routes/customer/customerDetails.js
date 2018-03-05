@@ -65,6 +65,8 @@ const DetailsForm = (props) => {
   const { isLoading, data, errors } = props;
   const statesList = _.sortBy(Object.keys(_.groupBy(statecity, function(o){ return o.state; })), function(o){return o;});
   const cityList = props.data.state == '' ? null : _.filter(statecity, function(o){ return o.state == props.data.state; });
+  const dobDate = props.type == 'disable' || props.type == 'edit' ? new Date(props.data.birthday) : '';
+  const anniversaryDate = props.type == 'disable' || props.type == 'edit' ? new Date(props.data.anniversary) : '';
   return(
   <div className="row">
     <div className="col-xl-12">
@@ -165,7 +167,7 @@ const DetailsForm = (props) => {
                       hintText="Select date"
                       container="inline"
                       mode="landscape"
-                      value={props.data.birthday}
+                      value={dobDate}
                       onChange={props.handleChange('birthday')}
                       disabled={isDisabled}
                       errorText={errors.birthday == '' ? null : errors.birthday}
@@ -175,10 +177,10 @@ const DetailsForm = (props) => {
                     <div className="col-md-4">
                       <TextField
                         hintText="Redeem Code"
-                        value={props.data.redeemCode}
+                        value={props.data.CodeRedeemFlag ? 'Yes': 'No'}
                         onChange={props.handleChange('redeemCode')}
                         type="text"
-                        disabled={isDisabled}
+                        disabled
                         />
                     </div>
                   </div>
@@ -299,7 +301,7 @@ const DetailsForm = (props) => {
                       hintText="Select date"
                       container="inline"
                       mode="landscape"
-                      value={props.data.anniversary}
+                      value={anniversaryDate}
                       onChange={props.handleChange('anniversary')}
                       disabled={isDisabled}
                       errorText={errors.anniversary == '' ? null : errors.anniversary}
@@ -459,7 +461,7 @@ class CustomerDetails extends React.Component {
       let data = customer.customer.data[match.params.id];
       data.phone = data.phone? data.phone.substring(2, data.phone.length) : data.phone;
       data.interest = [];
-      _.map(data.interests,(value,index)=>{ console.log(value.id); return data.interest.push(value.id)}); 
+      _.map(data.interests,(value,index)=>{ return data.interest.push(value.id)}); 
       let interests = [];
       for(var i = 0; i < interest.interestList.data.length; i++){
         interests.push(false);
@@ -688,6 +690,7 @@ class CustomerDetails extends React.Component {
     this.props.history.push('/app/customer/viewcustomer');
   }
   render(){
+    console.log(this.state,'edit customer')
     return(
       <div className="container-fluid no-breadcrumbs">
         <Snackbar

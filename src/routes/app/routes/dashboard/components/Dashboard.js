@@ -59,8 +59,8 @@ import RaisedButton from 'material-ui/RaisedButton';
       const apiData = {
         token,
         data:{
-          start_date: currDate.toISOString(),
-          end_date: endDate.toISOString()
+          end_date: currDate.toISOString(),
+          start_date: endDate.toISOString()
         }
       }
       this.props.redemptionChartRequest(apiData)
@@ -93,6 +93,30 @@ import RaisedButton from 'material-ui/RaisedButton';
         {CustomerList}
       </tbody>  
     </table>);
+
+    let redemptionList = _.map(this.props.customer.redemption.data, (value, index) => {
+      let date = new Date(value.reddeemed_date);
+      return(
+      <tr key={index}>
+        <td className="mdl-data-table__cell--non-numeric">{index+1}</td>
+        <td className="mdl-data-table__cell--non-numeric">{value.name} {value.lastName}</td>
+        <td className="mdl-data-table__cell--non-numeric">{date.getDate()}/{date.getMonth()}/{date.getFullYear()}  {date.getHours()}:{date.getMinutes()} </td>
+        
+      </tr>
+    )});
+    const redemptionData =( <table style={{marginLeft:'3%',width:"94%"}} className="table mdl-data-table table-responsive">
+      <thead>
+        <tr>
+        <th className="mdl-data-table__cell--non-numeric">#</th>
+        <th className="mdl-data-table__cell--non-numeric">Customer Name</th>
+        <th className="mdl-data-table__cell--non-numeric">Redemption Date and Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        {redemptionList}
+      </tbody>  
+    </table>);
+
       return(
         <div className="container-fluid no-breadcrumbs page-dashboard">
           <QueueAnim type="bottom" className="ui-animate">
@@ -108,7 +132,7 @@ import RaisedButton from 'material-ui/RaisedButton';
             <div  className="row box box-default" >
               <div className="col-md-12" >
                 <h3>{this.state.selector == 'customer'? "Customer List" : this.state.selector == 'redemption'? "Redemption List" : null}</h3>
-              {this.state.selector == 'redemption'?
+              {/* {this.state.selector == 'redemption'?
                 <div style={{float:"right",marginRight:7}} >
                 <RaisedButton label="Week" style={{boxShadow:'none' }}  onClick={()=>{this.handleRedemption(1)}}   />
                 <RaisedButton label="Month" style={{boxShadow:'none'}}  onClick={()=>{this.handleRedemption(2)}} />
@@ -117,12 +141,13 @@ import RaisedButton from 'material-ui/RaisedButton';
                 </div>
                 :
                 null
-              }
+              } */}
               {this.state.selector == 'customer'?
                 customerData
                 :
                 this.state.selector == 'redemption' ? 
-                <Chart {...this.props} />
+                // <Chart {...this.props} />
+                this.props.customer.redemption.data.length > 0 ? redemptionData : null
                 :
                 null
               }

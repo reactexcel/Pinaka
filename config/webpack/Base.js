@@ -1,4 +1,4 @@
-'use strict';  // eslint-disable-line
+'use strict';// eslint-disable-line
 
 /**
  * Webpack configuration base class
@@ -96,7 +96,8 @@ class WebpackBaseConfig {
             include: this.srcPathAbsolute,
             loader: 'babel-loader',
             query: {
-              presets: ['es2015', 'react', 'stage-2']
+              presets: ['es2015', 'react', 'stage-2'],
+              plugins: [ "syntax-dynamic-import"]
             }
           },
           {

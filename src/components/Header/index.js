@@ -96,9 +96,8 @@ class Header extends React.Component {
           } */}
 
           <div className="top-nav-right">
-          <RaisedButton label="Add Customer" style={{marginTop: 13,}}  onClick={()=>{this.props.history.push('/app/customer/viewcustomerdetails/0/add')}}  primary  />
-          
-            <NavRightList />
+            <RaisedButton label="Add Customer" style={{marginTop: 13,}}  onClick={()=>{this.props.history.push('/app/customer/viewcustomerdetails/0/add')}}  primary  />
+            <NavRightList {...this.props} />
           </div>
         </div>
       </section>

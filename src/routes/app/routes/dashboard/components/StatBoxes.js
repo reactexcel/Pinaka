@@ -38,8 +38,8 @@ const Statboxes = (props) =>{
       null
       }
 
-      {props.user.userLogged.data.data.role == 'Admisn'? 
-      <div className="col-xl-3 col-sm-6" onClick={()=>{props.handleSelect('resdemption')}} >
+      {props.user.userLogged.data.data.role == 'Admin'? 
+      <div className="col-xl-3 col-sm-6" onClick={()=>{props.handleSelect('redemption')}} >
         <div className="box box-default">
           <div className="box-top">
             <span>{props.customer.redemption.data.length}</span>
