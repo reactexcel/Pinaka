@@ -57,7 +57,7 @@ class App extends Component {
       sessionStorage.setItem('user',JSON.stringify(props.user.userLogged));
       this.setState({isOpen:true, message:'Login Successfully'})
     }
-    if(props.user.userToken.isSuccess){
+    if(props.user.userToken.isSuccess ){
       sessionStorage.removeItem('user');
       this.setState({isOpen:true, message:'Session Expire!!'})
     }
@@ -138,6 +138,7 @@ const mapStateToProps = (state, ownProps) => ({
   sidebarWidth: state.settings.sidebarWidth,
   theme: state.settings.theme,
   user: state.user,
+  customer: state.customer,
 });
 
 const mapDispatchToProps = (dispatch) => { return bindActionCreators(actions, dispatch); };

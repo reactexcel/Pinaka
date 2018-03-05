@@ -23,7 +23,7 @@ class Login extends React.Component {
     this.handleSave = this.handleSave.bind(this);
   }
   componentWillMount(){
-    if(sessionStorage.getItem('user')){
+    if(sessionStorage.getItem('user') && !this.props.user.userLogged.isSuccess){
         this.props.history.push('/app/dashboard');
     }
   }
@@ -32,10 +32,11 @@ class Login extends React.Component {
   }
   handleSave(){
     let data = {email:this.state.email,password:this.state.password}
+    this.props.loginTokenReset();
     this.props.loginUserRequest(data);
   }
   componentWillReceiveProps(props){
-    props.user.isSuccess ? this.props.history.push('/app/dashboard') : null;
+    props.user.userLogged.isSuccess ? this.props.history.push('/app/dashboard') : null;
   }
   render() {
     return (
@@ -96,7 +97,7 @@ const Page = (props) => (
 );
 function mapStateToProps (state) {
   return {
-    user: state.user.userLogged
+    user: state.user
   };
 }
 const mapDispatchToProps = (dispatch) => { return bindActionCreators(actions, dispatch); };

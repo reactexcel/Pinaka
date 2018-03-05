@@ -80,7 +80,7 @@ const DetailsForm = (props) => {
               <div className='col-md-6'>
                 <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-md" />
                 <RaisedButton label="Delete" backgroundColor="#FF0000" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.handleDelete({token:props.user.data.token,data:{_id:props.data._id}})}} className="btn-w-md" />
-                <RaisedButton label={props.type == 'disable'?"Back":"cancel"}  style={{marginLeft:5}}  onClick={()=>{props.type=='diable'? props.handleEdit('back'):props.handleEdit('cancel')}} className="btn-w-md" />
+                <RaisedButton label={props.type == 'disable'?"Back":"cancel"}  style={{marginLeft:5}}  onClick={()=>{props.type == 'disable'? props.handleEdit('back'):props.handleEdit('cancel')}} className="btn-w-md" />
               </div>
             }
           <div className="col-md-2"></div>
@@ -99,7 +99,7 @@ const DetailsForm = (props) => {
           </div>
           <article className="article">
           {isLoading?
-            <div className="col-md-12" style={styles.loading,{marginTop:15}}>
+            <div className="col-md-12" style={{marginTop:40,fontSize:20,fontWeight:600,textAlign:'center'}}>
               {props.type == 'add'?"Adding New User..........." : 'Please Wait.....'}
             </div>
             :
@@ -291,10 +291,10 @@ const DetailsForm = (props) => {
                       errorText={errors.birthday == '' ? null : errors.birthday}
                     />
                   </div> */}
-                </div>
-                <div className="form-group row" style={styles.formGroup}>
+                {/* </div>
+                <div className="form-group row" style={styles.formGroup}> */}
                   <label style={styles.label1}  className="col-md-2 control-label">Anniversary Date/Year *</label>
-                  <div className="col-md-10">
+                  <div className="col-md-4">
                     <DatePicker
                       hintText="Select date"
                       container="inline"
@@ -631,6 +631,7 @@ class CustomerDetails extends React.Component {
           if(this.state.type == 'add'){
               this.props.customerAddRequest(apiData);
           } else if(this.state.type == 'disable' || this.state.type == "edit" ){
+            this.setState({isLoading:true})
             this.props.customerUpdateRequest(apiData);
           }
         }
@@ -654,11 +655,11 @@ class CustomerDetails extends React.Component {
     let type = data == "edit" ? 'edit' : this.props.match.params.type  ;
     this.setState({ type });
     if(data == 'back'){
-      this.props.history.push('/app/customer/viewcustomer');
+      this.props.history.goBack();
     } else if (data == 'cancel' && this.state.type == 'edit') {
       this.setState({type:'disable'})
     } else if (data == 'cancel' && this.state.type == 'add') {
-      this.props.history.push('/app/customer/viewcustomer');
+      this.props.history.goBack();
     }
   }
   handleChange = props => (event, index, value) =>{

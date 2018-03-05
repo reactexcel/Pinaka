@@ -59,7 +59,6 @@ export function* addUser(data){
      });
 
      let res = yield call(api);
-     console.log(res)
        if(res.status == 1){
          yield put( actions.userAddSuccess(res.data));
        } else if(res.status == 0) {
@@ -96,7 +95,6 @@ export function* updateUser(data){
      });
 
      let res = yield call(api);
-     console.log(res);
        if(res.status == 1){
          yield put( actions.userUpdateSuccess(res.data));
        } else if(res.error == 1) {
@@ -133,7 +131,6 @@ export function* deleteUser(data){
      });
 
      let res = yield call(api);
-     console.log(res);
        if(res.status == 1){
          yield put( actions.userDeleteSuccess(res.data));
        } else if(res.error == 1) {
@@ -167,7 +164,6 @@ export function* fetchCustomer(action){
      });
 
      let res = yield call(api);
-     console.log(res)
        if(res.status == 1){
          yield put( actions.customerListSuccess(res.data));
        } else if(res.error == 1) {
@@ -204,7 +200,7 @@ export function* addCustomer(data){
     formData.append('lastName', params.lastName);
     formData.append('sms_option', params.sms_option);
     formData.append('redeemCode', params.redeemCode);    
-    formData.append('CodeRedeemFlag', params.CodeRedeemFlag);    
+    formData.append('CodeRedeemFlag', params.redeemCode != ""?true:false);    
     formData.append('app_installed', params.app_installed);
     formData.append('address1', params.address1);
     formData.append('address2', params.address2);
@@ -292,7 +288,6 @@ export function* updateCustomer(data){
      });
 
      let res = yield call(api);
-     console.log(res);
        if(res.status == 1){
          yield put( actions.customerUpdateSuccess(res.data));
        } else if(res.error == 1) {
@@ -329,7 +324,6 @@ export function* deleteCustomer(data){
      });
 
      let res = yield call(api);
-     console.log(res)
        if(res.status == 1){
          yield put( actions.customerDeleteSuccess(res.data));
        } else if(res.error == 1) {
@@ -476,7 +470,6 @@ export function* addRedeem(data){
      });
 
      let res = yield call(api);
-     console.log(res);
        if(res.status == 1){
          yield put( actions.redeemAddSuccess(res.data));
        } else if(res.error == 1) {
@@ -514,7 +507,6 @@ export function* updateRedeem(data){
      });
 
      let res = yield call(api);
-     console.log(res)
        if(res.status == 1){
          yield put( actions.redeemUpdateSuccess(res.data));
        } else if(res.error == 1) {
@@ -705,7 +697,6 @@ export function* fetchAllDashBoardCustomer(action){
 
 
 export function* fetchRedemption(action){
-  console.log(action);
   let token = action.payload.token;
   let body = JSON.stringify(action.payload.data);
   try{
@@ -728,7 +719,6 @@ export function* fetchRedemption(action){
      });
 
      let res = yield call(api);
-     console.log(res,'asdasdasdasdasdas')
        if(res.status == 1){
          yield put( actions.redemptionChartSuccess(res.data));
        } else if(res.error == 1) {
