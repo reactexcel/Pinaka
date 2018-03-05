@@ -65,8 +65,8 @@ const DetailsForm = (props) => {
   const { isLoading, data, errors } = props;
   const statesList = _.sortBy(Object.keys(_.groupBy(statecity, function(o){ return o.state; })), function(o){return o;});
   const cityList = props.data.state == '' ? null : _.filter(statecity, function(o){ return o.state == props.data.state; });
-  const dobDate = props.type == 'disable' || props.type == 'edit' ? new Date(props.data.birthday) : '';
-  const anniversaryDate = props.type == 'disable' || props.type == 'edit' ? new Date(props.data.anniversary) : '';
+  const dobDate = props.type == 'disable' || props.type == 'edit' ? props.data.birthday ? new Date(props.data.birthday):null : '';
+  const anniversaryDate = props.type == 'disable' || props.type == 'edit' ? props.data.anniversary? new Date(props.data.anniversary): null : '';
   return(
   <div className="row">
     <div className="col-xl-12 no-padding">
