@@ -489,6 +489,7 @@ export function* addRedeem(data){
 export function* updateRedeem(data){
   let body = JSON.stringify(data.payload.data);
   let token = data.payload.token
+  console.log(data)
   try{
     const api = () =>  new Promise((resolve, reject) => {
         return fetch(API.SERVER_DEV_URL+'RedeemCode/updateRedeemCode?accessToken='+token,{
@@ -509,6 +510,7 @@ export function* updateRedeem(data){
      });
 
      let res = yield call(api);
+     console.log(res)
        if(res.status == 1){
          yield put( actions.redeemUpdateSuccess(res.data));
        } else if(res.error == 1) {

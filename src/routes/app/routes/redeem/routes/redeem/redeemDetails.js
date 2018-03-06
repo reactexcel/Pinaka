@@ -50,7 +50,7 @@ const DetailsForm = (props) => {
   let isDisabled = props.type == 'disable' ? true : false;
   return(
   <div className="row">
-    <div className="col-xl-12">
+    <div className="col-xl-12 no-padding">
       <div className="box box-default">
         <article className="article">
         <div className="box-heading"><h3 className="article-title">Redeem Code Detail</h3></div>
@@ -60,30 +60,30 @@ const DetailsForm = (props) => {
           {props.type == 'add' ?
               null
             :
-              <div>
+              <div className='col-md-6 col-xs-9 resp-p-x-0'>
                 {/* button for add update and delete */}
-                <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-md" />
-                <RaisedButton label="Delete" backgroundColor="#FF0000" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.handleDelete({token:props.user.userLogged.data.token,data:{_id:props.data._id} })}} className="btn-w-md" />
-                <RaisedButton label={props.type == 'disable'?"Back":"cancel"}  style={{marginLeft:5}}  onClick={()=>{props.type=='disable'? props.handleEdit('back'):props.handleEdit('cancel')}} className="btn-w-md" />
+                <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-xs" />
+                <RaisedButton label="Delete" backgroundColor="#FF0000" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.handleDelete({token:props.user.userLogged.data.token,data:{_id:props.data._id} })}} className="btn-w-xs" />
+                <RaisedButton label={props.type == 'disable'?"Back":"cancel"}  style={{marginLeft:5}}  onClick={()=>{props.type=='disable'? props.handleEdit('back'):props.handleEdit('cancel')}} className="btn-w-xs" />
               </div>
           }
-          <div className="col-md-2"></div>
+          <div className="col-md-2 col-xs-0 hidden-xs resp-p-x-0"></div>
           {props.type == 'disable' ?
               null
               :
-                <div className='col-md-4'>
-                  <RaisedButton style={{marginLeft:5}} label={props.type =='add'?"Add":"Save"} backgroundColor={"#1b025c"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-md" />
+                <div className='col-md-4 col-xs-3 resp-p-x-0'>
+                  <RaisedButton style={{marginLeft:5}} label={props.type =='add'?"Add":"Save"} backgroundColor={"#1b025c"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-xs" />
                   {props.type == 'edit' ?
                     null
                     :
-                    <RaisedButton label="Cancel" style={styles.button} onClick={()=>{props.handleEdit('cancel')}} className="btn-w-md" />
+                    <RaisedButton label="Cancel" style={styles.button} onClick={()=>{props.handleEdit('cancel')}} className="btn-w-xs" />
                   }
                 </div>
             }          
         </div>
             {isLoading? 
               <div className="col-md-12" style={styles.loading} >
-                Adding New Redeem Code...........
+                {props.type == 'add' ? "Adding New Redeem Code...........":'Please wait........'}
               </div>        
               :
               <form role="form" style={{margin:20}} >
@@ -174,6 +174,7 @@ class redeemDetails extends React.Component {
     } else if(match.params.type == 'disable') {
       this.setState({
         data: redeem.redeem.data[match.params.id],
+        orData: redeem.redeem.data[match.params.id],
         type: match.params.type
       });
     }
@@ -189,6 +190,8 @@ class redeemDetails extends React.Component {
       } else if (this.state.type == 'disable'){
         this.setState({isOpen:true,message:"Redeem Code Updated Successfully"});        
       }
+    } else if(props.redeem.updateRedeem.isError){
+      this.setState({isLoading:false,message:props.redeem.updateRedeem.message.message,isOpen:true})
     }
   }
   componentWillMount(){
@@ -205,6 +208,7 @@ class redeemDetails extends React.Component {
     }else{
       this.setState({
         data: redeem.redeem.data[match.params.id],
+        orData: redeem.redeem.data[match.params.id],
         type: match.params.type
       });
     }
@@ -236,7 +240,7 @@ class redeemDetails extends React.Component {
     this.setState({ type });
     if(data == 'back'){
       this.props.history.goBack();
-    } else if (data == 'cancel' && this.state.type == 'edit') {
+    } else if (data == 'cancel' || this.state.type == 'edit') {
       this.setState({type:'disable'})
     } else if (data == 'cancel' && this.state.type == 'add') {
       this.props.history.goBack();
@@ -253,7 +257,9 @@ class redeemDetails extends React.Component {
   }
   handleRequestClose(){
     this.setState({isOpen:false})
-    this.props.history.push('/app/redeem/viewredeem');
+    if(this.props.redeem.updateRedeem.isSuccess){
+      this.props.history.push('/app/redeem/viewredeem');
+    }
   }
   render(){
     return(
@@ -261,7 +267,7 @@ class redeemDetails extends React.Component {
       <Snackbar
           open={this.state.isOpen}
           message={this.state.message}
-          autoHideDuration={1000}
+          autoHideDuration={2000}
           onRequestClose={this.handleRequestClose}
         />
         <DetailsForm {...this.props} handleSave={this.handleSave} handleDelete={this.handleDelete} handleEdit={this.handleEdit} handleChange={this.handleChange} {...this.state} />
