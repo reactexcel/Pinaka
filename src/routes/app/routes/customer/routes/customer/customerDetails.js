@@ -253,6 +253,7 @@ const DetailsForm = (props) => {
                       value={props.data.state}
                       onChange={props.handleChange('state')}
                       disabled={isDisabled}
+                      errorText={errors.state == '' ? null : errors.state}                      
                     >
                     {_.map(statesList, (val, i) => <MenuItem value={val} primaryText={val} key={i} /> )}
                     </SelectField>
@@ -264,6 +265,7 @@ const DetailsForm = (props) => {
                         value={props.data.city}
                         onChange={props.handleChange('city')}
                         disabled={props.data.state == '' || isDisabled}
+                        errorText={errors.city == '' ? null : errors.city}                                              
                         >
                         {_.map(cityList, (val, i) => <MenuItem value={val.city} primaryText={val.city} key={i} />)}
                       </SelectField>
@@ -459,7 +461,20 @@ class CustomerDetails extends React.Component {
       });
     }else if(match.params.type == 'disable' ){
       let data = customer.customer.data[match.params.id];
-      data.phone = data.phone? data.phone.substring(2, data.phone.length) : data.phone;
+    
+      data.name = data.name ? data.name : '';
+      data.lastName = data.lastName ? data.lastName:'';
+      data.email = data.email ? data.email : '';
+      data.address1 = data.address1 ? data.address1 : '';
+      data.address2 = data.address2? data.address2 : '';
+      data.anniversary = data.anniversary ? data.anniversary : '';
+      data.birthday = data.birthday ? data.birthday : '';
+      data.occupation = data.occupation ? data.occupation : '';
+      data.state = data.state ? data.state : '';
+      data.city = data.city ? data.city : '';
+      data.zipcode = data.zipcode ? data.zipcode : '';
+      data.source = data.source ? data.source : 1;
+      data.phone = data.phone? data.phone.substring(2, data.phone.length) : '';
       data.interest = [];
       _.map(data.interests,(value,index)=>{ return data.interest.push(value.id)}); 
       let interests = [];
@@ -520,7 +535,18 @@ class CustomerDetails extends React.Component {
     } else if(match.params.type == 'disable') {
       let data = customer.customer.data[match.params.id];
       const item = customer.customer.data[match.params.id];
-      data.phone = data.phone? data.phone.substring(2, data.phone.length) : data.phone;
+      data.name = data.name ? data.name : '';
+      data.lastName = data.lastName ? data.lastName:'';
+      data.email = data.email ? data.email : '';
+      data.address1 = data.address1 ? data.address1 : '';
+      data.address2 = data.address2? data.address2 : '';
+      data.anniversary = data.anniversary ? data.anniversary : '';
+      data.birthday = data.birthday ? data.birthday : '';
+      data.occupation = data.occupation ? data.occupation : '';
+      data.state = data.state ? data.state : '';
+      data.city = data.city ? data.city : '';
+      data.zipcode = data.zipcode ? data.zipcode : '';
+      data.phone = data.phone? data.phone.substring(2, data.phone.length) : '';
       data.interest = [];
       const interest = data.interests;
       _.map(data.interests,(value,index)=>{ return data.interest.push(value.id)}); 
@@ -587,7 +613,6 @@ class CustomerDetails extends React.Component {
   handleSave(){
     let { data } = this.state;
     let cloneData = _.cloneDeep(data);
-    
     const token = this.props.user.data.token;
     let intrestList ='';
     if(this.state.type == 'add'){
@@ -611,10 +636,12 @@ class CustomerDetails extends React.Component {
     const apiData = {token:token,data:cloneData};
     let interestCheck = this.state.type == 'add' ? cloneData.interest.length != 0 : true;  
     let errors = {};
-    if(cloneData.name != '' && cloneData.lastName != '' && cloneData.email != ''&& cloneData.interest.length != 0  && cloneData.phone != '' && cloneData.address1 != '' && cloneData.address2 != '' && cloneData.zipcode != '' && cloneData.birthday != '' && cloneData.anniversary != '' && cloneData.occupation != ''){
-      var pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    var pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if(cloneData.name != '' && cloneData.lastName != '' && cloneData.city !='' && cloneData.state !='' && cloneData.email != ''&& cloneData.interest.length != 0  && cloneData.phone != '' && cloneData.address1 != '' && cloneData.address2 != '' && cloneData.zipcode != '' && cloneData.birthday != '' && cloneData.anniversary != '' && cloneData.occupation != ''){
         let email = cloneData.email.trim();
-        if(cloneData.phone.length != 10){
+        if( cloneData.phone == undefined){
+          errors.phone = 'Please Enter Phone Number';          
+        } else if( cloneData.phone != undefined && cloneData.phone.length != 10 ){
             errors.phone = 'Phone should be of 10 digits.';
         }
         if(cloneData.zipcode.length != 5){
@@ -641,7 +668,7 @@ class CustomerDetails extends React.Component {
     } else {
         errors.name = cloneData.name != '' ? '' : 'Cannot be Empty.';
         errors.lastName = cloneData.lastName != '' ? '' : 'Cannot be Empty.';
-        errors.email = cloneData.email != '' ? '' : 'Cannot be Empty.';
+        errors.email = cloneData.email != '' ? !cloneData.email.match(pattern)? 'Not a valid email':'' : 'Cannot be Empty.';
         errors.phone = cloneData.phone != '' ? '' : 'Cannot be Empty.';
         errors.interests = cloneData.interest.length != 0 ? '' : 'Cannot be Empty.';
         errors.address1 = cloneData.address1 != '' ? '' : 'Cannot be Empty.';
@@ -650,6 +677,8 @@ class CustomerDetails extends React.Component {
         errors.birthday = cloneData.birthday != '' ? '' : 'Cannot be Empty.';
         errors.anniversary = cloneData.anniversary != '' ? '' : 'Cannot be Empty.';
         errors.occupation = cloneData.occupation != '' ? '' : 'Cannot be Empty.';
+        errors.city = cloneData.city != '' ? '' : 'Cannot be Empty.';
+        errors.state = cloneData.state != '' ? '' : 'Cannot be Empty.';        
         this.setState({errors: errors});
     }
   }
@@ -690,7 +719,6 @@ class CustomerDetails extends React.Component {
     this.props.history.push('/app/customer/viewcustomer');
   }
   render(){
-    console.log(this.state,'edit customer')
     return(
       <div className="container-fluid no-breadcrumbs">
         <Snackbar

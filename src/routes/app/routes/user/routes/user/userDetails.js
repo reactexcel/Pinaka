@@ -255,8 +255,9 @@ class UserDetails extends React.Component {
     let errors = {};
     
     
+    const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     if(data.name != '' && data.email != '' && data.password != '' ){
-      const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+      console.log(data.email.match(pattern) , data.email);
       if(!data.email.match(pattern)){
         errors.email = 'Not a valid email';
       } else {
@@ -269,7 +270,7 @@ class UserDetails extends React.Component {
       this.setState({errors: errors});
     } else {
       errors.name = data.name != '' ? '' : 'Cannot be Empty.';
-      errors.email = data.email != '' ? '' : 'Cannot be Empty.';
+      errors.email = data.email != '' ? !data.email.match(pattern)?'Not a valid email' :'' : 'Cannot be Empty.';
       errors.password = data.password != '' ? '' : 'Cannot be Empty.';
       this.setState({errors: errors});
     }
