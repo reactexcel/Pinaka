@@ -8,6 +8,7 @@ import {
   fetchCustomer,
   addCustomer,
   updateCustomer,
+  updateUserPassword,
   deleteCustomer,
   getInterests,
   loginUser,
@@ -26,6 +27,7 @@ export function* watchActions () {
     yield takeLatest(constants.USER_LIST_REQUEST, fetchUser);
     yield takeLatest(constants.USER_ADD_REQUEST, addUser);
     yield takeLatest(constants.USER_UPDATE_REQUEST, updateUser);
+    yield takeLatest(constants.USER_UPDATE_PASSWORD_REQUEST, updateUserPassword);
     yield takeLatest(constants.USER_DELETE_REQUEST, deleteUser);
     yield takeLatest(constants.SEARCH_USER_REQUEST, searchUser);
     yield takeLatest(constants.CUSTOMER_LIST_REQUEST, fetchCustomer);

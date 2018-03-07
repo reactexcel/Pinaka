@@ -57,16 +57,19 @@ class User extends React.Component {
   render(){
     const { isLoading } = this.state;    
     // console.log(this.props,'***********************');
-    let CustomerList = _.map(this.props.user.user.data, (value, index) => (
+    let CustomerList = _.map(this.props.user.user.data, (value, index) =>{
+      const lastLogin = value.lastLogin ? new Date(value.lastLogin) : '';
+      return (
       <tr key={index}>
         <td className="mdl-data-table__cell--non-numeric">{index+1}</td>
         <td className="mdl-data-table__cell--non-numeric"><a href={`/#/app/user/viewuserdetails/${index}/disable`}>{value.name}</a></td>
         <td className="mdl-data-table__cell--non-numeric">{value.email}</td>
         <td>{value.role}</td>
-        {/* <td>{value.lastLogin}</td> */}
-        <td>{value.lastLogin}</td>
+        <td>
+         {lastLogin != '' ? <span>{lastLogin.getDate()}/{lastLogin.getMonth()}/{lastLogin.getFullYear()} {lastLogin.getHours()}:{lastLogin.getMinutes()}</span> : ''}
+       </td>
       </tr>
-    ));
+    )});
     return(
       <div className="container-fluid no-breadcrumbs"  >
         <div className="row">

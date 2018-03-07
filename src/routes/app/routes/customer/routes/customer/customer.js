@@ -67,11 +67,13 @@ class Customer extends React.Component {
     }
   }
   render(){
+    const { page } = this.state;
     const { isLoading } = this.state;
     let CustomerList = _.map(this.props.customer.data, (value, index) => {
+      const itemNo = page == 0? index+1 : (page*20)+(index+1);
       return(
       <tr key={index} >
-        <td className="mdl-data-table__cell--non-numeric">{index+1}</td>
+        <td className="mdl-data-table__cell--non-numeric">{itemNo}</td>
         <td className="mdl-data-table__cell--non-numeric"> <a href={`/#/app/customer/viewcustomerdetails/${index}/disable`}>{value.name} {value.lastName}</a></td>
         <td className="mdl-data-table__cell--non-numeric">{value.email}</td>
         <td><a href={`/#/app/customer/viewcustomerdetails/${index}/disable`}>{value.phone?value.phone.substring(2, value.phone.length):''}</a></td>
@@ -104,7 +106,7 @@ class Customer extends React.Component {
                     />
                   </div>
                   <div>
-                    {this.state.page != 0 ? <a style={{color:'#00bcd6',cursor:'pointer'}} onClick={()=>{this.handleNext('prev')}} > Previous </a>: null  }
+                    {this.state.page != 0 ? <a style={{color:'#00bcd6',cursor:'pointer',marginRight:15}} onClick={()=>{this.handleNext('prev')}} > Previous </a>: null  }
                     {this.props.customer.data.length < 20 ? null : <a style={{color:'#00bcd6',cursor:'pointer'}} onClick={()=>{this.handleNext('next')}} > Next </a>}
                   </div>
                   <div className="box box-default table-box mdl-shadow--2dp">

@@ -73,11 +73,13 @@ export function* addUser(data){
 }
 
 export function* updateUser(data){
-  let body = JSON.stringify(data.payload.data);
+  const payloadData = data.payload.data;
+  delete payloadData['password']
+  let body = JSON.stringify(payloadData);
   let token = data.payload.token;
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/updateAdminStaff?accessToken='+token,{
+        return fetch(API.SERVER_DEV_URL+'admin/updateAdminStaff?accessToken='+token,{          
              method: 'PUT',
              cache: 'no-cache',
              headers: {
@@ -99,6 +101,46 @@ export function* updateUser(data){
          yield put( actions.userUpdateSuccess(res.data));
        } else if(res.error == 1) {
          yield put (actions.userUpdateError(res));
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'|| res.message == "Invalid Token"){
+          yield put (actions.loginTokenExpire(res));
+        }
+       } 
+     } catch (e){
+       console.log(e);
+     }
+}
+
+export function* updateUserPassword(data){
+  const payloadData = {
+    _id: data.payload.data._id,
+    password: data.payload.data.password
+  };
+  let body = JSON.stringify(payloadData);
+  let token = data.payload.token;
+  try{
+    const api = () =>  new Promise((resolve, reject) => {
+          return fetch(API.SERVER_DEV_URL+'admin/updateAdminStaff?accessToken='+token,{          
+             method: 'PUT',
+             cache: 'no-cache',
+             headers: {
+              'content-type': 'application/json'
+            },
+            body,
+         })
+         .then((res)=> res.json())
+         .then(data => {
+             resolve(data);
+         })
+         .catch(err => {
+             reject(err);
+         });
+     });
+
+     let res = yield call(api);
+       if(res.status == 1){
+         yield put( actions.userUpdatePasswordSuccess(res.data));
+       } else if(res.error == 1) {
+         yield put (actions.userUpdatePasswordError(res));
          if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'|| res.message == "Invalid Token"){
           yield put (actions.loginTokenExpire(res));
         }
@@ -544,7 +586,6 @@ export function* deleteRedeem(data){
      });
 
      let res = yield call(api);
-     console.log(res)
        if(res.status == 1){
          yield put( actions.redeemDeleteSuccess(res.data));
        } else if(res.error == 1) {

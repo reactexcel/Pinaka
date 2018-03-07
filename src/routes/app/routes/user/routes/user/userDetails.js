@@ -58,35 +58,46 @@ const DetailsForm = (props) => {
 
         <div className="box-body">
         <div className="form-group row" style={styles.formGroup}>                
-          {props.type == 'add' ?
+          {props.type == 'add' || props.type =='edit' || props.type == 'changePass' || props.isLoading ?
               null
             :
               <div className='col-md-6 col-xs-9 resp-p-x-0'>
                 {/* button for add update and delete */}
                 <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-xs" />
+                <RaisedButton label="Change Password" backgroundColor="#7edbe8" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.handleEdit('changePass')}} className="btn-w-xs" />                
                 <RaisedButton label="Delete" backgroundColor="#FF0000" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.handleDelete({token:props.user.userLogged.data.token,data:{_id:props.data._id}})}} className="btn-w-xs" />
                 <RaisedButton label={props.type == 'disable'?"Back":"cancel"}  style={{marginLeft:5}}  onClick={()=>{props.type=='disable'? props.handleEdit('back'):props.handleEdit('cancel')}} className="btn-w-xs" />               
               </div>
           }
           <div className="col-md-2 col-xs-0 hidden-xs resp-p-x-0"></div>
-          {props.type == 'disable' ?
-              null
-              :
-                <div className='col-md-4 col-xs-3 resp-p-x-0'>
-                  <RaisedButton style={{marginLeft:5}} label={props.type =='add'?"Add":"Save"} backgroundColor={"#1b025c"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-xs" />
-                  {props.type == 'edit' ?
-                    null
-                    :
-                    <RaisedButton label="Cancel" style={styles.button} onClick={()=>{props.handleEdit('cancel')}} className="btn-w-xs" />
-                  }
-                </div>
-            }          
+                
         </div>
           {isLoading? 
             <div className="col-md-12" style={styles.loading} >
               {props.type == 'add' ? "Adding New User...........":'Please wait..'}
             </div>        
             :
+              props.type == 'changePass'?
+              <form role="form">
+                 <div className="form-group row">
+                  <label style={styles.label} className="col-md-2 control-label">Enter New Password</label>
+                  <div className="col-md-10">
+                    <TextField
+                      hintText="Enter New password"
+                      value={props.data.password?props.data.password:''}
+                      onChange={props.handleChange('password')}
+                      type="password"
+                      disabled={isDisabled}
+                      errorText={errors.password == '' ? null : errors.password}                      
+                      />
+                  </div>
+                </div>
+                <div>
+                  <RaisedButton label={props.type =='add'?"Add":"Save"} backgroundColor={"#1b025c"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-md" />
+                  <RaisedButton label="Cancel" style={styles.button} onClick={()=>{props.handleEdit('cancel')}} className="btn-w-md" />
+                </div>
+              </form>              
+              :
               <form role="form">
                 <div className="form-group row">
                   <label style={styles.label} className="col-md-2 control-label">Full Name</label>
@@ -114,7 +125,10 @@ const DetailsForm = (props) => {
                     />
                   </div>
                 </div>
-                <div className="form-group row">
+                {props.type == 'edit'?
+                  null
+                  :
+                  <div className="form-group row">
                   <label style={styles.label} className="col-md-2 control-label">Password</label>
                   <div className="col-md-10">
                     <TextField
@@ -124,9 +138,10 @@ const DetailsForm = (props) => {
                       type="password"
                       disabled={isDisabled}
                       errorText={errors.password == '' ? null : errors.password}                      
-                    />
+                      />
                   </div>
                 </div>
+                }
                 <div className="form-group row">
                   <label className="col-md-2 control-label" style={styles.label1}>Role</label>
                   <div className="col-md-10">
@@ -157,6 +172,7 @@ const DetailsForm = (props) => {
                   </div>
                 </div>
               </form>
+                  
             }
         </div>
       </article>
@@ -184,6 +200,7 @@ class UserDetails extends React.Component {
     this.handleDelete = this.handleDelete.bind(this);
   }
   componentWillReceiveProps(props){
+    let token = props.user.userLogged.data.token;    
     const { user, match } = props;
     let data={
       name:'',
@@ -199,11 +216,12 @@ class UserDetails extends React.Component {
       });
     } else if(match.params.type == 'disable') {
       this.setState({
-        data: user.user.data[match.params.id],
+        data: _.cloneDeep(user.user.data[match.params.id]),
         type: match.params.type
       });
     }
     if(props.user.updateUser.isSuccess == true ){
+      props.userListRequest(token);      
       if(this.state.type == 'add'){
         this.setState({isOpen:true,message:"Added User Successfully"});
       } else if (this.state.type == 'disable'){
@@ -218,7 +236,9 @@ class UserDetails extends React.Component {
     }
     if(props.user.updateUser.isLoading){
       this.setState({isLoading:true})
-    } else if(props.user.updateUser.isLoading == false){
+    } else if (props.user.user.isLoading){
+      this.setState({isLoading:true})
+    } else if(!props.user.updateUser.isLoading && !props.user.user.isLoading ){
       this.setState({isLoading:false})
     }
   }
@@ -237,7 +257,7 @@ class UserDetails extends React.Component {
       });
     }else{
       this.setState({
-        data: user.user.data[match.params.id],
+        data: _.cloneDeep(user.user.data[match.params.id]),
         type: match.params.type
       });
     }
@@ -250,13 +270,11 @@ class UserDetails extends React.Component {
     const { data } = this.state;
     let token = this.props.user.userLogged.data.token;
     const apiData = {token,data};
-    console.log(data);
     let errors = {};
     
     
     const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     if(data.name != '' && data.email != '' && data.password != '' ){
-      console.log(data.email.match(pattern) , data.email);
       if(!data.email.match(pattern)){
         errors.email = 'Not a valid email';
       } else {
@@ -264,6 +282,8 @@ class UserDetails extends React.Component {
           this.props.userAddRequest(apiData);
         } else if(this.state.type == 'edit'){
           this.props.userUpdateRequest(apiData);
+        } else if (this.state.type == 'changePass'){
+          this.props.userUpdatePasswordRequest(apiData)
         }
       }
       this.setState({errors: errors});
@@ -280,9 +300,11 @@ class UserDetails extends React.Component {
     if(data == 'back'){
       this.props.history.goBack();
     } else if (data == 'cancel' && this.state.type == 'edit') {
-      this.setState({type:'disable'})
+      this.setState({type:'disable',data:_.cloneDeep(this.props.user.user.data[this.props.match.params.id])})
     } else if (data == 'cancel' && this.state.type == 'add') {
       this.props.history.goBack();
+    } else if(data == 'changePass'){
+      this.setState({type:data});
     }
   }
   handleChange = props => (event, value, index) =>{
@@ -298,10 +320,11 @@ class UserDetails extends React.Component {
     this.setState({isOpen:false});
     if(this.props.user.updateUser.isSuccess){
       this.props.userReset();      
-      this.props.history.goBack();    
+      // this.props.history.goBack();    
     }
   }
   render(){
+    console.log(this.props);
     return(
       <div className="container-fluid no-breadcrumbs">
       <Snackbar

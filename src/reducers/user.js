@@ -146,14 +146,16 @@ const loginUserSuccess = (state, action) => update(state, {
     message:    {$set: 'User Delete success'}
   }
 });
-const loginUserError = (state, action) => update(state, {
+const loginUserError = (state, action) =>{
+  console.log(action)
+  return update(state, {
   userLogged : {
     isSuccess: {$set: false},
     isLoading: {$set: false},
     isError:   {$set: true},
     message:   {$set: action.payload}
   }
-});
+});}
 
 const userSearchRequest = (state, action) => update(state, {
   searchUser : {
@@ -229,6 +231,10 @@ export default handleActions({
   [constants.USER_UPDATE_REQUEST]: userAddRequest,
   [constants.USER_UPDATE_SUCCESS]: userAddSuccess,
   [constants.USER_UPDATE_ERROR]:   userAddError,
+
+  [constants.USER_UPDATE_PASSWORD_REQUEST]: userAddRequest,
+  [constants.USER_UPDATE_PASSWORD_SUCCESS]: userAddSuccess,
+  [constants.USER_UPDATE_PASSWORD_ERROR]:   userAddError,
 
   [constants.USER_ADD_RESET]: userReset,
   [constants.LOGIN_USER_RESET]: loginUserReset,

@@ -76,8 +76,11 @@ const DetailsForm = (props) => {
         </div>
         <div className="box-body">
           <div className="form-group row" style={styles.formGroup}>
-            {props.type == 'add' ?
-              null
+            {props.type == 'add' || props.type == 'edit' ?
+              <div className='col-md-6 col-xs-9 resp-p-x-0' >
+                <RaisedButton style={{marginLeft:5}} label={props.type =='add'?"Add":"Save"} backgroundColor={"#1b025c"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-xs" />
+                <RaisedButton label="Cancel" style={styles.button} onClick={()=>{props.handleEdit('cancel')}} className="btn-w-xs" />
+              </div>  
               :
               <div className='col-md-6 col-xs-9 resp-p-x-0'>
                 <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-xs" />
@@ -85,19 +88,9 @@ const DetailsForm = (props) => {
                 <RaisedButton label={props.type == 'disable'?"Back":"cancel"}  style={{marginLeft:5}}  onClick={()=>{props.type == 'disable'? props.handleEdit('back'):props.handleEdit('cancel')}} className="btn-w-xs" />
               </div>
             }
+
           <div className="col-md-2 col-xs-0 hidden-xs resp-p-x-0"></div>
-          {props.type == 'disable' ?
-              null
-              :
-                <div className='col-md-4 col-xs-3 resp-p-x-0'>
-                  <RaisedButton style={{marginLeft:5}} label={props.type =='add'?"Add":"Save"} backgroundColor={"#1b025c"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-xs" />
-                  {props.type == 'edit' ?
-                    null
-                    :
-                    <RaisedButton label="Cancel" style={styles.button} onClick={()=>{props.handleEdit('cancel')}} className="btn-w-xs" />
-                  }
-                </div>
-            }
+          
           </div>
           <article className="article">
           {isLoading?
@@ -107,10 +100,10 @@ const DetailsForm = (props) => {
             :
               <form role="form" >
                 <div className="form-group row" style={styles.formGroup}>
-                  <label style={styles.label1}  className="col-md-2 control-label">First Name</label>
+                  <label style={styles.label1}  className="col-md-2 control-label">First Name *</label>
                   <div className="col-md-4">
                     <TextField
-                      hintText="First name *"
+                      hintText="First name"
                       value={props.data.name}
                       onChange={props.handleChange('name')}
                       type="text"
@@ -118,10 +111,10 @@ const DetailsForm = (props) => {
                       errorText={errors.name == '' ? null : errors.name}
                     />
                   </div>
-                  <label style={styles.label1} className="col-md-2 control-label">Last Name</label>
+                  <label style={styles.label1} className="col-md-2 control-label">Last Name *</label>
                   <div className="col-md-4">
                     <TextField
-                      hintText="Last Name *"
+                      hintText="Last Name"
                       value={props.data.lastName}
                       onChange={props.handleChange('lastName')}
                       type="text"
@@ -131,20 +124,20 @@ const DetailsForm = (props) => {
                   </div>
                 </div>
                 <div className="form-group row" style={styles.formGroup}>
-                  <label style={styles.label1} className="col-md-2 control-label">Email Id</label>
+                  <label style={styles.label1} className="col-md-2 control-label">Email *</label>
                   <div className="col-md-4">
                     <TextField
-                      hintText="Email Id *"
+                      hintText="Email ID"
                       value={props.data.email} onChange={props.handleChange('email')}
                       type="email"
                       disabled={isDisabled}
                       errorText={errors.email == '' ? null : errors.email}
                     />
                   </div>
-                  <label style={styles.label1} className="col-md-2 control-label">Phone Number</label>
+                  <label style={styles.label1} className="col-md-2 control-label">Phone Number *</label>
                   <div className="col-md-4">
                     <TextField
-                      hintText="Phone Number *"
+                      hintText="Phone Number "
                       value={props.data.phone?props.data.phone:''}
                       onChange={props.handleChange('phone')}
                       type="number"
@@ -283,20 +276,6 @@ const DetailsForm = (props) => {
                       errorText={errors.zipcode == '' ? null : errors.zipcode}
                     />
                   </div>
-                  {/* <label style={styles.label1} className="col-md-2 control-label">Date of Birth *</label>
-                  <div className="col-md-4">
-                    <DatePicker
-                      hintText="Select date"
-                      container="inline"
-                      mode="landscape"
-                      value={props.data.birthday}
-                      onChange={props.handleChange('birthday')}
-                      disabled={isDisabled}
-                      errorText={errors.birthday == '' ? null : errors.birthday}
-                    />
-                  </div> */}
-                {/* </div>
-                <div className="form-group row" style={styles.formGroup}> */}
                   <label style={styles.label1}  className="col-md-2 control-label">Anniversary Date/Year *</label>
                   <div className="col-md-4">
                     <DatePicker
@@ -353,7 +332,7 @@ const DetailsForm = (props) => {
                   </div>
                 </div>
                 <div className="form-group row" style={styles.formGroup}>
-                  <label style={styles.label1} className="col-md-2 control-label" style={styles.label} >Occupation</label>
+                  <label style={styles.label1} className="col-md-2 control-label" style={styles.label} >Occupation *</label>
                   <div className="col-md-4">
                     <TextField
                       hintText="Occupation"
@@ -636,7 +615,7 @@ class CustomerDetails extends React.Component {
     let interestCheck = this.state.type == 'add' ? cloneData.interest.length != 0 : true;  
     let errors = {};
     var pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    if(cloneData.name != '' && cloneData.lastName != '' && cloneData.city !='' && cloneData.state !='' && cloneData.email != ''&& cloneData.interest.length != 0  && cloneData.phone != '' && cloneData.address1 != '' && cloneData.address2 != '' && cloneData.zipcode != '' && cloneData.birthday != '' && cloneData.anniversary != '' && cloneData.occupation != ''){
+    if(cloneData.name != '' && cloneData.lastName != '' && cloneData.city !='' && cloneData.state !='' && cloneData.email != ''&& cloneData.interest.length != 0  && cloneData.phone != '' && cloneData.address1 != '' && cloneData.zipcode != '' && cloneData.birthday != '' && cloneData.anniversary != '' && cloneData.occupation != ''){
         let email = cloneData.email.trim();
         if( cloneData.phone == undefined){
           errors.phone = 'Please Enter Phone Number';          
@@ -671,7 +650,6 @@ class CustomerDetails extends React.Component {
         errors.phone = cloneData.phone != '' ? '' : 'Cannot be Empty.';
         errors.interests = cloneData.interest.length != 0 ? '' : 'Cannot be Empty.';
         errors.address1 = cloneData.address1 != '' ? '' : 'Cannot be Empty.';
-        errors.address2 = cloneData.address2 != '' ? '' : 'Cannot be Empty.';
         errors.zipcode = cloneData.zipcode != '' ? '' : 'Cannot be Empty.';
         errors.birthday = cloneData.birthday != '' ? '' : 'Cannot be Empty.';
         errors.anniversary = cloneData.anniversary != '' ? '' : 'Cannot be Empty.';

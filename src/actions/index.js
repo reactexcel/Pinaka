@@ -36,6 +36,10 @@ export const userUpdateRequest = createAction(types.USER_UPDATE_REQUEST);
 export const userUpdateSuccess = createAction(types.USER_UPDATE_SUCCESS);
 export const userUpdateError = createAction(types.USER_UPDATE_ERROR);
 
+export const userUpdatePasswordRequest = createAction(types.USER_UPDATE_PASSWORD_REQUEST);
+export const userUpdatePasswordSuccess = createAction(types.USER_UPDATE_PASSWORD_SUCCESS);
+export const userUpdatePasswordError = createAction(types.USER_UPDATE_PASSWORD_ERROR);
+
 export const userDeleteRequest = createAction(types.USER_DELETE_REQUEST);
 export const userDeleteSuccess = createAction(types.USER_DELETE_SUCCESS);
 export const userDeleteError = createAction(types.USER_DELETE_ERROR);
