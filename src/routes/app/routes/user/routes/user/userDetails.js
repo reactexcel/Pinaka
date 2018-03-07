@@ -221,10 +221,10 @@ class UserDetails extends React.Component {
       });
     }
     if(props.user.updateUser.isSuccess == true ){
-      props.userListRequest(token);      
       if(this.state.type == 'add'){
         this.setState({isOpen:true,message:"Added User Successfully"});
       } else if (this.state.type == 'disable'){
+        props.userListRequest(token);      
         this.setState({isOpen:true,message:"User Data Updated Successfully"});        
       }
     } else if(props.user.updateUser.isError == true){
@@ -324,7 +324,6 @@ class UserDetails extends React.Component {
     }
   }
   render(){
-    console.log(this.props);
     return(
       <div className="container-fluid no-breadcrumbs">
       <Snackbar

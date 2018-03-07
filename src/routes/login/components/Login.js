@@ -48,8 +48,17 @@ class Login extends React.Component {
     this.props.loginUserRequest(data);
   }
   componentWillReceiveProps(props){
-    props.user.userLogged.isSuccess ? this.props.history.push('/app/dashboard') : null;
+      
+    if(props.user.userLogged.isSuccess) {
+      sessionStorage.setItem('user',JSON.stringify(props.user.userLogged)) 
+      props.history.push('/app/dashboard') 
+    } 
+      
     props.user.userLogged.isLoading ? this.setState({isLoading: true}) : this.setState({isLoading:false});
+    if(props.user.userToken.isSuccess) {
+      sessionStorage.removeItem('user');
+      props.loginTokenReset()
+    } 
   }
   render() {
     const { isLoading } = this.state;

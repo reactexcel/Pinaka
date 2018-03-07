@@ -6,7 +6,7 @@ const Statboxes = (props) =>{
   return (
   <div className="row">
     
-    <div className="col-xl-3 col-sm-6" onClick={()=>{props.handleSelect('customer')}} > 
+    <div className="col-xl-3 col-sm-6" style={{cursor:'pointer'}} onClick={()=>{ console.log('asdasd'); props.history.push('/app/customer/viewcustomer')}} > 
       <div className="box box-default">
         <div className="box-top">
           <span>{props.customer.customerList.data.length}</span>
@@ -39,8 +39,8 @@ const Statboxes = (props) =>{
       }
 
       {props.user.userLogged.data.data.role == 'Admin'? 
-      <div className="col-xl-3 col-sm-6" onClick={()=>{props.handleSelect('redemption')}} >
-        <div className="box box-default">
+      <div className="col-xl-3 col-sm-6" style={{cursor:'pointer'}} onClick={()=>{props.history.push('/app/redeem/viewredeem')}} >
+        <div className="box box-default"> 
           <div className="box-top">
             <span>{props.customer.redemption.data.length}</span>
           </div>

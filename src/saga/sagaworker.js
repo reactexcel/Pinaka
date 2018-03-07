@@ -1,6 +1,7 @@
 import { API } from '../constants';
 import * as actions from 'actions';
 import {call, put} from 'redux-saga/effects';
+import 'whatwg-fetch';
 
 export function* fetchUser(action){
   let token = action.payload;
@@ -59,9 +60,10 @@ export function* addUser(data){
      });
 
      let res = yield call(api);
+     console.log(res)
        if(res.status == 1){
          yield put( actions.userAddSuccess(res.data));
-       } else if(res.status == 0) {
+       } else if(res.error == 1) {
          yield put (actions.userAddError(res));
          if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'|| res.message == "Invalid Token"){
           yield put (actions.loginTokenExpire(res));
@@ -270,6 +272,7 @@ export function* addCustomer(data){
 
 
      let res = yield call(api);
+     console.log(res)
         if(res.status == 1){
          yield put( actions.customerAddSuccess(res.data));
        } else if(res.error == 1 || res.code) {

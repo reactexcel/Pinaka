@@ -191,6 +191,7 @@ const loginUserReset = (state,action) =>{
   return update(state,{
   userLogged:{
     isError: {$set:false},
+    isLogged : { $set : false},
     isSuccess: {$set:false},
     isLoading: {$set: false}
   }
@@ -249,5 +250,6 @@ export default handleActions({
   [constants.LOGIN_USER_ERROR]:   loginUserError,
 
   [constants.LOGIN_TOKEN_EXPIRE]:   loginTokenExpire,
+  [constants.LOGIN_TOKEN_RESET]: loginTokenReset,
 
 }, initialState);

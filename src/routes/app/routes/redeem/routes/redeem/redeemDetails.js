@@ -176,10 +176,10 @@ class redeemDetails extends React.Component {
       this.setState({isLoading:false})
     }
     if(props.redeem.updateRedeem.isSuccess == true ){
-      this.props.redeemListRequest(token);            
       if(this.state.type == 'add'){
         this.setState({isOpen:true,message:"Added Redeem Code Successfully"});
       } else if (this.state.type == 'disable'){
+        this.props.redeemListRequest(token);            
         this.setState({isOpen:true,message:"Redeem Code Updated Successfully"});        
       }
     } else if(props.redeem.updateRedeem.isError){

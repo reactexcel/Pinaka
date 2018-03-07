@@ -77,10 +77,16 @@ const DetailsForm = (props) => {
         <div className="box-body">
           <div className="form-group row" style={styles.formGroup}>
             {props.type == 'add' || props.type == 'edit' ?
+              isLoading ? 
+              null
+              :
               <div className='col-md-6 col-xs-9 resp-p-x-0' >
                 <RaisedButton style={{marginLeft:5}} label={props.type =='add'?"Add":"Save"} backgroundColor={"#1b025c"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-xs" />
                 <RaisedButton label="Cancel" style={styles.button} onClick={()=>{props.handleEdit('cancel')}} className="btn-w-xs" />
               </div>  
+              :
+              isLoading ?
+              null
               :
               <div className='col-md-6 col-xs-9 resp-p-x-0'>
                 <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-xs" />
@@ -95,7 +101,7 @@ const DetailsForm = (props) => {
           <article className="article">
           {isLoading?
             <div className="col-md-12" style={{marginTop:40,fontSize:20,fontWeight:600,textAlign:'center'}}>
-              {props.type == 'add'?"Adding New User..........." : 'Please Wait.....'}
+              {props.type == 'add'?"Adding New Customer..........." : 'Please Wait.....'}
             </div>
             :
               <form role="form" >
@@ -138,6 +144,7 @@ const DetailsForm = (props) => {
                   <div className="col-md-4">
                     <TextField
                       hintText="Phone Number "
+                      className='spin-remove'
                       value={props.data.phone?props.data.phone:''}
                       onChange={props.handleChange('phone')}
                       type="number"
@@ -268,6 +275,7 @@ const DetailsForm = (props) => {
                   <label style={styles.label1} className="col-md-2 control-label">Zip Code *</label>
                   <div className="col-md-4">
                     <TextField
+                      className='spin-remove'
                       hintText="Zip code"
                       value={props.data.zipcode}
                       onChange={props.handleChange('zipcode')}
@@ -465,13 +473,32 @@ class CustomerDetails extends React.Component {
       })
       data.interestsFlag = interests;
       this.setState({
-        data: data,
+        data: _.cloneDeep(data),
         type: match.params.type,
         intrestList: interest.interestList.data,
       });
     }
   }
+  componentDidMount(){
+    document.onkeydown = function(e) {
+      e = e || window.event;
+      switch(e.which || e.keyCode) {
+        case 38: {
+          e.preventDefault();
+          break;
+        }
+
+        case 40: {
+          e.preventDefault();
+          break;
+        }
+
+        default: return;
+      }
+    }
+  }
   componentWillReceiveProps(props){
+    let token = props.user.data.token;    
     const { customer, match, interest } = props;
     let data={
       name: '',
@@ -529,27 +556,28 @@ class CustomerDetails extends React.Component {
       const interest = data.interests;
       _.map(data.interests,(value,index)=>{ return data.interest.push(value.id)}); 
       let interests = [];
-      if(interest.interestList != undefined) {
-
-        for(var i = 0; i < interest.interestList.data.length; i++){
+      if(props.interest.interestList != undefined) {
+        for(var i = 0; i < props.interest.interestList.data.length; i++){
           interests.push(false);
         }
         _.map(data.interest, (value) =>{
-          let dataIndex =  _.findIndex(interest.interestList.data , {_id:value} )
+          let dataIndex =  _.findIndex(props.interest.interestList.data , {_id:value} )
           interests[dataIndex] = !interests[dataIndex];
         })
         data.interestsFlag = interests;
       }
       this.setState({
-        data: data,
+        data: _.cloneDeep(data),
         type: match.params.type,
         intrestList: interest.interestList != undefined? interest.interestList.data : '',
       });
     }
     if(props.customer.updateCustomer.isSuccess == true ){
+      
       if(this.state.type == 'add'){
         this.setState({isOpen:true,message:"Added User Successfully"});
       } else if (this.state.type == 'disable' || this.state.type == 'edit' ){
+        props.customerListRequest({token,page:0});      
         this.setState({isOpen:true,message:"User Data Updated Successfully"});
       }
     } else if(props.customer.updateCustomer.isError){
@@ -570,6 +598,9 @@ class CustomerDetails extends React.Component {
               message= 'This zipcode is invalid now. Please try again';
               break;
         }
+        if(props.customer.updateCustomer.message.error == 1) {
+          message = props.customer.updateCustomer.message.message.toUpperCase();
+        }
         this.setState({isOpen:true,message});
       } else if (this.state.type == 'disable'){
         this.setState({isOpen:true,message:"Somthing went wrong"});        
@@ -577,15 +608,17 @@ class CustomerDetails extends React.Component {
     }
     if(props.customer.updateCustomer.isLoading){
       this.setState({isLoading:true})
-    } else if(props.customer.updateCustomer.isLoading == false){
+    } else if (props.customer.customer.isLoading) {
+      this.setState({isLoading:true})      
+    } else if(!props.customer.updateCustomer.isLoading && !props.customer.customer.isLoading ){
       this.setState({isLoading:false})
     }
   }
   handleRequestClose(){
     this.setState({isOpen:false})
     if(this.props.customer.updateCustomer.isSuccess){
+      this.setState({time:0})
       this.props.customerReset();
-      this.props.history.push('/app/customer/viewcustomer');
     }
   }
   handleSave(){
@@ -665,7 +698,36 @@ class CustomerDetails extends React.Component {
     if(data == 'back'){
       this.props.history.goBack();
     } else if (data == 'cancel' && this.state.type == 'edit') {
-      this.setState({type:'disable'})
+      let data = this.props.customer.customer.data[this.props.match.params.id];
+      const item = this.props.customer.customer.data[this.props.match.params.id];
+      data.name = data.name ? data.name : '';
+      data.lastName = data.lastName ? data.lastName:'';
+      data.email = data.email ? data.email : '';
+      data.address1 = data.address1 ? data.address1 : '';
+      data.address2 = data.address2? data.address2 : '';
+      data.anniversary = data.anniversary ? data.anniversary : '';
+      data.birthday = data.birthday ? data.birthday : '';
+      data.occupation = data.occupation ? data.occupation : '';
+      data.state = data.state ? data.state : '';
+      data.city = data.city ? data.city : '';
+      data.zipcode = data.zipcode ? data.zipcode : '';
+      data.phone = data.phone? data.phone.substring(2, data.phone.length) : '';
+      data.interest = [];
+      const interest = data.interests;
+      _.map(data.interests,(value,index)=>{ return data.interest.push(value.id)}); 
+      let interests = [];
+      if(this.props.interest.interestList != undefined) {
+        for(var i = 0; i < this.props.interest.interestList.data.length; i++){
+          interests.push(false);
+        }
+        _.map(data.interest, (value) =>{
+          let dataIndex =  _.findIndex(this.props.interest.interestList.data , {_id:value} )
+          interests[dataIndex] = !interests[dataIndex];
+        })
+        data.interestsFlag = interests;
+      }
+
+      this.setState({type:'disable',data:_.cloneDeep(data)})
     } else if (data == 'cancel' && this.state.type == 'add') {
       this.props.history.goBack();
     }
@@ -701,7 +763,7 @@ class CustomerDetails extends React.Component {
         <Snackbar
           open={this.state.isOpen}
           message={this.state.message}
-          autoHideDuration={900}
+          autoHideDuration={2000}
           onRequestClose={this.handleRequestClose}
         />
         <DetailsForm {...this.props} intrestList={this.state.intrestList} handleDelete={this.handleDelete} handleSave={this.handleSave} handleEdit={this.handleEdit} handleChange={this.handleChange}  {...this.state} />

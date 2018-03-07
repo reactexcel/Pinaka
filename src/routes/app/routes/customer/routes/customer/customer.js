@@ -34,7 +34,8 @@ class Customer extends React.Component {
   componentWillMount(){
     let token = this.props.user.userLogged.data.token;
     this.props.customerListRequest({token,page:0});
-    this.props.interestListRequest();        
+    this.props.interestListRequest();
+    this.props.customerListChartRequest(token);    
     this.props.searchHeaderCustomerReset();    
   }
   componentWillReceiveProps(props){
@@ -68,6 +69,8 @@ class Customer extends React.Component {
   }
   render(){
     const { page } = this.state;
+    let totalPage = Math.ceil(this.props.allCustomer.customerList.data.length / 20);
+    totalPage = totalPage == 0 ? 1 : totalPage;
     const { isLoading } = this.state;
     let CustomerList = _.map(this.props.customer.data, (value, index) => {
       const itemNo = page == 0? index+1 : (page*20)+(index+1);
@@ -108,6 +111,7 @@ class Customer extends React.Component {
                   <div>
                     {this.state.page != 0 ? <a style={{color:'#00bcd6',cursor:'pointer',marginRight:15}} onClick={()=>{this.handleNext('prev')}} > Previous </a>: null  }
                     {this.props.customer.data.length < 20 ? null : <a style={{color:'#00bcd6',cursor:'pointer'}} onClick={()=>{this.handleNext('next')}} > Next </a>}
+                    <span style={{float:"right",marginRight:5}} >{this.state.page + 1} out of {totalPage}</span>
                   </div>
                   <div className="box box-default table-box mdl-shadow--2dp">
                     <table className="mdl-data-table table-responsive">
@@ -133,6 +137,11 @@ class Customer extends React.Component {
                       </tbody>
                     </table>
                   </div>
+                  <div>
+                    {this.state.page != 0 ? <a style={{color:'#00bcd6',cursor:'pointer',marginRight:15}} onClick={()=>{this.handleNext('prev')}} > Previous </a>: null  }
+                    {this.props.customer.data.length < 20 ? null : <a style={{color:'#00bcd6',cursor:'pointer'}} onClick={()=>{this.handleNext('next')}} > Next </a>}
+                    <span style={{float:"right",marginRight:5}} >{this.state.page + 1} of {totalPage}</span>
+                  </div>
                 </article>
               </div>
             </div>
@@ -144,6 +153,7 @@ class Customer extends React.Component {
 }
 function mapStateToProps (state) {
   return {
+    allCustomer: state.customer,
     customer: state.customer.customer,
     user: state.user
   };
