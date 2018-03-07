@@ -243,11 +243,11 @@ export function* addCustomer(data){
 
 
 export function* updateCustomer(data){
-  console.log("adsda")
   let params = data.payload.data;
   let token = data.payload.token;
   var formData = new FormData();
   formData.append('_id', params._id);  
+  formData.append('infusion_id',params.infusion_id? params.infusion_id : '');
   formData.append('name', params.name);
   formData.append('email', params.email);
   formData.append('birthday', params.birthday);
@@ -278,7 +278,7 @@ export function* updateCustomer(data){
 
             body:formData,
          })
-         .then((res)=> { console.log(res); return res.json()})
+         .then((res)=> { console.log(res);  return res.json()})
          .then(data => {
              resolve(data);
          })
@@ -398,7 +398,6 @@ export function* searchCustomer(data){
      });
 
      let res = yield call(api);
-     console.log(res,'search')
        if(res.status == 1){
          yield put( actions.searchCustomerSuccess(res.data));
        } else if(res.error == 1) {
@@ -489,7 +488,6 @@ export function* addRedeem(data){
 export function* updateRedeem(data){
   let body = JSON.stringify(data.payload.data);
   let token = data.payload.token
-  console.log(data)
   try{
     const api = () =>  new Promise((resolve, reject) => {
         return fetch(API.SERVER_DEV_URL+'RedeemCode/updateRedeemCode?accessToken='+token,{
@@ -510,7 +508,6 @@ export function* updateRedeem(data){
      });
 
      let res = yield call(api);
-     console.log(res)
        if(res.status == 1){
          yield put( actions.redeemUpdateSuccess(res.data));
        } else if(res.error == 1) {

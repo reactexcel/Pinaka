@@ -100,7 +100,7 @@ const DetailsForm = (props) => {
                     />
                   </div>
                 </div>
-                {props.type == 'edit'?
+                {props.type == 'edit' || props.type == 'add'?
                 <div className="form-group row">
                   <label className="col-md-2 control-label" style={styles.label1}>Type</label>
                   <div className="col-md-10">
@@ -178,13 +178,13 @@ class redeemDetails extends React.Component {
         type: match.params.type
       });
     }
+    console.log(props.redeem);
     if(props.redeem.updateRedeem.isLoading){
       this.setState({isLoading:true})
-    } else if(props.redeem.isLoading == false){
+    } else if(!props.redeem.updateRedeem.isLoading){
       this.setState({isLoading:false})
     }
     if(props.redeem.updateRedeem.isSuccess == true ){
-      props.redeemReset()
       if(this.state.type == 'add'){
         this.setState({isOpen:true,message:"Added Redeem Code Successfully"});
       } else if (this.state.type == 'disable'){
@@ -240,7 +240,7 @@ class redeemDetails extends React.Component {
     this.setState({ type });
     if(data == 'back'){
       this.props.history.goBack();
-    } else if (data == 'cancel' || this.state.type == 'edit') {
+    } else if (data == 'cancel' && this.state.type == 'edit') {
       this.setState({type:'disable'})
     } else if (data == 'cancel' && this.state.type == 'add') {
       this.props.history.goBack();
@@ -258,7 +258,8 @@ class redeemDetails extends React.Component {
   handleRequestClose(){
     this.setState({isOpen:false})
     if(this.props.redeem.updateRedeem.isSuccess){
-      this.props.history.push('/app/redeem/viewredeem');
+      this.props.redeemReset();
+      this.props.history.goBack();
     }
   }
   render(){

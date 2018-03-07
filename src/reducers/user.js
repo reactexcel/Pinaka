@@ -196,7 +196,6 @@ const loginUserReset = (state,action) =>{
 }
 
 const loginTokenExpire = (state,action) =>{
-  console.log(action,'red')
   return update(state,{
     userToken:{
     data: {$set:action.payload},
@@ -206,7 +205,6 @@ const loginTokenExpire = (state,action) =>{
 }
 
 const loginTokenReset = (state,action) =>{
-  console.log(action,'red')
   return update(state,{
     userToken:{
     data: {$set:''},

@@ -204,7 +204,6 @@ class UserDetails extends React.Component {
       });
     }
     if(props.user.updateUser.isSuccess == true ){
-      props.userReset();
       if(this.state.type == 'add'){
         this.setState({isOpen:true,message:"Added User Successfully"});
       } else if (this.state.type == 'disable'){
@@ -298,7 +297,8 @@ class UserDetails extends React.Component {
   handleRequestClose(){
     this.setState({isOpen:false});
     if(this.props.user.updateUser.isSuccess){
-      this.props.history.push('/app/user/viewuser');    
+      this.props.userReset();      
+      this.props.history.goBack();    
     }
   }
   render(){

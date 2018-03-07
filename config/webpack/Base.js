@@ -129,6 +129,7 @@ class WebpackBaseConfig {
           },
           {
             test: /\.(js|jsx)$/,
+            exclude: /node_modules/,
             include: [].concat(
               this.includedPackages,
               [this.srcPathAbsolute]

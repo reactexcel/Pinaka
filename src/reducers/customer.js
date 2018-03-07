@@ -77,7 +77,6 @@ const customerListError = (state, action) => update(state, {
 });
 
 const customerAddRequest = (state, action) =>{
-  console.log(action);
   return update(state, {
   updateCustomer:{
     isLoading: {$set: true},

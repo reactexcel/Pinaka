@@ -65,8 +65,8 @@ const DetailsForm = (props) => {
   const { isLoading, data, errors } = props;
   const statesList = _.sortBy(Object.keys(_.groupBy(statecity, function(o){ return o.state; })), function(o){return o;});
   const cityList = props.data.state == '' ? null : _.filter(statecity, function(o){ return o.state == props.data.state; });
-  const dobDate = props.type == 'disable' || props.type == 'edit' ? props.data.birthday ? new Date(props.data.birthday):null : '';
-  const anniversaryDate = props.type == 'disable' || props.type == 'edit' ? props.data.anniversary? new Date(props.data.anniversary): null : '';
+  const dobDate = props.type == 'disable' || props.type == 'edit' ? props.data.birthday ? new Date(props.data.birthday): null : props.type == 'add' ? props.data.birthday : '';
+  const anniversaryDate = props.type == 'disable' || props.type == 'edit' ? props.data.anniversary? new Date(props.data.anniversary): null : props.type == 'add' ? props.data.anniversary : '';
   return(
   <div className="row">
     <div className="col-xl-12 no-padding">
@@ -81,7 +81,7 @@ const DetailsForm = (props) => {
               :
               <div className='col-md-6 col-xs-9 resp-p-x-0'>
                 <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-xs" />
-                <RaisedButton label="Delete" backgroundColor="#FF0000" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.handleDelete({token:props.user.data.token,data:{_id:props.data._id}})}} className="btn-w-xs" />
+                <RaisedButton label="Delete" backgroundColor="#FF0000" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.handleDelete({token:props.user.data.token,data:{_id:props.data._id,infusion_id:props.data.infusion_id?props.data.infusion_id :'' }})}} className="btn-w-xs" />
                 <RaisedButton label={props.type == 'disable'?"Back":"cancel"}  style={{marginLeft:5}}  onClick={()=>{props.type == 'disable'? props.handleEdit('back'):props.handleEdit('cancel')}} className="btn-w-xs" />
               </div>
             }
@@ -461,7 +461,6 @@ class CustomerDetails extends React.Component {
       });
     }else if(match.params.type == 'disable' ){
       let data = customer.customer.data[match.params.id];
-    
       data.name = data.name ? data.name : '';
       data.lastName = data.lastName ? data.lastName:'';
       data.email = data.email ? data.email : '';
