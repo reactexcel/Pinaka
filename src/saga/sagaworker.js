@@ -1,6 +1,7 @@
 import { API } from '../constants';
 import * as actions from 'actions';
 import {call, put} from 'redux-saga/effects';
+import 'whatwg-fetch';
 
 export function* fetchUser(action){
   let token = action.payload;
@@ -61,7 +62,7 @@ export function* addUser(data){
      let res = yield call(api);
        if(res.status == 1){
          yield put( actions.userAddSuccess(res.data));
-       } else if(res.status == 0) {
+       } else if(res.error == 1) {
          yield put (actions.userAddError(res));
          if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'|| res.message == "Invalid Token"){
           yield put (actions.loginTokenExpire(res));
@@ -73,11 +74,13 @@ export function* addUser(data){
 }
 
 export function* updateUser(data){
-  let body = JSON.stringify(data.payload.data);
+  const payloadData = data.payload.data;
+  delete payloadData['password']
+  let body = JSON.stringify(payloadData);
   let token = data.payload.token;
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/updateAdminStaff?accessToken='+token,{
+        return fetch(API.SERVER_DEV_URL+'admin/updateAdminStaff?accessToken='+token,{          
              method: 'PUT',
              cache: 'no-cache',
              headers: {
@@ -99,6 +102,46 @@ export function* updateUser(data){
          yield put( actions.userUpdateSuccess(res.data));
        } else if(res.error == 1) {
          yield put (actions.userUpdateError(res));
+         if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'|| res.message == "Invalid Token"){
+          yield put (actions.loginTokenExpire(res));
+        }
+       } 
+     } catch (e){
+       console.log(e);
+     }
+}
+
+export function* updateUserPassword(data){
+  const payloadData = {
+    _id: data.payload.data._id,
+    password: data.payload.data.password
+  };
+  let body = JSON.stringify(payloadData);
+  let token = data.payload.token;
+  try{
+    const api = () =>  new Promise((resolve, reject) => {
+          return fetch(API.SERVER_DEV_URL+'admin/updateAdminStaff?accessToken='+token,{          
+             method: 'PUT',
+             cache: 'no-cache',
+             headers: {
+              'content-type': 'application/json'
+            },
+            body,
+         })
+         .then((res)=> res.json())
+         .then(data => {
+             resolve(data);
+         })
+         .catch(err => {
+             reject(err);
+         });
+     });
+
+     let res = yield call(api);
+       if(res.status == 1){
+         yield put( actions.userUpdatePasswordSuccess(res.data));
+       } else if(res.error == 1) {
+         yield put (actions.userUpdatePasswordError(res));
          if(res.message == 'User is not logged in' ||res.message == 'You Are Not Authorized'|| res.message == "Invalid Token"){
           yield put (actions.loginTokenExpire(res));
         }
@@ -180,7 +223,6 @@ export function* fetchCustomer(action){
 export function* addCustomer(data){
   let params = data.payload.data;
   let token = data.payload.token;
-  console.log(params,'add data')
   var formData = new FormData();
     formData.append('name', params.name);
     formData.append('email', params.email);
@@ -243,11 +285,11 @@ export function* addCustomer(data){
 
 
 export function* updateCustomer(data){
-  console.log("adsda")
   let params = data.payload.data;
   let token = data.payload.token;
   var formData = new FormData();
   formData.append('_id', params._id);  
+  formData.append('infusion_id',params.infusion_id? params.infusion_id : '');
   formData.append('name', params.name);
   formData.append('email', params.email);
   formData.append('birthday', params.birthday);
@@ -278,7 +320,7 @@ export function* updateCustomer(data){
 
             body:formData,
          })
-         .then((res)=> { console.log(res); return res.json()})
+         .then((res)=> { console.log(res);  return res.json()})
          .then(data => {
              resolve(data);
          })
@@ -398,7 +440,6 @@ export function* searchCustomer(data){
      });
 
      let res = yield call(api);
-     console.log(res,'search')
        if(res.status == 1){
          yield put( actions.searchCustomerSuccess(res.data));
        } else if(res.error == 1) {
@@ -489,7 +530,6 @@ export function* addRedeem(data){
 export function* updateRedeem(data){
   let body = JSON.stringify(data.payload.data);
   let token = data.payload.token
-  console.log(data)
   try{
     const api = () =>  new Promise((resolve, reject) => {
         return fetch(API.SERVER_DEV_URL+'RedeemCode/updateRedeemCode?accessToken='+token,{
@@ -510,7 +550,6 @@ export function* updateRedeem(data){
      });
 
      let res = yield call(api);
-     console.log(res)
        if(res.status == 1){
          yield put( actions.redeemUpdateSuccess(res.data));
        } else if(res.error == 1) {
@@ -547,7 +586,6 @@ export function* deleteRedeem(data){
      });
 
      let res = yield call(api);
-     console.log(res)
        if(res.status == 1){
          yield put( actions.redeemDeleteSuccess(res.data));
        } else if(res.error == 1) {

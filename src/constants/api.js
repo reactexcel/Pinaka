@@ -1,6 +1,6 @@
 export const API = {
     SERVER: 'https://pinaka.herokuapp.com/',
-    // SERVER_DEV_URL: 'http://192.168.1.137:3000/api/',//http://54.88.40.46:3000/api/    
+    // SERVER_DEV_URL: 'http://192.168.1.11:3000/api/',//http://54.88.40.46:3000/api/    
     SERVER_DEV_URL: 'https://pinaka.herokuapp.com/api/',//http://54.88.40.46:3000/api/
     // SERVER_DEV_URL: 'https://sheltered-atoll-47991.herokuapp.com/api/',//http://54.88.40.46:3000/api/
     // SERVER: 'https://sheltered-atoll-47991.herokuapp.com/',

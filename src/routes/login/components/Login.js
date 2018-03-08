@@ -7,7 +7,18 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import QueueAnim from 'rc-queue-anim';
 import * as actions from 'actions';
+import RefreshIndicator from 'material-ui/RefreshIndicator';
 
+
+const style = {
+  container: {
+    position: 'relative',
+  },
+  refresh: {
+    display: 'inline-block',
+    position: 'relative',
+  },
+};
 
 class Login extends React.Component {
   constructor() {
@@ -17,13 +28,14 @@ class Login extends React.Component {
       email:'',
       password:'',
       isOpen:false,
-      message:''
+      message:'',
+      isLoading:false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
   }
   componentWillMount(){
-    if(sessionStorage.getItem('user') && !this.props.user.userLogged.isSuccess){
+    if(sessionStorage.getItem('user') && this.props.user.userLogged.isSuccess){
         this.props.history.push('/app/dashboard');
     }
   }
@@ -36,9 +48,22 @@ class Login extends React.Component {
     this.props.loginUserRequest(data);
   }
   componentWillReceiveProps(props){
-    props.user.userLogged.isSuccess ? this.props.history.push('/app/dashboard') : null;
+      
+    if(props.user.userLogged.isSuccess) {
+      sessionStorage.setItem('user',JSON.stringify(props.user.userLogged)) 
+      props.history.push('/app/dashboard') 
+    } 
+      
+    props.user.userLogged.isLoading ? this.setState({isLoading: true}) : this.setState({isLoading:false});
+    if(props.user.userToken.isSuccess) {
+      sessionStorage.removeItem('user');
+      props.loginTokenReset()
+    } 
   }
   render() {
+    const { isLoading } = this.state;
+    const { userLogged } = this.props.user;
+    const isDisabled = userLogged.isLoading ? true : false;
     return (
       <div className="body-inner">
         <div className="card bg-white">
@@ -47,6 +72,17 @@ class Login extends React.Component {
             <section className="logo text-center">
               <img src="assets/logo1.png" style={{height:'50px'}} />
             </section>
+            {isLoading ? 
+                <RefreshIndicator
+                size={40}
+                left={160}
+                top={50}
+                status="loading"
+                style={style.refresh}
+              />
+              :
+              null
+            }
 
             <form className="form-horizontal">
               <fieldset>
@@ -57,6 +93,7 @@ class Login extends React.Component {
                     value={this.state.email}
                     type="email"
                     onChange={this.handleChange('email')}
+                    disabled={isDisabled}
                   />
                 </div>
                 <div className="form-group">
@@ -66,6 +103,7 @@ class Login extends React.Component {
                     value={this.state.password}
                     onChange={this.handleChange('password')}
                     fullWidth
+                    disabled={isDisabled}                    
                     />
                 </div>
               </fieldset>
@@ -73,7 +111,7 @@ class Login extends React.Component {
           </div>
           <div className="card-action no-border text-right">
             {/* <a href="#/app/dashboard" className="color-primary">Login</a> */}
-            <RaisedButton label="Login"  onClick={()=>{this.handleSave()}}  primary  />
+            <RaisedButton label="Login"  onClick={()=>{this.handleSave()}}  primary disabled={isDisabled} />
 
           </div>
         </div>

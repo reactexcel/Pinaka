@@ -1,3 +1,12 @@
+.spin-remove{
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        margin: 0; 
+    }
+}
 @media only screen and (max-width: 786px) {
     .resp-p-a-0 {
         padding: 0;
@@ -11,6 +20,11 @@
     }
     .resp-m-a-0{
         margin: 0;
+    }
+    .btn-m-r-l-0{
+        margin-left: 0 !important;
+        margin-top: 10px !important; 
+        margin-right: 8px !important;
     }
     .resp-m-x-0{
         margin-right: 0;
@@ -53,6 +67,6 @@
         width: 91.66%;
     }
     .col-xs-12{
-        width: 100%;
+        width: 100% !important;
     }
 }

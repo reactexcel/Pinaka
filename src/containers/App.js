@@ -54,11 +54,9 @@ class App extends Component {
     if(props.user.userLogged.isError){
       this.setState({isOpen:true,message:'Invalid Email or Password'});
     } else if (props.user.userLogged.isSuccess && props.location.pathname == '/login' && !props.user.userToken.isSuccess) {
-      sessionStorage.setItem('user',JSON.stringify(props.user.userLogged));
       this.setState({isOpen:true, message:'Login Successfully'})
     }
     if(props.user.userToken.isSuccess ){
-      sessionStorage.removeItem('user');
       this.setState({isOpen:true, message:'Session Expire!!'})
     }
   }
