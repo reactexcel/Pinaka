@@ -178,7 +178,8 @@ const DetailsForm = (props) => {
                     </div>
                   </div>
                 }
-                
+                {props.type == 'add' ? 
+                null:
                 <div className="form-group row" style={styles.formGroup}>
                   <label className="col-md-2 control-label" style={{paddingTop: 14, paddingBottom: 20}}>SMS Option</label>
                   <div className="col-md-4" style={{paddingTop: 14, paddingBottom: 20}}>
@@ -197,6 +198,7 @@ const DetailsForm = (props) => {
                     />
                   </div>
                 </div>
+                }
                 <div className="form-group row" style={styles.formGroup}>
                   <label className={'col-md-2 control-label'}>Interests </label>
                   <div className="col-md-10">
