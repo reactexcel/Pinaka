@@ -186,7 +186,7 @@ const DetailsForm = (props) => {
                     <Toggle
                       defaultToggled={props.data.sms_option}
                       onToggle={props.handleChange('sms_option')}
-                      disabled={isDisabled}
+                      disabled
                     />
                   </div>
                   <label  className="col-md-2 control-label" style={{paddingTop: 14, paddingBottom: 20}}>App Installed Status</label>
@@ -194,7 +194,7 @@ const DetailsForm = (props) => {
                     <Toggle
                       defaultToggled={props.data.app_installed}
                       onToggle={props.handleChange('app_installed')}
-                      disabled={isDisabled}
+                      disabled
                     />
                   </div>
                 </div>
@@ -340,13 +340,15 @@ const DetailsForm = (props) => {
                       disabled={isDisabled}
                     />
                   </div>
+                  {props.type == 'add' ? 
+                   null : 
                   <label className="col-md-2 control-label" style={styles.label}>Source</label>
                   <div className="col-md-4">
                     <SelectField
                       value={props.data.source}
                       style={styles.dropFeild}
                       onChange={props.handleChange('source')}
-                      disabled={isDisabled}
+                      disabled
                     >
                       <MenuItem value={1} primaryText="Mobile App" />
                       <MenuItem value={2} primaryText="SMS" />
@@ -354,6 +356,7 @@ const DetailsForm = (props) => {
                       <MenuItem value={4} primaryText="Other" />
                     </SelectField>
                   </div>
+                  }
                 </div>
                 <div className="form-group row" style={styles.formGroup}>
                   <div className="col-md-10">
