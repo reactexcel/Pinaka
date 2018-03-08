@@ -223,6 +223,7 @@ export function* fetchCustomer(action){
 export function* addCustomer(data){
   let params = data.payload.data;
   let token = data.payload.token;
+  console.log(params)
   var formData = new FormData();
     formData.append('name', params.name);
     formData.append('email', params.email);
@@ -271,6 +272,7 @@ export function* addCustomer(data){
 
 
      let res = yield call(api);
+     console.log(res);
         if(res.status == 1){
          yield put( actions.customerAddSuccess(res.data));
        } else if(res.error == 1 || res.code) {

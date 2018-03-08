@@ -215,8 +215,9 @@ class UserDetails extends React.Component {
         time: 1
       });
     } else if(match.params.type == 'disable') {
+      const data = _.filter(user.user.data,{_id:match.params.id})
       this.setState({
-        data: _.cloneDeep(user.user.data[match.params.id]),
+        data: _.cloneDeep(data[0]),
         type: match.params.type
       });
     }
@@ -256,9 +257,10 @@ class UserDetails extends React.Component {
         type: match.params.type,
         time: 1
       });
-    }else{
+    }else if (match.params.type == 'disable') {
+      const data = _.filter(user.user.data,{_id:match.params.id})      
       this.setState({
-        data: _.cloneDeep(user.user.data[match.params.id]),
+        data: _.cloneDeep(data[0]),
         type: match.params.type
       });
     }
@@ -301,7 +303,8 @@ class UserDetails extends React.Component {
     if(data == 'back'){
       this.props.history.goBack();
     } else if (data == 'cancel' && this.state.type == 'edit') {
-      this.setState({type:'disable',data:_.cloneDeep(this.props.user.user.data[this.props.match.params.id])})
+      const data = _.filter(this.props.user.user.data,{_id:this.props.match.params.id})
+      this.setState({type:'disable',data:_.cloneDeep(data[0])})
     } else if (data == 'cancel' && this.state.type == 'add') {
       this.props.history.goBack();
     } else if(data == 'changePass'){

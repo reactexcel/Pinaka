@@ -342,6 +342,7 @@ const DetailsForm = (props) => {
                   </div>
                   {props.type == 'add' ? 
                    null : 
+                   <div>
                   <label className="col-md-2 control-label" style={styles.label}>Source</label>
                   <div className="col-md-4">
                     <SelectField
@@ -355,6 +356,7 @@ const DetailsForm = (props) => {
                       <MenuItem value={3} primaryText="Manual" />
                       <MenuItem value={4} primaryText="Other" />
                     </SelectField>
+                  </div>
                   </div>
                   }
                 </div>
