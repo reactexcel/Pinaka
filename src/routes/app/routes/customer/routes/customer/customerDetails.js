@@ -63,6 +63,7 @@ const styles = {
 const DetailsForm = (props) => {
   let isDisabled = props.type == 'disable' ? true : false;
   const { isLoading, data, errors } = props;
+  const genderVaalue = props.data.gender;
   const statesList = _.sortBy(Object.keys(_.groupBy(statecity, function(o){ return o.state; })), function(o){return o;});
   const cityList = props.data.state == '' ? null : _.filter(statecity, function(o){ return o.state == props.data.state; });
   const dobDate = props.type == 'disable' || props.type == 'edit' ? props.data.birthday ? new Date(props.data.birthday): null : props.type == 'add' ? props.data.birthday : '';
@@ -165,8 +166,6 @@ const DetailsForm = (props) => {
                   <div className="col-md-4">
                     <DatePicker
                       hintText="Select date"
-                      container="inline"
-                      mode="landscape"
                       value={dobDate}
                       onChange={props.handleChange('birthday')}
                       disabled={isDisabled}
@@ -204,13 +203,14 @@ const DetailsForm = (props) => {
                   </div>
                 </div>
                 <div className="form-group row" style={styles.formGroup}>
-                  <label className={errors.interests != '' && errors.interests != undefined ? 'col-md-2 control-label text-danger' : 'col-md-2 control-label'}>Interest *</label>
+                  <label className={errors.interests != '' && errors.interests != undefined ? 'col-md-2 control-label text-danger' : 'col-md-2 control-label'}>Interests *</label>
                   <div className="col-md-10">
                     {  _.map(props.intrestList,(value,index)=>(
                         <Checkbox
                           key={index}
                           label={value.name}
                           style={styles.checkbox}
+                          className="col-xs-12"
                           onCheck={props.type == 'add'?props.handleChange({props:'interests',item:value,index:index}):props.handleChange({props:'interestsFlag',item:value,index:index})}
                           checked={_.indexOf(props.data.interest, value._id) >= 0}
                           disabled={isDisabled}
@@ -288,8 +288,6 @@ const DetailsForm = (props) => {
                   <div className="col-md-4">
                     <DatePicker
                       hintText="Select date"
-                      container="inline"
-                      mode="landscape"
                       value={anniversaryDate}
                       onChange={props.handleChange('anniversary')}
                       disabled={isDisabled}
@@ -300,7 +298,7 @@ const DetailsForm = (props) => {
                 <div className="form-group row" style={styles.formGroup}>
                   <label className="col-md-2 control-label" style={{'paddingTop': 14}}>Gender *</label>
                   <div className='col-md-10' style={{'paddingTop': 14}}>
-                    <RadioButtonGroup disabled={isDisabled} name="gender" defaultSelected={props.data.gender} onChange={props.handleChange('gender')}>
+                    <RadioButtonGroup disabled={isDisabled} name="gender" valueSelected={genderVaalue}  defaultSelected={genderVaalue} onChange={props.handleChange('gender')}>
                       <RadioButton
                         value={false}
                         label="Male"
@@ -656,7 +654,7 @@ class CustomerDetails extends React.Component {
             errors.phone = 'Phone should be of 10 digits.';
         }
         if(cloneData.zipcode.length != 5){
-            errors.zipcode = 'Phone should be of 5 digits.';
+            errors.zipcode = 'ZipCode should be of 5 digits.';
         }
         if (_.isEmpty(email)) {
           errors.email = 'Empty field';
@@ -726,7 +724,6 @@ class CustomerDetails extends React.Component {
         })
         data.interestsFlag = interests;
       }
-
       this.setState({type:'disable',data:_.cloneDeep(data)})
     } else if (data == 'cancel' && this.state.type == 'add') {
       this.props.history.goBack();
@@ -748,7 +745,9 @@ class CustomerDetails extends React.Component {
       data['interest'] = interestList;
     } else if (props == 'birthday' || props == 'anniversary') {
       data[props] = index;
-    } else {
+    } else if ( props == 'gender'){
+      data[props] = event.target.value == 'false' ? false : true
+    }  else {
       data[props] = event.target.value;
     }
     this.setState({ data });

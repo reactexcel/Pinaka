@@ -117,8 +117,8 @@ const DetailsForm = (props) => {
                       // <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-md" />
                     :
                       <div>
-                        <RaisedButton label={props.type =='add'?"Add":"Save"} backgroundColor={"#1b025c"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-md" />
-                        <RaisedButton label="Cancel" style={styles.button} onClick={()=>{props.handleEdit('cancel')}} className="btn-w-md" />
+                        <RaisedButton label={props.type =='add'?"Add":"Save"} backgroundColor={"#1b025c"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-xs" />
+                        <RaisedButton label="Cancel" style={styles.button} onClick={()=>{props.handleEdit('cancel')}} className="btn-w-xs" />
                       </div>
                     }
                   </div>
@@ -192,10 +192,11 @@ class redeemDetails extends React.Component {
       redeem_code:'',
       type:'General'
     };
-    if(match.params.type == 'add'){
+    if(match.params.type == 'add' && this.state.time == 0){
       this.setState({
         data,
-        type: match.params.type
+        type: match.params.type,
+        time: 1
       });
     }else{
       this.setState({
