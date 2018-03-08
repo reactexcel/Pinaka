@@ -252,7 +252,8 @@ export function* addCustomer(data){
 
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        return fetch(API.SERVER_DEV_URL+'admin/addCustomer?accessToken='+token,{
+        // return fetch(API.SERVER_DEV_URL+'admin/addCustomer?accessToken='+token,{
+          return fetch('http://192.168.1.10:3000/api/admin/addCustomer?accessToken='+token,{
              method: 'POST',
             body:formData,
          })

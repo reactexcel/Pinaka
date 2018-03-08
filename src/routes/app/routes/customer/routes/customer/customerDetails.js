@@ -107,7 +107,7 @@ const DetailsForm = (props) => {
             :
               <form role="form" >
                 <div className="form-group row" style={styles.formGroup}>
-                  <label style={styles.label1}  className="col-md-2 control-label">First Name *</label>
+                  <label style={styles.label1}  className="col-md-2 control-label">First Name </label>
                   <div className="col-md-4">
                     <TextField
                       hintText="First name"
@@ -115,10 +115,9 @@ const DetailsForm = (props) => {
                       onChange={props.handleChange('name')}
                       type="text"
                       disabled={isDisabled}
-                      errorText={errors.name == '' ? null : errors.name}
                     />
                   </div>
-                  <label style={styles.label1} className="col-md-2 control-label">Last Name *</label>
+                  <label style={styles.label1} className="col-md-2 control-label">Last Name </label>
                   <div className="col-md-4">
                     <TextField
                       hintText="Last Name"
@@ -126,7 +125,6 @@ const DetailsForm = (props) => {
                       onChange={props.handleChange('lastName')}
                       type="text"
                       disabled={isDisabled}
-                      errorText={errors.lastName == '' ? null : errors.lastName}
                     />
                   </div>
                 </div>
@@ -158,11 +156,7 @@ const DetailsForm = (props) => {
                   null
                :
                   <div className="form-group row" style={styles.formGroup}>
-                    {/* <label  className="col-md-2 control-label" style={{paddingTop: 14, paddingBottom: 20}}>Code Redeem Flag</label> */}
-                    {/* <div className="col-md-4">
-                      <div style={{paddingTop: 14, paddingBottom: 20, color: 'grey'}} > {props.data.CodeRedeemFlag ? "Yes" : "No"} </div>
-                    </div> */}
-                    <label style={styles.label1} className="col-md-2 control-label">Date of Birth *</label>
+                    <label style={styles.label1} className="col-md-2 control-label">Date of Birth</label>
                   <div className="col-md-4">
                     <DatePicker
                       hintText="Select date"
@@ -184,6 +178,7 @@ const DetailsForm = (props) => {
                     </div>
                   </div>
                 }
+                
                 <div className="form-group row" style={styles.formGroup}>
                   <label className="col-md-2 control-label" style={{paddingTop: 14, paddingBottom: 20}}>SMS Option</label>
                   <div className="col-md-4" style={{paddingTop: 14, paddingBottom: 20}}>
@@ -203,7 +198,7 @@ const DetailsForm = (props) => {
                   </div>
                 </div>
                 <div className="form-group row" style={styles.formGroup}>
-                  <label className={errors.interests != '' && errors.interests != undefined ? 'col-md-2 control-label text-danger' : 'col-md-2 control-label'}>Interests *</label>
+                  <label className={'col-md-2 control-label'}>Interests </label>
                   <div className="col-md-10">
                     {  _.map(props.intrestList,(value,index)=>(
                         <Checkbox
@@ -220,7 +215,7 @@ const DetailsForm = (props) => {
                   </div>
                 </div>
                 <div className="form-group row" style={styles.formGroup}>
-                  <label style={styles.label1} className="col-md-2 control-label">Address Line 1 *</label>
+                  <label style={styles.label1} className="col-md-2 control-label">Address Line 1 </label>
                   <div className="col-md-4">
                     <TextField
                       hintText="Address Line 1"
@@ -229,7 +224,6 @@ const DetailsForm = (props) => {
                       type="text"
                       multiLine
                       disabled={isDisabled}
-                      errorText={errors.address1 == '' ? null : errors.address1}
                     />
                   </div>
                   <label style={styles.label1} className="col-md-2 control-label">Address Line 2</label>
@@ -241,19 +235,17 @@ const DetailsForm = (props) => {
                       type="text"
                       multiLine
                       disabled={isDisabled}
-                      errorText={errors.address2 == '' ? null : errors.address2}
                     />
                   </div>
                 </div>
                 <div className="form-group row" style={styles.formGroup}>
-                  <label style={styles.label2} className="col-md-2 control-label">State *</label>
+                  <label style={styles.label2} className="col-md-2 control-label">State </label>
                   <div className="col-md-4">
                     <SelectField
                       floatingLabelText="Select State"
                       value={props.data.state}
                       onChange={props.handleChange('state')}
                       disabled={isDisabled}
-                      errorText={errors.state == '' ? null : errors.state}                      
                     >
                     {_.map(statesList, (val, i) => <MenuItem value={val} primaryText={val} key={i} /> )}
                     </SelectField>
@@ -265,14 +257,13 @@ const DetailsForm = (props) => {
                         value={props.data.city}
                         onChange={props.handleChange('city')}
                         disabled={props.data.state == '' || isDisabled}
-                        errorText={errors.city == '' ? null : errors.city}                                              
                         >
                         {_.map(cityList, (val, i) => <MenuItem value={val.city} primaryText={val.city} key={i} />)}
                       </SelectField>
                     </div>
                 </div>
                 <div className="form-group row" style={styles.formGroup}>
-                  <label style={styles.label1} className="col-md-2 control-label">Zip Code *</label>
+                  <label style={styles.label1} className="col-md-2 control-label">Zip Code </label>
                   <div className="col-md-4">
                     <TextField
                       className='spin-remove'
@@ -284,19 +275,18 @@ const DetailsForm = (props) => {
                       errorText={errors.zipcode == '' ? null : errors.zipcode}
                     />
                   </div>
-                  <label style={styles.label1}  className="col-md-2 control-label">Anniversary Date/Year *</label>
+                  <label style={styles.label1}  className="col-md-2 control-label">Anniversary Date/Year </label>
                   <div className="col-md-4">
                     <DatePicker
                       hintText="Select date"
                       value={anniversaryDate}
                       onChange={props.handleChange('anniversary')}
                       disabled={isDisabled}
-                      errorText={errors.anniversary == '' ? null : errors.anniversary}
                     />
                   </div>
                 </div>
                 <div className="form-group row" style={styles.formGroup}>
-                  <label className="col-md-2 control-label" style={{'paddingTop': 14}}>Gender *</label>
+                  <label className="col-md-2 control-label" style={{'paddingTop': 14}}>Gender </label>
                   <div className='col-md-10' style={{'paddingTop': 14}}>
                     <RadioButtonGroup disabled={isDisabled} name="gender" valueSelected={genderVaalue}  defaultSelected={genderVaalue} onChange={props.handleChange('gender')}>
                       <RadioButton
@@ -346,7 +336,6 @@ const DetailsForm = (props) => {
                       onChange={props.handleChange('occupation')}
                       type="text"
                       disabled={isDisabled}
-                      errorText={errors.occupation == '' ? null : errors.occupation}
                     />
                   </div>
                   <label className="col-md-2 control-label" style={styles.label}>Source</label>
@@ -365,17 +354,16 @@ const DetailsForm = (props) => {
                   </div>
                 </div>
                 <div className="form-group row" style={styles.formGroup}>
-                  <div className="col-md-2"></div>
                   <div className="col-md-10">
                   {props.type == 'disable' ?
                   null
                 :
                   <div>
-                    <RaisedButton label={props.type =='add'?"Add":"Save"} backgroundColor={"#1b025c"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-md" />
+                    <RaisedButton label={props.type =='add'?"Add":"Save"} backgroundColor={"#1b025c"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-xs" />
                     {props.type == 'edit'?
                       null
                     :
-                      <RaisedButton label="Cancel" style={styles.button} onClick={()=>{props.handleEdit('cancel')}} className="btn-w-md" />
+                      <RaisedButton label="Cancel" style={styles.button} onClick={()=>{props.handleEdit('cancel')}} className="btn-w-xs" />
                     }
                   </div>
                 }
@@ -646,25 +634,24 @@ class CustomerDetails extends React.Component {
     let interestCheck = this.state.type == 'add' ? cloneData.interest.length != 0 : true;  
     let errors = {};
     var pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    if(cloneData.name != '' && cloneData.lastName != '' && cloneData.city !='' && cloneData.state !='' && cloneData.email != ''&& cloneData.interest.length != 0  && cloneData.phone != '' && cloneData.address1 != '' && cloneData.zipcode != '' && cloneData.birthday != '' && cloneData.anniversary != '' && cloneData.occupation != ''){
+    if(cloneData.email != '' && cloneData.phone != ''){
         let email = cloneData.email.trim();
         if( cloneData.phone == undefined){
           errors.phone = 'Please Enter Phone Number';          
         } else if( cloneData.phone != undefined && cloneData.phone.length != 10 ){
             errors.phone = 'Phone should be of 10 digits.';
         }
-        if(cloneData.zipcode.length != 5){
+        if(cloneData.zipcode !='' && cloneData.zipcode.length != 5){
             errors.zipcode = 'ZipCode should be of 5 digits.';
         }
         if (_.isEmpty(email)) {
           errors.email = 'Empty field';
         } else if (!cloneData.email.match(pattern)) {
           errors.email = 'Not a valid email';
-        } else if(cloneData.phone.length == 10 && cloneData.zipcode.length == 5) {
+        } else if(cloneData.phone.length == 10 ) {
           errors.email = '';
           errors.phone = '';
           errors.zipcode = '';
-          errors.others = '';
           this.setState({errors: errors});
           if(this.state.type == 'add'){
               this.props.customerAddRequest(apiData);
@@ -675,18 +662,8 @@ class CustomerDetails extends React.Component {
         }
         this.setState({errors: errors});
     } else {
-        errors.name = cloneData.name != '' ? '' : 'Cannot be Empty.';
-        errors.lastName = cloneData.lastName != '' ? '' : 'Cannot be Empty.';
         errors.email = cloneData.email != '' ? !cloneData.email.match(pattern)? 'Not a valid email':'' : 'Cannot be Empty.';
         errors.phone = cloneData.phone != '' ? '' : 'Cannot be Empty.';
-        errors.interests = cloneData.interest.length != 0 ? '' : 'Cannot be Empty.';
-        errors.address1 = cloneData.address1 != '' ? '' : 'Cannot be Empty.';
-        errors.zipcode = cloneData.zipcode != '' ? '' : 'Cannot be Empty.';
-        errors.birthday = cloneData.birthday != '' ? '' : 'Cannot be Empty.';
-        errors.anniversary = cloneData.anniversary != '' ? '' : 'Cannot be Empty.';
-        errors.occupation = cloneData.occupation != '' ? '' : 'Cannot be Empty.';
-        errors.city = cloneData.city != '' ? '' : 'Cannot be Empty.';
-        errors.state = cloneData.state != '' ? '' : 'Cannot be Empty.';        
         this.setState({errors: errors});
     }
   }
@@ -726,7 +703,7 @@ class CustomerDetails extends React.Component {
       }
       this.setState({type:'disable',data:_.cloneDeep(data)})
     } else if (data == 'cancel' && this.state.type == 'add') {
-      this.props.history.goBack();
+      this.props.history.push('/app/customer/viewcustomer');
     }
   }
   handleChange = props => (event, index, value) =>{
