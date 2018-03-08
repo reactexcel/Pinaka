@@ -440,7 +440,8 @@ class CustomerDetails extends React.Component {
         time : 1
       });
     }else if(match.params.type == 'disable' ){
-      let data = customer.customer.data[match.params.id];
+      const select = _.filter(customer.customer.data,{_id:match.params.id})            
+      let data = select[0];
       data.name = data.name ? data.name : '';
       data.lastName = data.lastName ? data.lastName:'';
       data.email = data.email ? data.email : '';
@@ -498,7 +499,7 @@ class CustomerDetails extends React.Component {
       lastName: '',
       email: '',
       phone: '',
-      sms_option: true,
+      sms_option: false,
       app_installed: false,
       interests: [],
       interest: [],    
@@ -531,8 +532,10 @@ class CustomerDetails extends React.Component {
         time : 1        
       });
     } else if(match.params.type == 'disable') {
-      let data = customer.customer.data[match.params.id];
-      const item = customer.customer.data[match.params.id];
+      const select = _.filter(customer.customer.data,{_id:match.params.id})      
+      
+      let data = select[0];
+      const item = select[0]
       data.name = data.name ? data.name : '';
       data.lastName = data.lastName ? data.lastName:'';
       data.email = data.email ? data.email : '';
@@ -608,7 +611,7 @@ class CustomerDetails extends React.Component {
     }
   }
   handleRequestClose(){
-    this.setState({isOpen:false})
+    this.setState({isOpen:false},()=>{ this.state.type == 'add' ? this.props.history.push('/app/customer/viewcustomer') :  0;})
     if(this.props.customer.updateCustomer.isSuccess){
       this.setState({time:0})
       this.props.customerReset();
@@ -680,8 +683,9 @@ class CustomerDetails extends React.Component {
     if(data == 'back'){
       this.props.history.goBack();
     } else if (data == 'cancel' && this.state.type == 'edit') {
-      let data = this.props.customer.customer.data[this.props.match.params.id];
-      const item = this.props.customer.customer.data[this.props.match.params.id];
+      const select = _.filter(this.props.customer.customer.data,{_id:this.props.match.params.id})            
+      let data = select[0]
+      const item = select[0];
       data.name = data.name ? data.name : '';
       data.lastName = data.lastName ? data.lastName:'';
       data.email = data.email ? data.email : '';

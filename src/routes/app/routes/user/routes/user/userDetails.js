@@ -321,7 +321,8 @@ class UserDetails extends React.Component {
     this.setState({ data });
   }
   handleRequestClose(){
-    this.setState({isOpen:false});
+    this.setState({isOpen:false},()=>{ this.state.type == 'add' ? this.props.history.push('/app/user/viewuser') :  0;});
+    
     if(this.props.user.updateUser.isSuccess){
       this.props.userReset();      
       // this.props.history.goBack();    

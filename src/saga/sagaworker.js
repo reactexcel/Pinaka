@@ -223,7 +223,6 @@ export function* fetchCustomer(action){
 export function* addCustomer(data){
   let params = data.payload.data;
   let token = data.payload.token;
-  console.log(params)
   var formData = new FormData();
     formData.append('name', params.name);
     formData.append('email', params.email);
@@ -253,8 +252,7 @@ export function* addCustomer(data){
 
   try{
     const api = () =>  new Promise((resolve, reject) => {
-        // return fetch(API.SERVER_DEV_URL+'admin/addCustomer?accessToken='+token,{
-          return fetch('http://192.168.1.10:3000/api/admin/addCustomer?accessToken='+token,{
+        return fetch(API.SERVER_DEV_URL+'admin/addCustomer?accessToken='+token,{
              method: 'POST',
             body:formData,
          })
@@ -272,7 +270,6 @@ export function* addCustomer(data){
 
 
      let res = yield call(api);
-     console.log(res);
         if(res.status == 1){
          yield put( actions.customerAddSuccess(res.data));
        } else if(res.error == 1 || res.code) {

@@ -77,7 +77,7 @@ class Customer extends React.Component {
       return(
       <tr key={index} >
         <td className="mdl-data-table__cell--non-numeric">{itemNo}</td>
-        <td className="mdl-data-table__cell--non-numeric"> <a href={`/#/app/customer/viewcustomerdetails/${index}/disable`}>{value.name} {value.lastName}</a></td>
+        <td className="mdl-data-table__cell--non-numeric"> <a href={`/#/app/customer/viewcustomerdetails/${value._id}/disable`}>{value.name} {value.lastName}</a></td>
         <td className="mdl-data-table__cell--non-numeric">{value.email}</td>
         <td><a href={`/#/app/customer/viewcustomerdetails/${index}/disable`}>{value.phone?value.phone.substring(2, value.phone.length):''}</a></td>
         <td>{value.CodeRedeemFlag ? "Yes" : "No"}</td>        

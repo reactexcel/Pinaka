@@ -61,7 +61,7 @@ class Redeem extends React.Component {
      redeemList = _.map(this.props.redeem.redeem.data, (value, index) => (
       <tr key={index}>
         <td className="mdl-data-table__cell--non-numeric">{index+1}</td>
-        <td className="mdl-data-table__cell--non-numeric"><a href={`/#/app/redeem/viewredeemdetails/${index}/disable`}>{value.redeem_code}</a></td>
+        <td className="mdl-data-table__cell--non-numeric"><a href={`/#/app/redeem/viewredeemdetails/${value._id}/disable`}>{value.redeem_code}</a></td>
         <td className="mdl-data-table__cell--non-numeric">{value.type}</td>
         <td>{value.active_status}</td>
         {/* <td>{value.lastLogin}</td> */}
