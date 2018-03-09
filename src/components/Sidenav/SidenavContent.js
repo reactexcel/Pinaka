@@ -107,18 +107,6 @@ class SidebarContent extends React.Component {
         :
         null  
         }
-        {/* <li>
-          <FlatButton href="#/app/chart"><i className="nav-icon material-icons">pie_chart_outlined</i><span className="nav-text">Charts</span></FlatButton>
-          <ul>
-            <li><FlatButton className="prepend-icon" href="#/app/chart/line"><span>Line & Area</span></FlatButton></li>
-            <li><FlatButton className="prepend-icon" href="#/app/chart/bar"><span>Bar</span></FlatButton></li>
-            <li><FlatButton className="prepend-icon" href="#/app/chart/pie"><span>Pie</span></FlatButton></li>
-            <li><FlatButton className="prepend-icon" href="#/app/chart/scatter"><span>Scatter</span></FlatButton></li>
-            <li><FlatButton className="prepend-icon" href="#/app/chart/radar"><span>Radar</span></FlatButton></li>
-            <li><FlatButton className="prepend-icon" href="#/app/chart/funnel"><span>Funnel</span></FlatButton></li>
-            <li><FlatButton className="prepend-icon" href="#/app/chart/more"><span>More</span></FlatButton></li>
-          </ul>
-        </li> */}
       </ul>
     );
   }

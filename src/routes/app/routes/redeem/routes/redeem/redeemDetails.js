@@ -251,7 +251,7 @@ class redeemDetails extends React.Component {
     this.setState({ data });
   }
   handleRequestClose(){
-    this.setState({isOpen:false})
+    this.setState({isOpen:false},()=>{ this.state.type == 'add' && this.props.redeem.updateRedeem.isSuccess  ? this.props.history.push('/app/redeem/viewredeem') :  0;})
     if(this.props.redeem.updateRedeem.isSuccess ){
       this.props.redeemReset();
     }
@@ -262,6 +262,7 @@ class redeemDetails extends React.Component {
       <Snackbar
           open={this.state.isOpen}
           message={this.state.message}
+          style={{top:61,left:"58%",transition:"transform 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, visibility 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms"}}
           autoHideDuration={4000}
           onRequestClose={this.handleRequestClose}
         />

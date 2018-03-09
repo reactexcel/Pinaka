@@ -80,17 +80,18 @@ class User extends React.Component {
                     <h2 className="article-title">User Details</h2>
                     
                   </div>
-                  <div className=" col-xl-12 row" >
-                  <RaisedButton label="Add User" style={{boxShadow:'none',marginRight:5}}  onClick={()=>{this.props.history.push('/app/user/viewuserdetails/0/add')}}  primary  />
-                   
-                    <TextField
-                      hintText="Search"
-                      style={{width:'75%'}}
-                      value={this.state.search}
-                      onChange={this.handleChange('search')}
-                      type="text"
-                      fullWidth
-                    />
+                  <div className="row">
+                    <div className="col-xl-12">
+                      <RaisedButton label="Add User" style={{boxShadow:'none',marginRight:5}}  onClick={()=>{this.props.history.push('/app/user/viewuserdetails/0/add')}}  primary  />
+                      <TextField
+                        hintText="Search"
+                        style={{width:'75%', marginLeft: "3vw" }}
+                        value={this.state.search}
+                        onChange={this.handleChange('search')}
+                        type="text"
+                        fullWidth
+                      />
+                    </div>
                   </div>
                   <div className="box box-default table-box mdl-shadow--2dp">
                     <table className="mdl-data-table table-responsive">

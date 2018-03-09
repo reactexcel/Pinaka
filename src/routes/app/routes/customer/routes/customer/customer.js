@@ -78,7 +78,7 @@ class Customer extends React.Component {
       <tr key={index} >
         <td className="mdl-data-table__cell--non-numeric">{itemNo}</td>
         <td className="mdl-data-table__cell--non-numeric"> <a href={`/#/app/customer/viewcustomerdetails/${value._id}/disable`}>{value.name} {value.lastName}</a></td>
-        <td className="mdl-data-table__cell--non-numeric">{value.email}</td>
+        <td className="mdl-data-table__cell--non-numeric"><a href={`/#/app/customer/viewcustomerdetails/${value._id}/disable`}> {value.email}</a> </td>
         <td><a href={`/#/app/customer/viewcustomerdetails/${index}/disable`}>{value.phone?value.phone.substring(2, value.phone.length):''}</a></td>
         <td>{value.CodeRedeemFlag ? "Yes" : "No"}</td>        
         <td>{value.sms_option ? "Yes" : "No"}</td>
@@ -95,18 +95,18 @@ class Customer extends React.Component {
                 <article className="article">
                   <h2 className="article-title">Customer Details</h2>
                   
-                  <div className=" col-xl-12 row" >
-             
-                    <RaisedButton label="Add Customer"  style={{boxShadow:'none',marginRight:5}}  onClick={()=>{this.props.history.push('/app/customer/viewcustomerdetails/0/add')}}  primary  />
-
-                    <TextField
-                      hintText="Search"
-                      style={{width:'75%'}}
-                      value={this.state.search}
-                      onChange={this.handleChange('search')}
-                      type="text"
-                      fullWidth
-                    />
+                  <div className="row">
+                    <div className="col-xl-12">
+                      <RaisedButton label="Add Customer"  style={{boxShadow:'none',marginRight:5}}  onClick={()=>{this.props.history.push('/app/customer/viewcustomerdetails/0/add')}} primary />
+                      <TextField
+                        hintText="Search"
+                        style={{width:'75%', marginLeft: "3vw" }}
+                        value={this.state.search}
+                        onChange={this.handleChange('search')}
+                        type="text"
+                        fullWidth
+                      />
+                    </div>
                   </div>
                   <div>
                     {this.state.page != 0 ? <a style={{color:'#00bcd6',cursor:'pointer',marginRight:15}} onClick={()=>{this.handleNext('prev')}} > Previous </a>: null  }
@@ -114,7 +114,7 @@ class Customer extends React.Component {
                     <span style={{float:"right",marginRight:5}} >{this.state.page + 1} out of {totalPage}</span>
                   </div>
                   <div className="box box-default table-box mdl-shadow--2dp">
-                    <table className="mdl-data-table table-responsive">
+                    <table className="mdl-data-table table-responsive" style={{display:'inherit'}} >
                       <thead>
                         <tr>
                           <th className="mdl-data-table__cell--non-numeric">#</th>

@@ -61,7 +61,7 @@ const DetailsForm = (props) => {
           {props.type == 'add' || props.type =='edit' || props.type == 'changePass' || props.isLoading ?
               null
             :
-              <div className='col-md-6 col-xs-9 resp-p-x-0'>
+              <div className='col-md-8 col-xs-9 resp-p-x-0'>
                 {/* button for add update and delete */}
                 <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-xs" />
                 <RaisedButton label="Change Password" backgroundColor="#7edbe8" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.handleEdit('changePass')}} className="btn-w-xs" />                
@@ -321,11 +321,10 @@ class UserDetails extends React.Component {
     this.setState({ data });
   }
   handleRequestClose(){
-    this.setState({isOpen:false},()=>{ this.state.type == 'add' ? this.props.history.push('/app/user/viewuser') :  0;});
-    
+    this.setState({isOpen:false},()=>{ if(this.state.type == 'add' && this.props.user.updateUser.isSuccess ) {this.props.history.push('/app/user/viewuser'); this.props.userReset();} });
+
     if(this.props.user.updateUser.isSuccess){
       this.props.userReset();      
-      // this.props.history.goBack();    
     }
   }
   render(){
@@ -333,6 +332,7 @@ class UserDetails extends React.Component {
       <div className="container-fluid no-breadcrumbs">
       <Snackbar
           open={this.state.isOpen}
+          style={{top:61,left:"58%",transition:"transform 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, visibility 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms"}}
           message={this.state.message}
           autoHideDuration={1000}
           onRequestClose={this.handleRequestClose}

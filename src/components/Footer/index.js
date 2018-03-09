@@ -9,10 +9,7 @@ class Footer extends React.Component {
          >
         <div className="container-fluid" >
           <span className="float-left">
-            <span>Copyright © <a className="brand" target="_blank" style={{color:'white',fontSize:18}} >{APPCONFIG.brand}</a> {APPCONFIG.year}</span>
-          </span>
-          <span className="float-right">
-            <span>Built with Love <i className="material-icons">favorite_border</i></span>
+            <span>Copyright © <a className="brand" target="_blank" style={{color:'white'}} >{APPCONFIG.brand}</a> {APPCONFIG.year}</span>
           </span>
         </div>
       </section>

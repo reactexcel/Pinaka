@@ -81,7 +81,7 @@ const DetailsForm = (props) => {
               isLoading ? 
               null
               :
-              <div className='col-md-6 col-xs-9 resp-p-x-0' >
+              <div className='col-md-6 col-xs-9 resp-p-x-0 no-padding' >
                 <RaisedButton style={{marginLeft:5}} label={props.type =='add'?"Add":"Save"} backgroundColor={"#1b025c"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-xs" />
                 <RaisedButton label="Cancel" style={styles.button} onClick={()=>{props.handleEdit('cancel')}} className="btn-w-xs" />
               </div>  
@@ -114,6 +114,7 @@ const DetailsForm = (props) => {
                       value={props.data.name}
                       onChange={props.handleChange('name')}
                       type="text"
+                      style={{width:'auto'}}
                       disabled={isDisabled}
                     />
                   </div>
@@ -123,6 +124,7 @@ const DetailsForm = (props) => {
                       hintText="Last Name"
                       value={props.data.lastName}
                       onChange={props.handleChange('lastName')}
+                      style={{width:'auto'}}
                       type="text"
                       disabled={isDisabled}
                     />
@@ -134,6 +136,7 @@ const DetailsForm = (props) => {
                     <TextField
                       hintText="Email ID"
                       value={props.data.email} onChange={props.handleChange('email')}
+                      style={{width:'auto'}}
                       type="email"
                       disabled={isDisabled}
                       errorText={errors.email == '' ? null : errors.email}
@@ -146,6 +149,7 @@ const DetailsForm = (props) => {
                       className='spin-remove'
                       value={props.data.phone?props.data.phone:''}
                       onChange={props.handleChange('phone')}
+                      style={{width:'auto'}}
                       type="number"
                       disabled={isDisabled}
                       errorText={errors.phone == '' ? null : errors.phone}
@@ -160,6 +164,7 @@ const DetailsForm = (props) => {
                   <div className="col-md-4">
                     <DatePicker
                       hintText="Select date"
+                      textFieldStyle={{width:'auto'}}
                       value={dobDate}
                       onChange={props.handleChange('birthday')}
                       disabled={isDisabled}
@@ -168,17 +173,28 @@ const DetailsForm = (props) => {
                   </div>
                     <label style={styles.label1} className="col-md-2 control-label">Redeem Code</label>
                     <div className="col-md-4">
-                      <TextField
+                      {!props.data.CodeRedeemFlag && props.type =='edit'?
+                        <TextField
+                        hintText="Redeem Code"
+                        value={props.data.redeemCode ? props.data.redeemCode : ''}
+                        onChange={props.handleChange('redeemCode')}
+                        style={{width:'auto'}}
+                        type="text"
+                        />
+                        :
+                        <TextField
                         hintText="Redeem Code"
                         value={props.type =='add'?props.data.redeemCode:props.data.CodeRedeemFlag ? 'Yes': 'No'}
                         onChange={props.handleChange('redeemCode')}
+                        style={{width:'auto'}}
                         type="text"
                         disabled = {props.type == 'add'? false:true}
                         />
+                      }
                     </div>
                   </div>
                 }
-                {props.type == 'add' ? 
+                {props.type == 'add' || props.type == 'edit' ? 
                 null:
                 <div className="form-group row" style={styles.formGroup}>
                   <label className="col-md-2 control-label" style={{paddingTop: 14, paddingBottom: 20}}>SMS Option</label>
@@ -224,6 +240,7 @@ const DetailsForm = (props) => {
                       value={props.data.address1}
                       onChange={props.handleChange('address1')}
                       type="text"
+                      style={{width:'auto'}}
                       multiLine
                       disabled={isDisabled}
                     />
@@ -234,6 +251,7 @@ const DetailsForm = (props) => {
                       hintText="Address Line 2"
                       value={props.data.address2}
                       onChange={props.handleChange('address2')}
+                      style={{width:'auto'}}
                       type="text"
                       multiLine
                       disabled={isDisabled}
@@ -245,6 +263,7 @@ const DetailsForm = (props) => {
                   <div className="col-md-4">
                     <SelectField
                       floatingLabelText="Select State"
+                      style={{width:"auto", display:'flow-root'}}
                       value={props.data.state}
                       onChange={props.handleChange('state')}
                       disabled={isDisabled}
@@ -257,6 +276,7 @@ const DetailsForm = (props) => {
                       <SelectField
                         floatingLabelText="Select city"
                         value={props.data.city}
+                        style={{width:"auto", display:'flow-root'}}
                         onChange={props.handleChange('city')}
                         disabled={props.data.state == '' || isDisabled}
                         >
@@ -272,6 +292,7 @@ const DetailsForm = (props) => {
                       hintText="Zip code"
                       value={props.data.zipcode}
                       onChange={props.handleChange('zipcode')}
+                      style={{width:'auto'}}
                       type="number"
                       disabled={isDisabled}
                       errorText={errors.zipcode == '' ? null : errors.zipcode}
@@ -281,6 +302,7 @@ const DetailsForm = (props) => {
                   <div className="col-md-4">
                     <DatePicker
                       hintText="Select date"
+                      textFieldStyle={{width:'auto'}}
                       value={anniversaryDate}
                       onChange={props.handleChange('anniversary')}
                       disabled={isDisabled}
@@ -320,6 +342,7 @@ const DetailsForm = (props) => {
                   <div className="col-md-4">
                     <SelectField
                       style={styles.dropFeild}
+                      style={{width:"auto", display:'inherit'}}
                       value={props.data.marital}
                       onChange={props.handleChange('marital')}
                       disabled={isDisabled}
@@ -336,18 +359,21 @@ const DetailsForm = (props) => {
                       hintText="Occupation"
                       value={props.data.occupation}
                       onChange={props.handleChange('occupation')}
+                      style={{width:'auto'}}
                       type="text"
                       disabled={isDisabled}
                     />
                   </div>
                   {props.type == 'add' ? 
-                   null : 
-                   <div>
+                   null :
                   <label className="col-md-2 control-label" style={styles.label}>Source</label>
-                  <div className="col-md-4">
+                  }
+                 {props.type == 'add' ? 
+                   null :
+                   <div className="col-md-4">
                     <SelectField
                       value={props.data.source}
-                      style={styles.dropFeild}
+                      style={styles.dropFeild,{width:"auto", display:'flow-root'}}
                       onChange={props.handleChange('source')}
                       disabled
                     >
@@ -357,24 +383,26 @@ const DetailsForm = (props) => {
                       <MenuItem value={4} primaryText="Other" />
                     </SelectField>
                   </div>
-                  </div>
                   }
                 </div>
                 <div className="form-group row" style={styles.formGroup}>
-                  <div className="col-md-10">
                   {props.type == 'disable' ?
+                  isLoading ?
                   null
+                  :
+                  <div className='col-md-6 col-xs-9 resp-p-x-0 ' style={{paddingLeft:13}} >
+                    <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-xs" />
+                    <RaisedButton label="Delete" backgroundColor="#FF0000" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.handleDelete({token:props.user.data.token,data:{_id:props.data._id,infusion_id:props.data.infusion_id?props.data.infusion_id :'' }})}} className="btn-w-xs" />
+                    <RaisedButton label={props.type == 'disable'?"Back":"cancel"}  style={{marginLeft:5}}  onClick={()=>{props.type == 'disable'? props.handleEdit('back'):props.handleEdit('cancel')}} className="btn-w-xs" />
+                  </div>
                 :
-                  <div>
+                  <div className="col-md-6 col-xs-9 resp-p-x-0 " style={{paddingLeft:4}} >
                     <RaisedButton label={props.type =='add'?"Add":"Save"} backgroundColor={"#1b025c"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-xs" />
-                    {props.type == 'edit'?
-                      null
-                    :
+    
                       <RaisedButton label="Cancel" style={styles.button} onClick={()=>{props.handleEdit('cancel')}} className="btn-w-xs" />
-                    }
+                    
                   </div>
                 }
-                  </div>
                 </div>
               </form>
             }
@@ -404,6 +432,8 @@ class CustomerDetails extends React.Component {
     this.handleDelete = this.handleDelete.bind(this);
   }
   componentWillMount(){
+    let token = this.props.user.data.token;     
+    this.props.customerListChartRequest(token);    
     const { customer, match, interest } = this.props;
     let data={
       name: '',
@@ -440,7 +470,7 @@ class CustomerDetails extends React.Component {
         time : 1
       });
     }else if(match.params.type == 'disable' ){
-      const select = _.filter(customer.customer.data,{_id:match.params.id})            
+      const select = _.filter(customer.customerList.data,{_id:match.params.id})            
       let data = select[0];
       data.name = data.name ? data.name : '';
       data.lastName = data.lastName ? data.lastName:'';
@@ -492,7 +522,7 @@ class CustomerDetails extends React.Component {
     }
   }
   componentWillReceiveProps(props){
-    let token = props.user.data.token;    
+    let token = props.user.data.token; 
     const { customer, match, interest } = props;
     let data={
       name: '',
@@ -532,7 +562,7 @@ class CustomerDetails extends React.Component {
         time : 1        
       });
     } else if(match.params.type == 'disable') {
-      const select = _.filter(customer.customer.data,{_id:match.params.id})      
+      const select = _.filter(customer.customerList.data,{_id:match.params.id})      
       
       let data = select[0];
       const item = select[0]
@@ -547,7 +577,7 @@ class CustomerDetails extends React.Component {
       data.state = data.state ? data.state : '';
       data.city = data.city ? data.city : '';
       data.zipcode = data.zipcode ? data.zipcode : '';
-      data.phone = data.phone? data.phone.substring(2, data.phone.length) : '';
+      data.phone = data.phone? data.phone.length > 10 ? data.phone.substring(2, data.phone.length) : data.phone : '';
       data.interest = [];
       const interest = data.interests;
       _.map(data.interests,(value,index)=>{ return data.interest.push(value.id)}); 
@@ -565,7 +595,7 @@ class CustomerDetails extends React.Component {
       this.setState({
         data: _.cloneDeep(data),
         type: match.params.type,
-        intrestList: interest.interestList != undefined? interest.interestList.data : '',
+        intrestList: props.interest.interestList != undefined? props.interest.interestList.data : '',
       });
     }
     if(props.customer.updateCustomer.isSuccess == true ){
@@ -573,7 +603,7 @@ class CustomerDetails extends React.Component {
       if(this.state.type == 'add'){
         this.setState({isOpen:true,message:"Added User Successfully"});
       } else if (this.state.type == 'disable' || this.state.type == 'edit' ){
-        props.customerListRequest({token,page:0});      
+        props.customerListChartRequest(token);
         this.setState({isOpen:true,message:"User Data Updated Successfully"});
       }
     } else if(props.customer.updateCustomer.isError){
@@ -599,7 +629,7 @@ class CustomerDetails extends React.Component {
         }
         this.setState({isOpen:true,message});
       } else if (this.state.type == 'disable'){
-        this.setState({isOpen:true,message:"Somthing went wrong"});        
+        this.setState({isOpen:true,message:props.customer.updateCustomer.message.message});        
       }
     }
     if(props.customer.updateCustomer.isLoading){
@@ -611,10 +641,10 @@ class CustomerDetails extends React.Component {
     }
   }
   handleRequestClose(){
-    this.setState({isOpen:false},()=>{ this.state.type == 'add' ? this.props.history.push('/app/customer/viewcustomer') :  0;})
+    this.setState({isOpen:false},()=>{ this.state.type == 'add' && this.props.customer.updateCustomer.isSuccess ? this.props.history.push('/app/customer/viewcustomer') :  0;})
+    this.props.customerReset();
     if(this.props.customer.updateCustomer.isSuccess){
       this.setState({time:0})
-      this.props.customerReset();
     }
   }
   handleSave(){
@@ -683,7 +713,7 @@ class CustomerDetails extends React.Component {
     if(data == 'back'){
       this.props.history.goBack();
     } else if (data == 'cancel' && this.state.type == 'edit') {
-      const select = _.filter(this.props.customer.customer.data,{_id:this.props.match.params.id})            
+      const select = _.filter(this.props.customer.customerList.data,{_id:this.props.match.params.id})            
       let data = select[0]
       const item = select[0];
       data.name = data.name ? data.name : '';
@@ -749,6 +779,7 @@ class CustomerDetails extends React.Component {
       <div className="container-fluid no-breadcrumbs">
         <Snackbar
           open={this.state.isOpen}
+          style={{top:61,left:"58%",transition:"transform 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, visibility 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms"}}
           message={this.state.message}
           autoHideDuration={2000}
           onRequestClose={this.handleRequestClose}
