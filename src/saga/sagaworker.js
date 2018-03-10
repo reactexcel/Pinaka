@@ -300,6 +300,10 @@ export function* updateCustomer(data){
   if(params.phone != undefined){
       formData.append('phone', '+1' + params.phone);
   }
+  if(!params.CodeRedeemFlag && params.redeemCode != undefined ){
+    formData.append('CodeRedeemFlag', params.redeemCode != ""?true:false);    
+    formData.append('redeemCode', params.redeemCode);        
+  }
   formData.append('interests', params.interest);
   formData.append('source', params.source != undefined ? params.source : 1);
   formData.append('type', 0);
@@ -320,7 +324,7 @@ export function* updateCustomer(data){
 
             body:formData,
          })
-         .then((res)=> { console.log(res);  return res.json()})
+         .then((res)=> { return res.json()})
          .then(data => {
              resolve(data);
          })

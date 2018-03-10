@@ -44,6 +44,6 @@
 // for Directive: slimScroll
 .app-sidebar{
   .sidebar-content {
-    height: calc(100% - #{$l_header_height + $sidebar_footer_height} ); // calc is a simple sultion with a bit cross browser support problem
+    height: calc(100vh - #{$l_header_height + $sidebar_footer_height} ); // calc is a simple sultion with a bit cross browser support problem
   }
 }

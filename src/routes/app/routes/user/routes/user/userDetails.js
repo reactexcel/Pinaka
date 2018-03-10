@@ -61,7 +61,7 @@ const DetailsForm = (props) => {
           {props.type == 'add' || props.type =='edit' || props.type == 'changePass' || props.isLoading ?
               null
             :
-              <div className='col-md-6 col-xs-9 resp-p-x-0'>
+              <div className='col-md-8 col-xs-9 resp-p-x-0'>
                 {/* button for add update and delete */}
                 <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-xs" />
                 <RaisedButton label="Change Password" backgroundColor="#7edbe8" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.handleEdit('changePass')}} className="btn-w-xs" />                
@@ -215,8 +215,9 @@ class UserDetails extends React.Component {
         time: 1
       });
     } else if(match.params.type == 'disable') {
+      const data = _.filter(user.user.data,{_id:match.params.id})
       this.setState({
-        data: _.cloneDeep(user.user.data[match.params.id]),
+        data: _.cloneDeep(data[0]),
         type: match.params.type
       });
     }
@@ -256,9 +257,10 @@ class UserDetails extends React.Component {
         type: match.params.type,
         time: 1
       });
-    }else{
+    }else if (match.params.type == 'disable') {
+      const data = _.filter(user.user.data,{_id:match.params.id})      
       this.setState({
-        data: _.cloneDeep(user.user.data[match.params.id]),
+        data: _.cloneDeep(data[0]),
         type: match.params.type
       });
     }
@@ -301,7 +303,8 @@ class UserDetails extends React.Component {
     if(data == 'back'){
       this.props.history.goBack();
     } else if (data == 'cancel' && this.state.type == 'edit') {
-      this.setState({type:'disable',data:_.cloneDeep(this.props.user.user.data[this.props.match.params.id])})
+      const data = _.filter(this.props.user.user.data,{_id:this.props.match.params.id})
+      this.setState({type:'disable',data:_.cloneDeep(data[0])})
     } else if (data == 'cancel' && this.state.type == 'add') {
       this.props.history.goBack();
     } else if(data == 'changePass'){
@@ -318,10 +321,10 @@ class UserDetails extends React.Component {
     this.setState({ data });
   }
   handleRequestClose(){
-    this.setState({isOpen:false});
+    this.setState({isOpen:false},()=>{ if(this.state.type == 'add' && this.props.user.updateUser.isSuccess ) {this.props.history.push('/app/user/viewuser'); this.props.userReset();} });
+
     if(this.props.user.updateUser.isSuccess){
       this.props.userReset();      
-      // this.props.history.goBack();    
     }
   }
   render(){
@@ -329,6 +332,7 @@ class UserDetails extends React.Component {
       <div className="container-fluid no-breadcrumbs">
       <Snackbar
           open={this.state.isOpen}
+          style={{top:61,left:"58%",transition:"transform 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, visibility 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms"}}
           message={this.state.message}
           autoHideDuration={1000}
           onRequestClose={this.handleRequestClose}

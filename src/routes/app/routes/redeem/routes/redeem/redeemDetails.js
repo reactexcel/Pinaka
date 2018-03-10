@@ -163,8 +163,9 @@ class redeemDetails extends React.Component {
         type: match.params.type
       });
     } else if(match.params.type == 'disable') {
+      const data = _.filter(redeem.redeem.data,{_id:match.params.id})      
       this.setState({
-        data: _.cloneDeep(redeem.redeem.data[match.params.id]),
+        data: _.cloneDeep(data[0]),
         type: match.params.type
       });
     }
@@ -198,9 +199,10 @@ class redeemDetails extends React.Component {
         type: match.params.type,
         time: 1
       });
-    }else{
+    }else if(match.params.type == 'disable'){
+      const data = _.filter(redeem.redeem.data,{_id:match.params.id})      
       this.setState({
-        data: _.cloneDeep(redeem.redeem.data[match.params.id]),
+        data: _.cloneDeep(data[0]),
         type: match.params.type
       });
     }
@@ -233,7 +235,8 @@ class redeemDetails extends React.Component {
     if(data == 'back'){
       this.props.history.goBack();
     } else if (data == 'cancel' && this.state.type == 'edit') {
-      this.setState({type:'disable',data:_.cloneDeep(this.props.redeem.redeem.data[this.props.match.params.id])})
+      const data = _.filter(this.props.redeem.redeem.data,{_id:this.props.match.params.id})            
+      this.setState({type:'disable',data:_.cloneDeep(data[0])})
     } else if (data == 'cancel' && this.state.type == 'add') {
       this.props.history.goBack();
     }
@@ -248,7 +251,7 @@ class redeemDetails extends React.Component {
     this.setState({ data });
   }
   handleRequestClose(){
-    this.setState({isOpen:false})
+    this.setState({isOpen:false},()=>{ if(this.state.type == 'add' && this.props.redeem.updateRedeem.isSuccess) { this.props.history.push('/app/redeem/viewredeem'); this.props.redeemReset()} })
     if(this.props.redeem.updateRedeem.isSuccess ){
       this.props.redeemReset();
     }
@@ -259,6 +262,7 @@ class redeemDetails extends React.Component {
       <Snackbar
           open={this.state.isOpen}
           message={this.state.message}
+          style={{top:61,left:"58%",transition:"transform 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, visibility 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms"}}
           autoHideDuration={4000}
           onRequestClose={this.handleRequestClose}
         />

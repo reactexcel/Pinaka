@@ -29,6 +29,7 @@ class Login extends React.Component {
       password:'',
       isOpen:false,
       message:'',
+      error:{},
       isLoading:false
     };
     this.handleChange = this.handleChange.bind(this);
@@ -44,8 +45,20 @@ class Login extends React.Component {
   }
   handleSave(){
     let data = {email:this.state.email,password:this.state.password}
+    const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;    
+    let error = {};
     this.props.loginTokenReset();
-    this.props.loginUserRequest(data);
+    if(this.state.email != '' && this.state.password != ''){
+      if(!this.state.email.match(pattern)){
+        error.email = 'Not a valid email';
+      } else {
+        this.props.loginUserRequest(data);
+      }
+    } else {
+      error.email =this.state.email != ''? '': 'Cannot be Empty';
+      error.password =this.state.password != '' ? '' : 'Cannot be Empty';
+    } 
+    this.setState({error})
   }
   componentWillReceiveProps(props){
       
@@ -61,7 +74,7 @@ class Login extends React.Component {
     } 
   }
   render() {
-    const { isLoading } = this.state;
+    const { isLoading, error } = this.state;
     const { userLogged } = this.props.user;
     const isDisabled = userLogged.isLoading ? true : false;
     return (
@@ -94,6 +107,7 @@ class Login extends React.Component {
                     type="email"
                     onChange={this.handleChange('email')}
                     disabled={isDisabled}
+                    errorText={error.email == '' ? null : error.email}                    
                   />
                 </div>
                 <div className="form-group">
@@ -104,6 +118,7 @@ class Login extends React.Component {
                     onChange={this.handleChange('password')}
                     fullWidth
                     disabled={isDisabled}                    
+                    errorText={error.password == '' ? null : error.password}                    
                     />
                 </div>
               </fieldset>

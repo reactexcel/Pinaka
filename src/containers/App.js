@@ -107,6 +107,7 @@ class App extends Component {
             >
             <Snackbar
               open={this.state.isOpen}
+              style={{top:61,left:"58%",transition:"transform 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, visibility 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms"}}
               message={this.state.message}
               autoHideDuration={2000}
               onRequestClose={this.handleRequestClose}
