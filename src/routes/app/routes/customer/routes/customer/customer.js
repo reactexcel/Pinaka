@@ -76,7 +76,6 @@ class Customer extends React.Component {
     }
   }
   render(){
-    console.log(this.props.customer.data)
     const { page } = this.state;
     let totalPage = Math.ceil(this.props.allCustomer.customerList.data.length / 20);
     totalPage = totalPage == 0 ? 1 : totalPage;

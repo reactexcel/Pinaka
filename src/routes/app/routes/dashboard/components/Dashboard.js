@@ -13,6 +13,12 @@ import Chart from './chart';
 import RaisedButton from 'material-ui/RaisedButton';
 import IconButton from 'material-ui/IconButton';
 
+const styles = {
+  icon: {
+    color:'red !important'
+  }
+}
+
   class Dashboard extends React.Component {
     constructor (props) {
       super(props);
@@ -82,7 +88,7 @@ import IconButton from 'material-ui/IconButton';
           <td className="mdl-data-table__cell--non-numeric" >{value.app_installed ? "Yes" : "No"}</td>
           <td className="mdl-data-table__cell--non-numeric" >
             <IconButton style={{boxShadow:'none'}}  onClick={()=>{ this.handleDelete({token:this.props.user.userLogged.data.token,data:{_id:value._id,infusion_id:value.infusion_id?value.infusion_id :'' }})  }} >
-              <i className="material-icons" style={{color:'red'}} >delete_forever</i>
+              <i className="material-icons" color="red" style={{color:'red'},styles.icon} >delete_forever</i>
             </IconButton>
           </td>          
         </tr>
@@ -97,7 +103,7 @@ import IconButton from 'material-ui/IconButton';
         <th>Redeem Code</th>
         <th>SMS Option</th>
         <th>App Installed</th>
-        <th></th>
+        <th>Deactivate</th>
         </tr>
       </thead>
       <tbody>
@@ -139,25 +145,18 @@ import IconButton from 'material-ui/IconButton';
               <Chart {...this.props} />
             </div>
           </div> */}
+          <div className="row box box-default" style={{marginBottom:80}} >
+              <Chart {...this.props} handleRedemption={this.handleRedemption} {...this.state} />
+          </div>
           { this.state.selector == 'customer' || this.state.selector == 'redemption' ?
+            
             <div  className="row box box-default" >
               <div className="col-md-12" >
                 <h3>{this.state.selector == 'customer'? "Customer List" : this.state.selector == 'redemption'? "Redemption List" : null}</h3>
-              {/* {this.state.selector == 'redemption'?
-                <div style={{float:"right",marginRight:7}} >
-                <RaisedButton label="Week" style={{boxShadow:'none' }}  onClick={()=>{this.handleRedemption(1)}}   />
-                <RaisedButton label="Month" style={{boxShadow:'none'}}  onClick={()=>{this.handleRedemption(2)}} />
-                <RaisedButton label="Quarter" style={{boxShadow:'none'}}  onClick={()=>{this.handleRedemption(3)}} />
-                <RaisedButton label="Year" style={{boxShadow:'none'}}  onClick={()=>{this.handleRedemption(4)}} />                  
-                </div>
-                :
-                null
-              } */}
               {this.state.selector == 'customer'?
                 customerData
                 :
                 this.state.selector == 'redemption' ? 
-                // <Chart {...this.props} />
                 this.props.customer.redemption.data.length > 0 ? redemptionData : null
                 :
                 null

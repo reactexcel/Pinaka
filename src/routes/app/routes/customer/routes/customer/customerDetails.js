@@ -279,7 +279,7 @@ const DetailsForm = (props) => {
                     {_.map(statesList, (val, i) => <MenuItem value={val} primaryText={val} key={i} /> )}
                     </SelectField>
                   </div>
-                    <label style={styles.label2} className="col-md-2 control-label">City *</label>
+                    <label style={styles.label2} className="col-md-2 control-label">City </label>
                     <div className="col-md-4">
                       <SelectField
                         hintText="Select city"
@@ -361,7 +361,7 @@ const DetailsForm = (props) => {
                   </div>
                 </div>
                 <div className="form-group row" style={styles.formGroup}>
-                  <label style={styles.label1} className="col-md-2 control-label" style={styles.label} >Occupation *</label>
+                  <label style={styles.label1} className="col-md-2 control-label" style={styles.label} >Occupation </label>
                   <div className="col-md-4">
                     <TextField
                       hintText="Occupation"
@@ -804,9 +804,12 @@ class CustomerDetails extends React.Component {
     const created_at = data.created_at != undefined ? new Date(data.created_at) : '';
     const reddeemed_date = data.reddeemed_date != undefined ? new Date(data.reddeemed_date) : '';
     const updated_at = data.updated_at != undefined ? new Date(data.updated_at) : '';
+    const Infusion_synced_date = data.Infusion_synced_date != undefined ? new Date(data.Infusion_synced_date) : '';
+    
     const createdOn = created_at != ''? `${created_at.getDate()}/${created_at.getMonth()}/${created_at.getFullYear()}  ${created_at.getHours()}:${created_at.getMinutes()} `:'';
     const updatedOn = updated_at != ''? `${updated_at.getDate()}/${updated_at.getMonth()}/${updated_at.getFullYear()}  ${updated_at.getHours()}:${updated_at.getMinutes()} `:'';
-    const redeemedOn = reddeemed_date != ''? `${reddeemed_date.getDate()}/${reddeemed_date.getMonth()}/${reddeemed_date.getFullYear()}  ${reddeemed_date.getHours()}:${reddeemed_date.getMinutes()} `:'';
+    const redeemedOn = reddeemed_date != ''? `${reddeemed_date.getDate()}/${reddeemed_date.getMonth()}/${reddeemed_date.getFullYear()}  ${reddeemed_date.getHours()}:${reddeemed_date.getMinutes()} `:'Not Yet Redeem';
+    const syncOn = Infusion_synced_date != ''? `${Infusion_synced_date.getDate()}/${Infusion_synced_date.getMonth()}/${Infusion_synced_date.getFullYear()}  ${Infusion_synced_date.getHours()}:${Infusion_synced_date.getMinutes()} `:'';
     
     return(
       <div className="container-fluid no-breadcrumbs">
@@ -836,7 +839,7 @@ class CustomerDetails extends React.Component {
             </tr>
             <tr>
               <td className="mdl-data-table__cell--non-numeric" >Infusion Sync on - </td>
-              <td></td>
+              <td> {syncOn} </td>
             </tr>
             <tr>
               <td className="mdl-data-table__cell--non-numeric" >Code Redeem On - </td>

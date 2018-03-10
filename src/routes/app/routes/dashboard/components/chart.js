@@ -5,6 +5,17 @@ import * as actions from 'actions';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {withRouter} from 'react-router';
+import RaisedButton from 'material-ui/RaisedButton';
+
+const styles = {
+  chart: {
+    position: "relative",
+    margin: "auto",
+    height: "90vh",
+    width: "80vw",
+  }
+}
+
 class Chart extends Component {
 constructor(props){
     super(props);
@@ -30,17 +41,15 @@ constructor(props){
   }
 
   componentWillReceiveProps(props){
-      console.log(props,'asdasd');
-      this.setState({customer:props.customer.customerList.data.length});
+      this.setState({customer:props.customer.redemption.data.length});
       this.initChart();      
   }
 
   initChart() {
-    console.log(this.props,'chart',this.state)
     this.chart = new ChartJS(this.canvas, {
       type: 'bar',
       data: {
-        labels: ["Total No. of Customer"],
+        labels: ["Total No. of Redemption"],
         datasets: [{
           label:'time',
             data: [this.state.customer],
@@ -54,6 +63,10 @@ constructor(props){
         }],
     },
       options: {
+        title: {
+          display: true,
+          text: 'Total No. Of Redemption'
+        },
         legend: {
           display: false,
           position: this.props.type === 'bar' ? 'right' : 'top',
@@ -71,9 +84,36 @@ constructor(props){
   }
 
   render() {
+    const { redemptionOption } = this.props
+    let redeem;
+    switch(redemptionOption)   {
+      case 1:
+          redeem = 'of This Week';
+          break;
+      case 2:
+          redeem = 'of This Month';
+          break;
+      case 3:
+          redeem = 'of This Quater';
+          break;
+      case 4:
+          redeem = 'of This Year';
+          break; 
+    }
     return (
       <div>
-        <canvas ref={(canvas) => this.canvas = canvas} />
+        <div className="col-md-12" >
+          <div style={{margin:20}} > <h4>Redemption {redeem} </h4> </div>
+          <div  style={{float:"right",marginRight:30,transform: "translateY(-20px)"}} >
+            <RaisedButton label="Week" style={{boxShadow:'none' }}  onClick={()=>{ this.props.handleRedemption(1) }}   />
+            <RaisedButton label="Month" style={{boxShadow:'none'}}  onClick={()=>{ this.props.handleRedemption(2) }} />
+            <RaisedButton label="Quarter" style={{boxShadow:'none'}}  onClick={()=>{ this.props.handleRedemption(3) }} />
+            <RaisedButton label="Year" style={{boxShadow:'none'}}  onClick={()=>{ this.props.handleRedemption(4) }} />                  
+          </div>
+        </div>
+        <div style={{marginTop:50,marginBottom:50},styles.chart} >
+          <canvas ref={(canvas) => this.canvas = canvas} />
+        </div>
       </div>
     );
   }
