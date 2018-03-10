@@ -123,7 +123,6 @@ const customerDeleteSuccess = (state, action) => update(state, {
   updateCustomer:{
     isLoading:  {$set: false},
     isError:    {$set: false},
-    isSuccess:  {$set: true},
     message:    {$set: 'Customer Delete success'}
   }
 });
