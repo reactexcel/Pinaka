@@ -114,7 +114,7 @@ class Customer extends React.Component {
                     <span style={{float:"right",marginRight:5}} >{this.state.page + 1} out of {totalPage}</span>
                   </div>
                   <div className="box box-default table-box mdl-shadow--2dp">
-                    <table className="mdl-data-table table-responsive" style={{display:'inherit'}} >
+                    <table className="mdl-data-table table-responsive" >
                       <thead>
                         <tr>
                           <th className="mdl-data-table__cell--non-numeric">#</th>

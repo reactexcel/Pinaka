@@ -61,6 +61,7 @@ const styles = {
 
 
 const DetailsForm = (props) => {
+  let token = props.user.data.token;  
   let isDisabled = props.type == 'disable' ? true : false;
   const { isLoading, data, errors } = props;
   const genderVaalue = props.data.gender;
@@ -91,7 +92,7 @@ const DetailsForm = (props) => {
               :
               <div className='col-md-6 col-xs-9 resp-p-x-0'>
                 <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-xs" />
-                <RaisedButton label="Delete" backgroundColor="#FF0000" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.handleDelete({token:props.user.data.token,data:{_id:props.data._id,infusion_id:props.data.infusion_id?props.data.infusion_id :'' }})}} className="btn-w-xs" />
+                <RaisedButton label="Delete" backgroundColor="#FF0000" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.handleDelete({token:props.user.data.token,data:{_id:props.data._id,infusion_id:props.data.infusion_id?props.data.infusion_id :'' }}); props.customerListChartRequest(token) }} className="btn-w-xs" />
                 <RaisedButton label={props.type == 'disable'?"Back":"cancel"}  style={{marginLeft:5}}  onClick={()=>{props.type == 'disable'? props.handleEdit('back'):props.handleEdit('cancel')}} className="btn-w-xs" />
               </div>
             }
@@ -262,7 +263,7 @@ const DetailsForm = (props) => {
                   <label style={styles.label2} className="col-md-2 control-label">State </label>
                   <div className="col-md-4">
                     <SelectField
-                      floatingLabelText="Select State"
+                      hintText="Select State"
                       style={{width:"auto", display:'flow-root'}}
                       value={props.data.state}
                       onChange={props.handleChange('state')}
@@ -274,7 +275,7 @@ const DetailsForm = (props) => {
                     <label style={styles.label2} className="col-md-2 control-label">City *</label>
                     <div className="col-md-4">
                       <SelectField
-                        floatingLabelText="Select city"
+                        hintText="Select city"
                         value={props.data.city}
                         style={{width:"auto", display:'flow-root'}}
                         onChange={props.handleChange('city')}
@@ -372,6 +373,7 @@ const DetailsForm = (props) => {
                    null :
                    <div className="col-md-4">
                     <SelectField
+                      hintText="Select Source"
                       value={props.data.source}
                       style={styles.dropFeild,{width:"auto", display:'flow-root'}}
                       onChange={props.handleChange('source')}
@@ -641,9 +643,9 @@ class CustomerDetails extends React.Component {
     }
   }
   handleRequestClose(){
-    this.setState({isOpen:false},()=>{ this.state.type == 'add' && this.props.customer.updateCustomer.isSuccess ? this.props.history.push('/app/customer/viewcustomer') :  0;})
-    this.props.customerReset();
+    this.setState({isOpen:false},()=>{ if(this.state.type == 'add' && this.props.customer.updateCustomer.isSuccess) { this.props.history.push('/app/customer/viewcustomer'); this.props.customerReset(); }})
     if(this.props.customer.updateCustomer.isSuccess){
+      this.props.customerReset();
       this.setState({time:0})
     }
   }

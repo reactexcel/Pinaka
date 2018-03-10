@@ -91,6 +91,7 @@ const customerReset = (state, action) =>{
     isLoading: {$set: false},
     isError:   {$set: false},
     isSuccess: {$set: false},
+    data: {$set: ''}
   }
 });}
 const customerAddSuccess = (state, action) => update(state, {

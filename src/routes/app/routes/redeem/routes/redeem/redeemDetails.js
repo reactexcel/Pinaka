@@ -251,7 +251,7 @@ class redeemDetails extends React.Component {
     this.setState({ data });
   }
   handleRequestClose(){
-    this.setState({isOpen:false},()=>{ this.state.type == 'add' && this.props.redeem.updateRedeem.isSuccess  ? this.props.history.push('/app/redeem/viewredeem') :  0;})
+    this.setState({isOpen:false},()=>{ if(this.state.type == 'add' && this.props.redeem.updateRedeem.isSuccess) { this.props.history.push('/app/redeem/viewredeem'); this.props.redeemReset()} })
     if(this.props.redeem.updateRedeem.isSuccess ){
       this.props.redeemReset();
     }
