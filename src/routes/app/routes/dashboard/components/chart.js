@@ -20,7 +20,7 @@ class Chart extends Component {
 constructor(props){
     super(props);
     this.state = {
-        customer:0,
+        customer:props.redemption.length,
     }
 }
   chart = null;
@@ -41,7 +41,7 @@ constructor(props){
   }
 
   componentWillReceiveProps(props){
-      this.setState({customer:props.customer.redemption.data.length});
+      this.setState({customer:props.redemption.length});
       this.initChart();      
   }
 

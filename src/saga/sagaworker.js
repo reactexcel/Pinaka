@@ -270,6 +270,7 @@ export function* addCustomer(data){
 
 
      let res = yield call(api);
+     console.log(res);
         if(res.status == 1){
          yield put( actions.customerAddSuccess(res.data));
        } else if(res.error == 1 || res.code) {

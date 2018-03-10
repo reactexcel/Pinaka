@@ -752,7 +752,7 @@ class CustomerDetails extends React.Component {
       data.state = data.state ? data.state : '';
       data.city = data.city ? data.city : '';
       data.zipcode = data.zipcode ? data.zipcode : '';
-      data.phone = data.phone? data.phone.substring(2, data.phone.length) : '';
+      data.phone = data.phone? data.phone.length > 10 ? data.phone.substring(2, data.phone.length) : data.phone : '';      
       data.interest = [];
       const interest = data.interests;
       _.map(data.interests,(value,index)=>{ return data.interest.push(value.id)}); 

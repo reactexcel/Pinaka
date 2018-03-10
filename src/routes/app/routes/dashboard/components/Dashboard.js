@@ -139,15 +139,10 @@ const styles = {
           <QueueAnim type="bottom" className="ui-animate">
             <div key="2"><StatBoxes {...this.props} handleSelect={this.handleSelect} {...this.state} /></div>
           </QueueAnim>
-          {/* <div className="row box box-default" >
-            <div style={{margin:30}}>
-              <div className="row" style={{fontSize:21,fontWeight:600,marginBottom:30,marginLeft:"6%"}} > Total No. of Customer </div>
-              <Chart {...this.props} />
+            <div className="row box box-default" style={{marginBottom:80}} >
+                <Chart {...this.props} redemption={this.props.customer.redemption.data}  handleRedemption={this.handleRedemption} {...this.state} />
             </div>
-          </div> */}
-          <div className="row box box-default" style={{marginBottom:80}} >
-              <Chart {...this.props} handleRedemption={this.handleRedemption} {...this.state} />
-          </div>
+          
           { this.state.selector == 'customer' || this.state.selector == 'redemption' ?
             
             <div  className="row box box-default" >
