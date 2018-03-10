@@ -1,0 +1,77 @@
+.spin-remove{
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        margin: 0; 
+    }
+}
+@media (max-width: 768px) {
+    .table-responsive{
+        display: inherit ;
+    }
+}
+@media only screen and (max-width: 786px) {
+    .resp-p-a-0 {
+        padding: 0;
+    }
+    .resp-p-x-0{
+        padding-right: 0;
+        padding-left: 0;
+    }
+    .hidden-xs{
+        display: none;
+    }
+    .resp-m-a-0{
+        margin: 0;
+    }
+    .btn-m-r-l-0{
+        margin-left: 0 !important;
+        margin-top: 10px !important; 
+        margin-right: 8px !important;
+    }
+    .resp-m-x-0{
+        margin-right: 0;
+        margin-left: 0;
+    }
+    .col-xs-0{
+        width: 0%;
+    }
+    .col-xs-1{
+        width: 8.33%;
+    }
+    .col-xs-2{
+        width: 16.66%;
+    }
+    .col-xs-3{
+        width: 25%;
+    }
+    .col-xs-4{
+        width: 33.33%;
+    }
+    .col-xs-5{
+        width: 41.66%;
+    }
+    .col-xs-6{
+        width: 50%;
+    }
+    .col-xs-7{
+        width: 58.33%;
+    }
+    .col-xs-8{
+        width: 64.66%;
+    }
+    .col-xs-9{
+        width: 75%;
+    }
+    .col-xs-10{
+        width: 83.33%;
+    }
+    .col-xs-11{
+        width: 91.66%;
+    }
+    .col-xs-12{
+        width: 100% !important;
+    }
+}

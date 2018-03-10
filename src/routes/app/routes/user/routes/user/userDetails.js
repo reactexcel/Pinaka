@@ -51,42 +51,53 @@ const DetailsForm = (props) => {
   let isDisabled = props.type == 'disable' ? true : false;
   return(
   <div className="row">
-    <div className="col-xl-12">
+    <div className="col-xl-12 no-padding">
       <div className="box box-default">
         <article className="article">
         <div className="box-heading"><h3 className="article-title">User Detail</h3></div>
 
         <div className="box-body">
         <div className="form-group row" style={styles.formGroup}>                
-          {props.type == 'add' ?
+          {props.type == 'add' || props.type =='edit' || props.type == 'changePass' || props.isLoading ?
               null
             :
-              <div>
+              <div className='col-md-8 col-xs-9 resp-p-x-0'>
                 {/* button for add update and delete */}
-                <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-md" />
-                <RaisedButton label="Delete" backgroundColor="#FF0000" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.handleDelete({token:props.user.userLogged.data.token,data:{_id:props.data._id}})}} className="btn-w-md" />
-                <RaisedButton label={props.type == 'disable'?"Back":"cancel"}  style={{marginLeft:5}}  onClick={()=>{props.type=='disable'? props.handleEdit('back'):props.handleEdit('cancel')}} className="btn-w-md" />               
+                <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-xs" />
+                <RaisedButton label="Change Password" backgroundColor="#7edbe8" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.handleEdit('changePass')}} className="btn-w-xs" />                
+                <RaisedButton label="Delete" backgroundColor="#FF0000" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.handleDelete({token:props.user.userLogged.data.token,data:{_id:props.data._id}})}} className="btn-w-xs btn-m-r-l-0 " />
+                <RaisedButton label={props.type == 'disable'?"Back":"cancel"}  style={{marginLeft:5}}  onClick={()=>{props.type=='disable'? props.handleEdit('back'):props.handleEdit('cancel')}} className="btn-w-xs" />               
               </div>
           }
-          <div className="col-md-2"></div>
-          {props.type == 'disable' ?
-              null
-              :
-                <div className='col-md-4'>
-                  <RaisedButton style={{marginLeft:5}} label={props.type =='add'?"Add":"Save"} backgroundColor={"#1b025c"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-md" />
-                  {props.type == 'edit' ?
-                    null
-                    :
-                    <RaisedButton label="Cancel" style={styles.button} onClick={()=>{props.handleEdit('cancel')}} className="btn-w-md" />
-                  }
-                </div>
-            }          
+          <div className="col-md-2 col-xs-0 hidden-xs resp-p-x-0"></div>
+                
         </div>
           {isLoading? 
             <div className="col-md-12" style={styles.loading} >
-              Adding New User...........
+              {props.type == 'add' ? "Adding New User...........":'Please wait..'}
             </div>        
             :
+              props.type == 'changePass'?
+              <form role="form">
+                 <div className="form-group row">
+                  <label style={styles.label} className="col-md-2 control-label">Enter New Password</label>
+                  <div className="col-md-10">
+                    <TextField
+                      hintText="Enter New password"
+                      value={props.data.password?props.data.password:''}
+                      onChange={props.handleChange('password')}
+                      type="password"
+                      disabled={isDisabled}
+                      errorText={errors.password == '' ? null : errors.password}                      
+                      />
+                  </div>
+                </div>
+                <div>
+                  <RaisedButton label={props.type =='add'?"Add":"Save"} backgroundColor={"#1b025c"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-md" />
+                  <RaisedButton label="Cancel" style={styles.button} onClick={()=>{props.handleEdit('cancel')}} className="btn-w-md" />
+                </div>
+              </form>              
+              :
               <form role="form">
                 <div className="form-group row">
                   <label style={styles.label} className="col-md-2 control-label">Full Name</label>
@@ -114,7 +125,10 @@ const DetailsForm = (props) => {
                     />
                   </div>
                 </div>
-                <div className="form-group row">
+                {props.type == 'edit'?
+                  null
+                  :
+                  <div className="form-group row">
                   <label style={styles.label} className="col-md-2 control-label">Password</label>
                   <div className="col-md-10">
                     <TextField
@@ -124,9 +138,10 @@ const DetailsForm = (props) => {
                       type="password"
                       disabled={isDisabled}
                       errorText={errors.password == '' ? null : errors.password}                      
-                    />
+                      />
                   </div>
                 </div>
+                }
                 <div className="form-group row">
                   <label className="col-md-2 control-label" style={styles.label1}>Role</label>
                   <div className="col-md-10">
@@ -157,6 +172,7 @@ const DetailsForm = (props) => {
                   </div>
                 </div>
               </form>
+                  
             }
         </div>
       </article>
@@ -184,6 +200,7 @@ class UserDetails extends React.Component {
     this.handleDelete = this.handleDelete.bind(this);
   }
   componentWillReceiveProps(props){
+    let token = props.user.userLogged.data.token;    
     const { user, match } = props;
     let data={
       name:'',
@@ -198,16 +215,17 @@ class UserDetails extends React.Component {
         time: 1
       });
     } else if(match.params.type == 'disable') {
+      const data = _.filter(user.user.data,{_id:match.params.id})
       this.setState({
-        data: user.user.data[match.params.id],
+        data: _.cloneDeep(data[0]),
         type: match.params.type
       });
     }
     if(props.user.updateUser.isSuccess == true ){
-      props.userReset();
       if(this.state.type == 'add'){
         this.setState({isOpen:true,message:"Added User Successfully"});
       } else if (this.state.type == 'disable'){
+        props.userListRequest(token);      
         this.setState({isOpen:true,message:"User Data Updated Successfully"});        
       }
     } else if(props.user.updateUser.isError == true){
@@ -219,7 +237,9 @@ class UserDetails extends React.Component {
     }
     if(props.user.updateUser.isLoading){
       this.setState({isLoading:true})
-    } else if(props.user.updateUser.isLoading == false){
+    } else if (props.user.user.isLoading){
+      this.setState({isLoading:true})
+    } else if(!props.user.updateUser.isLoading && !props.user.user.isLoading ){
       this.setState({isLoading:false})
     }
   }
@@ -231,14 +251,16 @@ class UserDetails extends React.Component {
       password:'',
       role:'Admin'
     };
-    if(match.params.type == 'add'){
+    if(match.params.type == 'add' && this.state.time == 0){
       this.setState({
         data,
-        type: match.params.type
+        type: match.params.type,
+        time: 1
       });
-    }else{
+    }else if (match.params.type == 'disable') {
+      const data = _.filter(user.user.data,{_id:match.params.id})      
       this.setState({
-        data: user.user.data[match.params.id],
+        data: _.cloneDeep(data[0]),
         type: match.params.type
       });
     }
@@ -251,12 +273,11 @@ class UserDetails extends React.Component {
     const { data } = this.state;
     let token = this.props.user.userLogged.data.token;
     const apiData = {token,data};
-    console.log(data);
     let errors = {};
     
     
+    const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     if(data.name != '' && data.email != '' && data.password != '' ){
-      const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
       if(!data.email.match(pattern)){
         errors.email = 'Not a valid email';
       } else {
@@ -264,12 +285,14 @@ class UserDetails extends React.Component {
           this.props.userAddRequest(apiData);
         } else if(this.state.type == 'edit'){
           this.props.userUpdateRequest(apiData);
+        } else if (this.state.type == 'changePass'){
+          this.props.userUpdatePasswordRequest(apiData)
         }
       }
       this.setState({errors: errors});
     } else {
       errors.name = data.name != '' ? '' : 'Cannot be Empty.';
-      errors.email = data.email != '' ? '' : 'Cannot be Empty.';
+      errors.email = data.email != '' ? !data.email.match(pattern)?'Not a valid email' :'' : 'Cannot be Empty.';
       errors.password = data.password != '' ? '' : 'Cannot be Empty.';
       this.setState({errors: errors});
     }
@@ -280,9 +303,12 @@ class UserDetails extends React.Component {
     if(data == 'back'){
       this.props.history.goBack();
     } else if (data == 'cancel' && this.state.type == 'edit') {
-      this.setState({type:'disable'})
+      const data = _.filter(this.props.user.user.data,{_id:this.props.match.params.id})
+      this.setState({type:'disable',data:_.cloneDeep(data[0])})
     } else if (data == 'cancel' && this.state.type == 'add') {
       this.props.history.goBack();
+    } else if(data == 'changePass'){
+      this.setState({type:data});
     }
   }
   handleChange = props => (event, value, index) =>{
@@ -295,9 +321,10 @@ class UserDetails extends React.Component {
     this.setState({ data });
   }
   handleRequestClose(){
-    this.setState({isOpen:false});
+    this.setState({isOpen:false},()=>{ if(this.state.type == 'add' && this.props.user.updateUser.isSuccess ) {this.props.history.push('/app/user/viewuser'); this.props.userReset();} });
+
     if(this.props.user.updateUser.isSuccess){
-      this.props.history.push('/app/user/viewuser');    
+      this.props.userReset();      
     }
   }
   render(){
@@ -305,6 +332,7 @@ class UserDetails extends React.Component {
       <div className="container-fluid no-breadcrumbs">
       <Snackbar
           open={this.state.isOpen}
+          style={{top:61,left:"58%",transition:"transform 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, visibility 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms"}}
           message={this.state.message}
           autoHideDuration={1000}
           onRequestClose={this.handleRequestClose}

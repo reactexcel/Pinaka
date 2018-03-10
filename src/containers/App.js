@@ -54,11 +54,9 @@ class App extends Component {
     if(props.user.userLogged.isError){
       this.setState({isOpen:true,message:'Invalid Email or Password'});
     } else if (props.user.userLogged.isSuccess && props.location.pathname == '/login' && !props.user.userToken.isSuccess) {
-      sessionStorage.setItem('user',JSON.stringify(props.user.userLogged));
       this.setState({isOpen:true, message:'Login Successfully'})
     }
     if(props.user.userToken.isSuccess ){
-      sessionStorage.removeItem('user');
       this.setState({isOpen:true, message:'Session Expire!!'})
     }
   }
@@ -109,6 +107,7 @@ class App extends Component {
             >
             <Snackbar
               open={this.state.isOpen}
+              style={{top:61,left:"58%",transition:"transform 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, visibility 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms"}}
               message={this.state.message}
               autoHideDuration={2000}
               onRequestClose={this.handleRequestClose}

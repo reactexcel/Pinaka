@@ -77,7 +77,6 @@ const customerListError = (state, action) => update(state, {
 });
 
 const customerAddRequest = (state, action) =>{
-  console.log(action);
   return update(state, {
   updateCustomer:{
     isLoading: {$set: true},
@@ -92,6 +91,7 @@ const customerReset = (state, action) =>{
     isLoading: {$set: false},
     isError:   {$set: false},
     isSuccess: {$set: false},
+    data: {$set: ''}
   }
 });}
 const customerAddSuccess = (state, action) => update(state, {
@@ -123,7 +123,6 @@ const customerDeleteSuccess = (state, action) => update(state, {
   updateCustomer:{
     isLoading:  {$set: false},
     isError:    {$set: false},
-    isSuccess:  {$set: true},
     message:    {$set: 'Customer Delete success'}
   }
 });
