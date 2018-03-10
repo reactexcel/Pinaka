@@ -11,7 +11,7 @@ import BenchmarkChart from './BenchmarkChart';
 import * as actions from 'actions';
 import Chart from './chart';
 import RaisedButton from 'material-ui/RaisedButton';
-
+import IconButton from 'material-ui/IconButton';
 
   class Dashboard extends React.Component {
     constructor (props) {
@@ -25,6 +25,7 @@ import RaisedButton from 'material-ui/RaisedButton';
       this.handleSelect = this.handleSelect.bind(this);
       this.handleRedemption = this.handleRedemption.bind(this);
       this.redemption = this.redemption.bind(this);
+      this.handleDelete = this.handleDelete.bind(this);
     }
     componentWillMount(){
       let token = this.props.user.userLogged.data.token;
@@ -65,19 +66,28 @@ import RaisedButton from 'material-ui/RaisedButton';
       }
       this.props.redemptionChartRequest(apiData)
     }
+    handleDelete (data) {      
+      this.props.customerDeleteRequest({token:data.token,data:data.data});
+      this.props.customerListChartRequest(data.token);      
+    }
     render(){
       let CustomerList = _.map(this.props.customer.customerList.data, (value, index) => (
         <tr key={index}>
           <td className="mdl-data-table__cell--non-numeric">{index+1}</td>
           <td className="mdl-data-table__cell--non-numeric"> <a href={`/#/app/customer/viewcustomerdetails/${index}/disable`}>{value.name} {value.lastName}</a></td>
           <td className="mdl-data-table__cell--non-numeric">{value.email}</td>
-          <td><a href={`/#/app/customer/viewcustomerdetails/${index}/disable`}>{value.phone?value.phone.substring(2, value.phone.length):''}</a></td>
-          <td>{value.CodeRedeemFlag ? "Yes" : "No"}</td>        
-          <td>{value.sms_option ? "Yes" : "No"}</td>
-          <td>{value.app_installed ? "Yes" : "No"}</td>
+          <td className="mdl-data-table__cell--non-numeric" ><a href={`/#/app/customer/viewcustomerdetails/${index}/disable`}>{value.phone?value.phone.substring(2, value.phone.length):''}</a></td>
+          <td className="mdl-data-table__cell--non-numeric" >{value.CodeRedeemFlag ? "Yes" : "No"}</td>        
+          <td className="mdl-data-table__cell--non-numeric" >{value.sms_option ? "Yes" : "No"}</td>
+          <td className="mdl-data-table__cell--non-numeric" >{value.app_installed ? "Yes" : "No"}</td>
+          <td className="mdl-data-table__cell--non-numeric" >
+            <IconButton style={{boxShadow:'none'}}  onClick={()=>{ this.handleDelete({token:this.props.user.userLogged.data.token,data:{_id:value._id,infusion_id:value.infusion_id?value.infusion_id :'' }})  }} >
+              <i className="material-icons" style={{color:'red'}} >delete_forever</i>
+            </IconButton>
+          </td>          
         </tr>
       ));
-      const customerData =( <table style={{marginLeft:'3%'}} className="mdl-data-table table-responsive">
+      const customerData =( <table style={{marginLeft:'-1%', display: 'inherit' }} className="mdl-data-table table-responsive">
       <thead>
         <tr>
         <th className="mdl-data-table__cell--non-numeric">#</th>
@@ -87,6 +97,7 @@ import RaisedButton from 'material-ui/RaisedButton';
         <th>Redeem Code</th>
         <th>SMS Option</th>
         <th>App Installed</th>
+        <th></th>
         </tr>
       </thead>
       <tbody>
@@ -104,7 +115,7 @@ import RaisedButton from 'material-ui/RaisedButton';
         
       </tr>
     )});
-    const redemptionData =( <table style={{marginLeft:'3%',width:"94%"}} className="table mdl-data-table table-responsive">
+    const redemptionData =( <table style={{marginLeft:'1%',width:"94%"}} className="table mdl-data-table table-responsive">
       <thead>
         <tr>
         <th className="mdl-data-table__cell--non-numeric">#</th>

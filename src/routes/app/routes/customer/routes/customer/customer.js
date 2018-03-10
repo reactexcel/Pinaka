@@ -7,6 +7,7 @@ import ReactEcharts from 'components/ReactECharts';
 import SelectField from 'material-ui/SelectField';
 import RaisedButton from 'material-ui/RaisedButton';
 import MenuItem from 'material-ui/MenuItem';
+import IconButton from 'material-ui/IconButton';
 import TextField from 'material-ui/TextField';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn, TableFooter} from 'material-ui/Table';
 import CHARTCONFIG from 'constants/ChartConfig';
@@ -25,7 +26,6 @@ class Customer extends React.Component {
     super(props);
     this.state = {
       search:'',
-      searchType:'email',
       isLoading:false,
       page:0
     };
@@ -44,6 +44,14 @@ class Customer extends React.Component {
     } else if (props.customer.isLoading == false){
       this.setState({isLoading:false});
     }
+  }
+  handleDelete (data) {     
+    console.log(data); 
+    this.props.customerDeleteRequest({token:data.token,data:data.data});
+      let searchvalue = {search:this.state.search};
+      let apiData={token:data.token,data:searchvalue};
+      console.log(apiData)
+      setTimeout(()=>{this.props.searchCustomerRequest(apiData)}, 5000);    
   }
   handleChange = props => (event, value, index) => {
     if(props == 'searchType'){
@@ -68,6 +76,7 @@ class Customer extends React.Component {
     }
   }
   render(){
+    console.log(this.props.customer.data)
     const { page } = this.state;
     let totalPage = Math.ceil(this.props.allCustomer.customerList.data.length / 20);
     totalPage = totalPage == 0 ? 1 : totalPage;
@@ -83,7 +92,15 @@ class Customer extends React.Component {
         <td>{value.CodeRedeemFlag ? "Yes" : "No"}</td>        
         <td>{value.sms_option ? "Yes" : "No"}</td>
         <td>{value.app_installed ? "Yes" : "No"}</td>
-
+        {this.state.search !='' ? 
+            <td>
+              <IconButton style={{boxShadow:'none'}}  onClick={()=>{ this.handleDelete({token:this.props.user.userLogged.data.token,data:{_id:value._id,infusion_id:value.infusion_id?value.infusion_id :'' }})  }} >
+                <i className="material-icons" style={{color:'red'}} >delete_forever</i>
+              </IconButton>
+            </td>
+          :
+            null
+        }
       </tr>
     )} );
     return(
@@ -124,6 +141,9 @@ class Customer extends React.Component {
                           <th>Redeem Code</th>
                           <th>SMS Option</th>
                           <th>App Installed</th>
+                          {this.state.search != ''? 
+                          <th> Deactivate </th>
+                          : null }
                         </tr>
                       </thead>
                       <tbody>
