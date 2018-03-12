@@ -46,11 +46,9 @@ class Customer extends React.Component {
     }
   }
   handleDelete (data) {     
-    console.log(data); 
     this.props.customerDeleteRequest({token:data.token,data:data.data});
       let searchvalue = {search:this.state.search};
       let apiData={token:data.token,data:searchvalue};
-      console.log(apiData)
       setTimeout(()=>{this.props.searchCustomerRequest(apiData)}, 5000);    
   }
   handleChange = props => (event, value, index) => {
@@ -79,15 +77,15 @@ class Customer extends React.Component {
     const { page } = this.state;
     let totalPage = Math.ceil(this.props.allCustomer.customerList.data.length / 20);
     totalPage = totalPage == 0 ? 1 : totalPage;
-    const { isLoading } = this.state;
+    const { isLoading, search } = this.state;
     let CustomerList = _.map(this.props.customer.data, (value, index) => {
       const itemNo = page == 0? index+1 : (page*20)+(index+1);
       return(
       <tr key={index} >
         <td className="mdl-data-table__cell--non-numeric">{itemNo}</td>
-        <td className="mdl-data-table__cell--non-numeric"> <a href={`/#/app/customer/viewcustomerdetails/${value._id}/disable`}>{value.name} {value.lastName}</a></td>
+        <td className="mdl-data-table__cell--non-numeric"><a href={`/#/app/customer/viewcustomerdetails/${value._id}/disable`}>{value.phone?value.phone.length > 10 ? value.phone.substring(2, value.phone.length) : value.phone : ''}</a></td>
         <td className="mdl-data-table__cell--non-numeric"><a href={`/#/app/customer/viewcustomerdetails/${value._id}/disable`}> {value.email}</a> </td>
-        <td><a href={`/#/app/customer/viewcustomerdetails/${index}/disable`}>{value.phone?value.phone.length > 10 ? value.phone.substring(2, value.phone.length) : value.phone : ''}</a></td>
+        <td className="mdl-data-table__cell--non-numeric"> <a href={`/#/app/customer/viewcustomerdetails/${value._id}/disable`}>{value.name} {value.lastName}</a></td>
         <td>{value.CodeRedeemFlag ? "Yes" : "No"}</td>        
         <td>{value.sms_option ? "Yes" : "No"}</td>
         <td>{value.app_installed ? "Yes" : "No"}</td>
@@ -134,9 +132,9 @@ class Customer extends React.Component {
                       <thead>
                         <tr>
                           <th className="mdl-data-table__cell--non-numeric">#</th>
-                          <th className="mdl-data-table__cell--non-numeric">Name</th>
+                          <th className="mdl-data-table__cell--non-numeric">Phone Number</th>
                           <th className="mdl-data-table__cell--non-numeric">Email Id</th>
-                          <th>Phone Number</th>
+                          <th className="mdl-data-table__cell--non-numeric">Name</th>
                           <th>Redeem Code</th>
                           <th>SMS Option</th>
                           <th>App Installed</th>
@@ -151,6 +149,9 @@ class Customer extends React.Component {
                             <td colSpan={7} style={styles.loading} >Loading Data..........</td>
                           </tr>
                         :
+                          search != '' && this.props.customer.data.length == 0 ?
+                          <td colSpan={7} style={styles.loading} >No Data Found</td>                          
+                          :
                           CustomerList
                         }
                       </tbody>
