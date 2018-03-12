@@ -31,7 +31,7 @@ const styles = {
     width: '41%'
   },
   checkbox: {
-    width: '20%',
+    width: '42%',
     float: 'left',
   },
   dropFeild:{
@@ -51,7 +51,7 @@ const styles = {
     marginLeft: 10,
   },
   formGroup: {
-    marginBottom: 5,
+    marginBottom: 15,
   },
   loading: {
     textAlign: 'center',
@@ -122,7 +122,7 @@ const DetailsForm = (props) => {
                       value={props.data.name}
                       onChange={props.handleChange('name')}
                       type="text"
-                      style={{width:'auto'}}
+                      style={{width:'auto', display:'inherit'}}
                       disabled={isDisabled}
                     />
                   </div>
@@ -132,7 +132,7 @@ const DetailsForm = (props) => {
                       hintText="Last Name"
                       value={props.data.lastName}
                       onChange={props.handleChange('lastName')}
-                      style={{width:'auto'}}
+                      style={{width:'auto', display:'inherit'}}
                       type="text"
                       disabled={isDisabled}
                     />
@@ -144,7 +144,7 @@ const DetailsForm = (props) => {
                     <TextField
                       hintText="Email ID"
                       value={props.data.email} onChange={props.handleChange('email')}
-                      style={{width:'auto'}}
+                      style={{width:'auto', display:'inherit'}}
                       type="email"
                       disabled={isDisabled}
                       errorText={errors.email == '' ? null : errors.email}
@@ -157,7 +157,7 @@ const DetailsForm = (props) => {
                       className='spin-remove'
                       value={props.data.phone?props.data.phone:''}
                       onChange={props.handleChange('phone')}
-                      style={{width:'auto'}}
+                      style={{width:'auto', display:'inherit'}}
                       type="number"
                       disabled={isDisabled}
                       errorText={errors.phone == '' ? null : errors.phone}
@@ -172,7 +172,7 @@ const DetailsForm = (props) => {
                   <div className="col-md-4">
                     <DatePicker
                       hintText="Select date"
-                      textFieldStyle={{width:'auto'}}
+                      textFieldStyle={{width:'auto', display:'inherit'}}
                       value={dobDate}
                       onChange={props.handleChange('birthday')}
                       disabled={isDisabled}
@@ -186,7 +186,7 @@ const DetailsForm = (props) => {
                         hintText="Redeem Code"
                         value={props.data.redeemCode ? props.data.redeemCode : ''}
                         onChange={props.handleChange('redeemCode')}
-                        style={{width:'auto'}}
+                        style={{width:'auto', display:'inherit'}}
                         type="text"
                         />
                         :
@@ -194,7 +194,7 @@ const DetailsForm = (props) => {
                         hintText="Redeem Code"
                         value={props.type =='add'?props.data.redeemCode:props.data.CodeRedeemFlag ? 'Yes': 'No'}
                         onChange={props.handleChange('redeemCode')}
-                        style={{width:'auto'}}
+                        style={{width:'auto', display:'inherit'}}
                         type="text"
                         disabled = {props.type == 'add'? false:true}
                         />
@@ -248,7 +248,7 @@ const DetailsForm = (props) => {
                       value={props.data.address1}
                       onChange={props.handleChange('address1')}
                       type="text"
-                      style={{width:'auto'}}
+                      style={{width:'auto', display:'inherit'}}
                       multiLine
                       disabled={isDisabled}
                     />
@@ -259,7 +259,7 @@ const DetailsForm = (props) => {
                       hintText="Address Line 2"
                       value={props.data.address2}
                       onChange={props.handleChange('address2')}
-                      style={{width:'auto'}}
+                      style={{width:'auto', display:'inherit'}}
                       type="text"
                       multiLine
                       disabled={isDisabled}
@@ -271,7 +271,7 @@ const DetailsForm = (props) => {
                   <div className="col-md-4">
                     <SelectField
                       hintText="Select State"
-                      style={{width:"auto", display:'flow-root'}}
+                      style={{width:"auto", display:'inherit',marginTop: 20}}
                       value={props.data.state}
                       onChange={props.handleChange('state')}
                       disabled={isDisabled}
@@ -284,7 +284,7 @@ const DetailsForm = (props) => {
                       <SelectField
                         hintText="Select city"
                         value={props.data.city}
-                        style={{width:"auto", display:'flow-root'}}
+                        style={{width:"auto", display:'inherit',marginTop: 20}}
                         onChange={props.handleChange('city')}
                         disabled={props.data.state == '' || isDisabled}
                         >
@@ -300,7 +300,7 @@ const DetailsForm = (props) => {
                       hintText="Zip code"
                       value={props.data.zipcode}
                       onChange={props.handleChange('zipcode')}
-                      style={{width:'auto'}}
+                      style={{width:'auto', display:'inherit'}}
                       type="number"
                       disabled={isDisabled}
                       errorText={errors.zipcode == '' ? null : errors.zipcode}
@@ -310,7 +310,7 @@ const DetailsForm = (props) => {
                   <div className="col-md-4">
                     <DatePicker
                       hintText="Select date"
-                      textFieldStyle={{width:'auto'}}
+                      textFieldStyle={{width:'auto', display:'inherit'}}
                       value={anniversaryDate}
                       onChange={props.handleChange('anniversary')}
                       disabled={isDisabled}
@@ -346,7 +346,7 @@ const DetailsForm = (props) => {
                       disabled={isDisabled}
                     />
                   </div>
-                  <label  className="col-md-2 control-label" style={styles.label}>Marital status</label>
+                  <label  className="col-md-2 control-label" style={styles.label,{marginTop:14}}>Marital status</label>
                   <div className="col-md-4">
                     <SelectField
                       style={styles.dropFeild}
@@ -367,14 +367,14 @@ const DetailsForm = (props) => {
                       hintText="Occupation"
                       value={props.data.occupation}
                       onChange={props.handleChange('occupation')}
-                      style={{width:'auto'}}
+                      style={{width:'auto', display:'inherit'}}
                       type="text"
                       disabled={isDisabled}
                     />
                   </div>
                   {props.type == 'add' ? 
                    null :
-                  <label className="col-md-2 control-label" style={styles.label}>Source</label>
+                  <label className="col-md-2 control-label" style={styles.label,{marginTop:14}}>Source</label>
                   }
                  {props.type == 'add' ? 
                    null :
@@ -394,7 +394,7 @@ const DetailsForm = (props) => {
                   </div>
                   }
                 </div>
-                <div className="form-group row" style={styles.formGroup}>
+                <div className="form-group row" style={styles.formGroup,{marginTop:10}}>
                   {props.type == 'disable' ?
                   isLoading ?
                   null
