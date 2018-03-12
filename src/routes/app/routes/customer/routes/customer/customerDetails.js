@@ -77,7 +77,7 @@ const DetailsForm = (props) => {
         <div className="box-heading">
             <h3 className="article-title">Customer Detail</h3>
         </div>
-        <div className="box-body">
+        <div className="box-body" style={{margin:15}} >
           <div className="form-group row" style={styles.formGroup}>
             {props.type == 'add' || props.type == 'edit' ?
               isLoading ? 
@@ -102,6 +102,9 @@ const DetailsForm = (props) => {
            {props.type =='add'?
               null
              :
+             isLoading ?
+              null
+              :
               <div className="col-md-4 resp-p-x-0"  >
                 <RaisedButton label={"Activity"}  style={{marginLeft:5, float:'right' }}  onClick={ props.handleActivity } className="btn-w-xs" />              
               </div>
@@ -819,8 +822,8 @@ class CustomerDetails extends React.Component {
   }
   handleDelete (data) {
     this.props.customerDeleteRequest({token:data.token,data:data.data});
-    this.props.customerListRequest({token,page:0});
-    this.props.customerListChartRequest(token)
+    this.props.customerListRequest({token:data.token,page:0});
+    this.props.customerListChartRequest(data.token)
     this.props.history.push('/app/customer/viewcustomer');
   }
   render(){
