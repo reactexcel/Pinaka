@@ -54,12 +54,6 @@ bar1.options = {
           color: CHARTCONFIG.color.splitLine
         }
       },
-      splitArea: {
-        show: true,
-        areaStyle: {
-          color: CHARTCONFIG.color.splitArea
-        }
-      }
     }
   ],
   series: [
@@ -67,17 +61,7 @@ bar1.options = {
       name: 'Evaporation',
       type: 'bar',
       data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
-      markPoint: {
-        data: [
-                    {type: 'max', name: 'Max'},
-                    {type: 'min', name: 'Min'}
-        ]
-      },
-      markLine: {
-        data: [
-                    {type: 'average', name: 'Average'}
-        ]
-      }
+     
     },
     {
       name: 'Precipitation',

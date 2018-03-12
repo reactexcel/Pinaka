@@ -232,7 +232,7 @@ export function* addCustomer(data){
     formData.append('marital', params.marital?1:0);
     formData.append('kids', params.kids?1:0);
     if(params.phone != undefined){
-        formData.append('phone', '+1' + params.phone);
+      formData.append('phone',params.phone);
     }
     formData.append('interests', params.interest);
     formData.append('source', params.source);
@@ -270,6 +270,7 @@ export function* addCustomer(data){
 
 
      let res = yield call(api);
+     console.log(res);
         if(res.status == 1){
          yield put( actions.customerAddSuccess(res.data));
        } else if(res.error == 1 || res.code) {
@@ -298,7 +299,7 @@ export function* updateCustomer(data){
   formData.append('marital', params.marital?1:0);
   formData.append('kids', params.kids?1:0);
   if(params.phone != undefined){
-      formData.append('phone', '+1' + params.phone);
+      formData.append('phone',params.phone);
   }
   if(!params.CodeRedeemFlag && params.redeemCode != undefined ){
     formData.append('CodeRedeemFlag', params.redeemCode != ""?true:false);    
