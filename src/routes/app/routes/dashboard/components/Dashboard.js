@@ -82,7 +82,7 @@ const styles = {
           <td className="mdl-data-table__cell--non-numeric">{index+1}</td>
           <td className="mdl-data-table__cell--non-numeric"> <a href={`/#/app/customer/viewcustomerdetails/${index}/disable`}>{value.name} {value.lastName}</a></td>
           <td className="mdl-data-table__cell--non-numeric">{value.email}</td>
-          <td className="mdl-data-table__cell--non-numeric" ><a href={`/#/app/customer/viewcustomerdetails/${index}/disable`}>{value.phone?value.phone.substring(2, value.phone.length):''}</a></td>
+          <td className="mdl-data-table__cell--non-numeric" ><a href={`/#/app/customer/viewcustomerdetails/${index}/disable`}>{value.phone?value.phone.length > 10 ? value.phone.substring(2, value.phone.length) : value.phone : ''}</a></td>
           <td className="mdl-data-table__cell--non-numeric" >{value.CodeRedeemFlag ? "Yes" : "No"}</td>        
           <td className="mdl-data-table__cell--non-numeric" >{value.sms_option ? "Yes" : "No"}</td>
           <td className="mdl-data-table__cell--non-numeric" >{value.app_installed ? "Yes" : "No"}</td>
@@ -139,10 +139,13 @@ const styles = {
           <QueueAnim type="bottom" className="ui-animate">
             <div key="2"><StatBoxes {...this.props} handleSelect={this.handleSelect} {...this.state} /></div>
           </QueueAnim>
+          {this.props.user.userLogged.data.data.role == 'Admin'? 
             <div className="row box box-default" style={{marginBottom:80}} >
                 <Chart {...this.props} redemption={this.props.customer.redemption.data}  handleRedemption={this.handleRedemption} {...this.state} />
             </div>
-          
+            :
+            null
+          }
           { this.state.selector == 'customer' || this.state.selector == 'redemption' ?
             
             <div  className="row box box-default" >

@@ -87,7 +87,7 @@ class Customer extends React.Component {
         <td className="mdl-data-table__cell--non-numeric">{itemNo}</td>
         <td className="mdl-data-table__cell--non-numeric"> <a href={`/#/app/customer/viewcustomerdetails/${value._id}/disable`}>{value.name} {value.lastName}</a></td>
         <td className="mdl-data-table__cell--non-numeric"><a href={`/#/app/customer/viewcustomerdetails/${value._id}/disable`}> {value.email}</a> </td>
-        <td><a href={`/#/app/customer/viewcustomerdetails/${index}/disable`}>{value.phone?value.phone.substring(2, value.phone.length):''}</a></td>
+        <td><a href={`/#/app/customer/viewcustomerdetails/${index}/disable`}>{value.phone?value.phone.length > 10 ? value.phone.substring(2, value.phone.length) : value.phone : ''}</a></td>
         <td>{value.CodeRedeemFlag ? "Yes" : "No"}</td>        
         <td>{value.sms_option ? "Yes" : "No"}</td>
         <td>{value.app_installed ? "Yes" : "No"}</td>
