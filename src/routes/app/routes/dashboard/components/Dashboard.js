@@ -11,7 +11,13 @@ import BenchmarkChart from './BenchmarkChart';
 import * as actions from 'actions';
 import Chart from './chart';
 import RaisedButton from 'material-ui/RaisedButton';
+import IconButton from 'material-ui/IconButton';
 
+const styles = {
+  icon: {
+    color:'red !important'
+  }
+}
 
   class Dashboard extends React.Component {
     constructor (props) {
@@ -25,6 +31,7 @@ import RaisedButton from 'material-ui/RaisedButton';
       this.handleSelect = this.handleSelect.bind(this);
       this.handleRedemption = this.handleRedemption.bind(this);
       this.redemption = this.redemption.bind(this);
+      this.handleDelete = this.handleDelete.bind(this);
     }
     componentWillMount(){
       let token = this.props.user.userLogged.data.token;
@@ -65,19 +72,28 @@ import RaisedButton from 'material-ui/RaisedButton';
       }
       this.props.redemptionChartRequest(apiData)
     }
+    handleDelete (data) {      
+      this.props.customerDeleteRequest({token:data.token,data:data.data});
+      this.props.customerListChartRequest(data.token);      
+    }
     render(){
       let CustomerList = _.map(this.props.customer.customerList.data, (value, index) => (
         <tr key={index}>
           <td className="mdl-data-table__cell--non-numeric">{index+1}</td>
           <td className="mdl-data-table__cell--non-numeric"> <a href={`/#/app/customer/viewcustomerdetails/${index}/disable`}>{value.name} {value.lastName}</a></td>
           <td className="mdl-data-table__cell--non-numeric">{value.email}</td>
-          <td><a href={`/#/app/customer/viewcustomerdetails/${index}/disable`}>{value.phone?value.phone.substring(2, value.phone.length):''}</a></td>
-          <td>{value.CodeRedeemFlag ? "Yes" : "No"}</td>        
-          <td>{value.sms_option ? "Yes" : "No"}</td>
-          <td>{value.app_installed ? "Yes" : "No"}</td>
+          <td className="mdl-data-table__cell--non-numeric" ><a href={`/#/app/customer/viewcustomerdetails/${index}/disable`}>{value.phone?value.phone.length > 10 ? value.phone.substring(2, value.phone.length) : value.phone : ''}</a></td>
+          <td className="mdl-data-table__cell--non-numeric" >{value.CodeRedeemFlag ? "Yes" : "No"}</td>        
+          <td className="mdl-data-table__cell--non-numeric" >{value.sms_option ? "Yes" : "No"}</td>
+          <td className="mdl-data-table__cell--non-numeric" >{value.app_installed ? "Yes" : "No"}</td>
+          <td className="mdl-data-table__cell--non-numeric" >
+            <IconButton style={{boxShadow:'none'}}  onClick={()=>{ this.handleDelete({token:this.props.user.userLogged.data.token,data:{_id:value._id,infusion_id:value.infusion_id?value.infusion_id :'' }})  }} >
+              <i className="material-icons" color="red" style={{color:'red'},styles.icon} >delete_forever</i>
+            </IconButton>
+          </td>          
         </tr>
       ));
-      const customerData =( <table style={{marginLeft:'3%'}} className="mdl-data-table table-responsive">
+      const customerData =( <table style={{marginLeft:'-1%', display: 'inherit' }} className="mdl-data-table table-responsive">
       <thead>
         <tr>
         <th className="mdl-data-table__cell--non-numeric">#</th>
@@ -87,6 +103,7 @@ import RaisedButton from 'material-ui/RaisedButton';
         <th>Redeem Code</th>
         <th>SMS Option</th>
         <th>App Installed</th>
+        <th>Deactivate</th>
         </tr>
       </thead>
       <tbody>
@@ -104,7 +121,7 @@ import RaisedButton from 'material-ui/RaisedButton';
         
       </tr>
     )});
-    const redemptionData =( <table style={{marginLeft:'3%',width:"94%"}} className="table mdl-data-table table-responsive">
+    const redemptionData =( <table style={{marginLeft:'1%',width:"94%"}} className="table mdl-data-table table-responsive">
       <thead>
         <tr>
         <th className="mdl-data-table__cell--non-numeric">#</th>
@@ -122,31 +139,22 @@ import RaisedButton from 'material-ui/RaisedButton';
           <QueueAnim type="bottom" className="ui-animate">
             <div key="2"><StatBoxes {...this.props} handleSelect={this.handleSelect} {...this.state} /></div>
           </QueueAnim>
-          {/* <div className="row box box-default" >
-            <div style={{margin:30}}>
-              <div className="row" style={{fontSize:21,fontWeight:600,marginBottom:30,marginLeft:"6%"}} > Total No. of Customer </div>
-              <Chart {...this.props} />
+          {this.props.user.userLogged.data.data.role == 'Admin'? 
+            <div className="row box box-default" style={{marginBottom:80}} >
+                <Chart {...this.props} redemption={this.props.customer.redemption.data}  handleRedemption={this.handleRedemption} {...this.state} />
             </div>
-          </div> */}
+            :
+            null
+          }
           { this.state.selector == 'customer' || this.state.selector == 'redemption' ?
+            
             <div  className="row box box-default" >
               <div className="col-md-12" >
                 <h3>{this.state.selector == 'customer'? "Customer List" : this.state.selector == 'redemption'? "Redemption List" : null}</h3>
-              {/* {this.state.selector == 'redemption'?
-                <div style={{float:"right",marginRight:7}} >
-                <RaisedButton label="Week" style={{boxShadow:'none' }}  onClick={()=>{this.handleRedemption(1)}}   />
-                <RaisedButton label="Month" style={{boxShadow:'none'}}  onClick={()=>{this.handleRedemption(2)}} />
-                <RaisedButton label="Quarter" style={{boxShadow:'none'}}  onClick={()=>{this.handleRedemption(3)}} />
-                <RaisedButton label="Year" style={{boxShadow:'none'}}  onClick={()=>{this.handleRedemption(4)}} />                  
-                </div>
-                :
-                null
-              } */}
               {this.state.selector == 'customer'?
                 customerData
                 :
                 this.state.selector == 'redemption' ? 
-                // <Chart {...this.props} />
                 this.props.customer.redemption.data.length > 0 ? redemptionData : null
                 :
                 null

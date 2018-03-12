@@ -6,7 +6,7 @@ const Statboxes = (props) =>{
   return (
   <div className="row">
     
-    <div className="col-xl-3 col-sm-6" style={{cursor:'pointer'}} onClick={()=>{ console.log('asdasd'); props.history.push('/app/customer/viewcustomer')}} > 
+    <div className="col-xl-3 col-sm-6" style={{cursor:'pointer'}} onClick={()=>{ props.handleSelect('customer') }} > 
       <div className="box box-default">
         <div className="box-top">
           <span>{props.customer.customerList.data.length}</span>

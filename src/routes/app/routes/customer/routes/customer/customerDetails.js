@@ -12,6 +12,7 @@ import MenuItem from 'material-ui/MenuItem';
 import DatePicker from 'material-ui/DatePicker';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import TextField from 'material-ui/TextField';
+import Popover from 'material-ui/Popover';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn, TableFooter} from 'material-ui/Table';
 import CHARTCONFIG from 'constants/ChartConfig';
 import * as actions from 'actions';
@@ -97,8 +98,14 @@ const DetailsForm = (props) => {
               </div>
             }
 
-          <div className="col-md-2 col-xs-0 hidden-xs resp-p-x-0"></div>
-          
+            <div className="col-md-2 col-xs-0 hidden-xs resp-p-x-0"></div>
+           {props.type =='add'?
+              null
+             :
+              <div className="col-md-4 resp-p-x-0"  >
+                <RaisedButton label={"Activity"}  style={{marginLeft:5, float:'right' }}  onClick={ props.handleActivity } className="btn-w-xs" />              
+              </div>
+            }
           </div>
           <article className="article">
           {isLoading?
@@ -272,7 +279,7 @@ const DetailsForm = (props) => {
                     {_.map(statesList, (val, i) => <MenuItem value={val} primaryText={val} key={i} /> )}
                     </SelectField>
                   </div>
-                    <label style={styles.label2} className="col-md-2 control-label">City *</label>
+                    <label style={styles.label2} className="col-md-2 control-label">City </label>
                     <div className="col-md-4">
                       <SelectField
                         hintText="Select city"
@@ -354,7 +361,7 @@ const DetailsForm = (props) => {
                   </div>
                 </div>
                 <div className="form-group row" style={styles.formGroup}>
-                  <label style={styles.label1} className="col-md-2 control-label" style={styles.label} >Occupation *</label>
+                  <label style={styles.label1} className="col-md-2 control-label" style={styles.label} >Occupation </label>
                   <div className="col-md-4">
                     <TextField
                       hintText="Occupation"
@@ -425,13 +432,16 @@ class CustomerDetails extends React.Component {
       errors: {},
       isOpen:false,
       message:'',
-      time: 0
+      time: 0,
+      open: false,
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
     this.handleRequestClose = this.handleRequestClose.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleActivity = this.handleActivity.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
   componentWillMount(){
     let token = this.props.user.data.token;     
@@ -486,7 +496,7 @@ class CustomerDetails extends React.Component {
       data.city = data.city ? data.city : '';
       data.zipcode = data.zipcode ? data.zipcode : '';
       data.source = data.source ? data.source : 1;
-      data.phone = data.phone? data.phone.substring(2, data.phone.length) : '';
+      data.phone = data.phone? data.phone.length > 10 ? data.phone.substring(2, data.phone.length) : data.phone : '';
       data.interest = [];
       _.map(data.interests,(value,index)=>{ return data.interest.push(value.id)}); 
       let interests = [];
@@ -649,6 +659,19 @@ class CustomerDetails extends React.Component {
       this.setState({time:0})
     }
   }
+  handleActivity = (event) => {
+    event.preventDefault();
+
+    this.setState({
+      open: true,
+      anchorEl: event.currentTarget,
+    });
+  }
+  handleClose = () => {
+    this.setState({
+      open: false,
+    });
+  };
   handleSave(){
     let { data } = this.state;
     let cloneData = _.cloneDeep(data);
@@ -729,7 +752,7 @@ class CustomerDetails extends React.Component {
       data.state = data.state ? data.state : '';
       data.city = data.city ? data.city : '';
       data.zipcode = data.zipcode ? data.zipcode : '';
-      data.phone = data.phone? data.phone.substring(2, data.phone.length) : '';
+      data.phone = data.phone? data.phone.length > 10 ? data.phone.substring(2, data.phone.length) : data.phone : '';      
       data.interest = [];
       const interest = data.interests;
       _.map(data.interests,(value,index)=>{ return data.interest.push(value.id)}); 
@@ -777,6 +800,17 @@ class CustomerDetails extends React.Component {
     this.props.history.push('/app/customer/viewcustomer');
   }
   render(){
+    const { data } = this.state;
+    const created_at = data.created_at != undefined ? new Date(data.created_at) : '';
+    const reddeemed_date = data.reddeemed_date != undefined ? new Date(data.reddeemed_date) : '';
+    const updated_at = data.updated_at != undefined ? new Date(data.updated_at) : '';
+    const Infusion_synced_date = data.Infusion_synced_date != undefined ? new Date(data.Infusion_synced_date) : '';
+    
+    const createdOn = created_at != ''? `${created_at.getDate()}/${created_at.getMonth()}/${created_at.getFullYear()}  ${created_at.getHours()}:${created_at.getMinutes()} `:'';
+    const updatedOn = updated_at != ''? `${updated_at.getDate()}/${updated_at.getMonth()}/${updated_at.getFullYear()}  ${updated_at.getHours()}:${updated_at.getMinutes()} `:'';
+    const redeemedOn = reddeemed_date != ''? `${reddeemed_date.getDate()}/${reddeemed_date.getMonth()}/${reddeemed_date.getFullYear()}  ${reddeemed_date.getHours()}:${reddeemed_date.getMinutes()} `:'Not Yet Redeem';
+    const syncOn = Infusion_synced_date != ''? `${Infusion_synced_date.getDate()}/${Infusion_synced_date.getMonth()}/${Infusion_synced_date.getFullYear()}  ${Infusion_synced_date.getHours()}:${Infusion_synced_date.getMinutes()} `:'';
+    
     return(
       <div className="container-fluid no-breadcrumbs">
         <Snackbar
@@ -786,7 +820,36 @@ class CustomerDetails extends React.Component {
           autoHideDuration={2000}
           onRequestClose={this.handleRequestClose}
         />
-        <DetailsForm {...this.props} intrestList={this.state.intrestList} handleDelete={this.handleDelete} handleSave={this.handleSave} handleEdit={this.handleEdit} handleChange={this.handleChange}  {...this.state} />
+        <Popover
+        open={this.state.open}
+        anchorEl={this.state.anchorEl}
+        anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+        targetOrigin={{horizontal: 'left', vertical: 'top'}}
+        onRequestClose={this.handleClose}
+      >
+        <table className="mdl-data-table table-responsive" >
+          <tbody>
+            <tr>
+              <td className="mdl-data-table__cell--non-numeric"  >Created on - </td>
+              <td> {createdOn} </td>
+            </tr>
+            <tr>
+              <td className="mdl-data-table__cell--non-numeric" >Updated On - </td>
+              <td> {updatedOn} </td>
+            </tr>
+            <tr>
+              <td className="mdl-data-table__cell--non-numeric" >Infusion Sync on - </td>
+              <td> {syncOn} </td>
+            </tr>
+            <tr>
+              <td className="mdl-data-table__cell--non-numeric" >Code Redeem On - </td>
+              <td> {redeemedOn} </td>
+            </tr>
+          </tbody>
+        </table>
+      </Popover>
+
+        <DetailsForm {...this.props} intrestList={this.state.intrestList} handleActivity={this.handleActivity} handleDelete={this.handleDelete} handleSave={this.handleSave} handleEdit={this.handleEdit} handleChange={this.handleChange}  {...this.state} />
       </div>
     );
   }
