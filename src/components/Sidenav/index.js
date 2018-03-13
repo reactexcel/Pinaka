@@ -56,7 +56,7 @@ class Sidebar extends React.Component {
         <section
           className={classnames('sidebar-header')}
           style={{backgroundColor:'#1b025c'}}
-                >
+        >
           <img src="assets/logo.png" style={{height:'40px',width:'180px'}} />
         </section>
 
@@ -66,7 +66,7 @@ class Sidebar extends React.Component {
 
         <section className="sidebar-footer">
           <ul className="nav"
-            style={{backgroundColor:'#1b025c'}}
+            style={{backgroundColor:'#1b025c',cursor:'pointer' }}
             >
             <li style={{marginLeft:"7%",marginTop:'3%',paddingBottom:'5%',display:'inline-flex'}}  onclick={()=>{this.handleChange('/logout')}} >
                 <i className="material-icons">power_settings_new</i>
