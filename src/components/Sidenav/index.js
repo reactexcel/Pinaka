@@ -70,7 +70,7 @@ class Sidebar extends React.Component {
             >
             <li style={{marginLeft:"7%",marginTop:'3%',paddingBottom:'5%',display:'inline-flex'}}  onclick={()=>{this.handleChange('/logout')}} >
                 <i className="material-icons">power_settings_new</i>
-                <span className="nav-text" style={{marginLeft:'15%'}} >Logout</span>
+                <span className="nav-text" style={{marginLeft:'8%'}} >Logout</span>
             </li>
           </ul>
         </section>
