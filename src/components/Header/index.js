@@ -8,6 +8,8 @@ import NavRightList from './NavRightList';
 import * as actions from 'actions';
 import {bindActionCreators} from 'redux';
 import RaisedButton from 'material-ui/RaisedButton';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 import TextField from 'material-ui/TextField';
 import {withRouter} from 'react-router';
 
@@ -70,33 +72,11 @@ class Header extends React.Component {
             <h2><Link to="/">{APPCONFIG.brand}</Link></h2>
           </div>
 
-          <div className="top-nav-left d-none d-lg-inline-block d-xl-inline-block">
-            {/* <NavLeftList /> */}
-          </div>
-          {/* <TextField
-            hintText="Search"
-            style={{width:'60%'}}
-            value={this.state.search}
-            hintStyle={{color:"#ffff"}}
-            inputStyle={{color:"#ffff"}}
-            onChange={this.handleChange('search')}
-            type="text"
-          />
-            {this.props.customer.searchHeader.isSuccess ?  
-            <div className="box box-default table-box mdl-shadow--2dp" style={{width:"45%",marginLeft:"25%"}} >
-            <table className="mdl-data-table table-responsive">
-              
-              <tbody>
-                  {CustomerList}
-              </tbody>
-            </table>
-          </div>
-          :
-          null
-          } */}
 
           <div className="top-nav-right">
-            <RaisedButton label="Add Customer" style={{marginTop: 13,}}  onClick={()=>{this.props.history.push('/app/customer/viewcustomerdetails/0/add')}}  primary  />
+            <FloatingActionButton mini style={{marginTop: '10%',}} onClick={()=>{this.props.history.push('/app/customer/viewcustomerdetails/0/add')}}  primary  >
+              <ContentAdd />
+            </FloatingActionButton>
             <NavRightList {...this.props} />
           </div>
         </div>

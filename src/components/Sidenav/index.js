@@ -24,6 +24,14 @@ class Sidebar extends React.Component {
     }
   }
 
+  handleChange = (event, value) => {
+    if(value == '/logout'){
+      sessionStorage.removeItem('user');
+      this.props.loginUserReset();
+      this.props.history.push(value);
+    }
+  }
+
   onToggleCollapsedNav = (e) => {
     const val = !this.props.navCollapsed;
     const { handleToggleCollapsedNav } = this.props;
@@ -60,11 +68,9 @@ class Sidebar extends React.Component {
           <ul className="nav"
             style={{backgroundColor:'#1b025c'}}
             >
-            <li>
-              <a target="_blank" >
-                <i className="nav-icon material-icons">help</i>
-                <span className="nav-text"><span>Help</span> & <span>Support</span></span>
-              </a>
+            <li style={{marginLeft:"7%",marginTop:'3%',paddingBottom:'5%',display:'inline-flex'}}  onclick={()=>{this.handleChange('/logout')}} >
+                <i className="material-icons">power_settings_new</i>
+                <span className="nav-text" style={{marginLeft:'15%'}} >Logout</span>
             </li>
           </ul>
         </section>
