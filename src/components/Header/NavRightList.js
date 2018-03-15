@@ -16,7 +16,7 @@ const listItemStyle = {
 class NavRightList extends React.Component {
 
   handleChange = (event, value) => {
-    if(value == '/login'){
+    if(value == '/logout'){
       sessionStorage.removeItem('user');
       this.props.loginUserReset();
       this.props.history.push(value);
@@ -26,7 +26,7 @@ class NavRightList extends React.Component {
   render() {
     return (
       <ul className="list-unstyled float-right">
-        <li style={{marginRight: '10px'}}>
+        <li style={{marginRight: '10%'}}>
           <IconMenu
             iconButtonElement={<IconButton style={ImgIconButtonStyle,{color:'white',width:"50px",height:"50px", marginRight: 20,marginTop: 6,}}><i className="material-icons">settings</i></IconButton>}
             onChange={this.handleChange}
@@ -49,7 +49,7 @@ class NavRightList extends React.Component {
               leftIcon={<i className="material-icons">person_outline</i>}
                         /> */}
             <MenuItem
-              value="/login"
+              value="/logout"
               primaryText="Log Out"
               innerDivStyle={listItemStyle}
               style={{fontSize: '14px', lineHeight: '48px'}}
