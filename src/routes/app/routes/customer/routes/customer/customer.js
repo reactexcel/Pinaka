@@ -82,14 +82,13 @@ class Customer extends React.Component {
       const itemNo = page == 0? index+1 : (page*20)+(index+1);
       return(
       <tr key={index} >
-        <td className="mdl-data-table__cell--non-numeric">{itemNo}</td>
         <td className="mdl-data-table__cell--non-numeric"><a href={`/#/app/customer/viewcustomerdetails/${value._id}/disable`}>{value.phone?value.phone.length > 10 ? value.phone.substring(2, value.phone.length) : value.phone : ''}</a></td>
         <td className="mdl-data-table__cell--non-numeric"><a href={`/#/app/customer/viewcustomerdetails/${value._id}/disable`}> {value.email}</a> </td>
         <td className="mdl-data-table__cell--non-numeric"> <a href={`/#/app/customer/viewcustomerdetails/${value._id}/disable`}>{value.name} {value.lastName}</a></td>
         <td>{value.CodeRedeemFlag ? "Yes" : "No"}</td>        
         <td>{value.sms_option ? "Yes" : "No"}</td>
         <td>{value.app_installed ? "Yes" : "No"}</td>
-        {this.state.search !='' ? 
+        {/* {this.state.search !='' ? 
             <td>
               <IconButton style={{boxShadow:'none'}}  onClick={()=>{ this.handleDelete({token:this.props.user.userLogged.data.token,data:{_id:value._id,infusion_id:value.infusion_id?value.infusion_id :'' }})  }} >
                 <i className="material-icons" style={{color:'red'}} >delete_forever</i>
@@ -97,7 +96,7 @@ class Customer extends React.Component {
             </td>
           :
             null
-        }
+        } */}
       </tr>
     )} );
     return(
@@ -131,16 +130,15 @@ class Customer extends React.Component {
                     <table className="mdl-data-table table-responsive" >
                       <thead>
                         <tr>
-                          <th className="mdl-data-table__cell--non-numeric">#</th>
                           <th className="mdl-data-table__cell--non-numeric">Phone Number</th>
                           <th className="mdl-data-table__cell--non-numeric">Email Id</th>
                           <th className="mdl-data-table__cell--non-numeric">Name</th>
                           <th>Redeem Code</th>
                           <th>SMS Option</th>
                           <th>App Installed</th>
-                          {this.state.search != ''? 
+                          {/* {this.state.search != ''? 
                           <th> Deactivate </th>
-                          : null }
+                          : null } */}
                         </tr>
                       </thead>
                       <tbody>

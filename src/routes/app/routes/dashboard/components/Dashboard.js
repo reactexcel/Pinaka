@@ -86,24 +86,19 @@ const styles = {
           <td className="mdl-data-table__cell--non-numeric" >{value.CodeRedeemFlag ? "Yes" : "No"}</td>        
           <td className="mdl-data-table__cell--non-numeric" >{value.sms_option ? "Yes" : "No"}</td>
           <td className="mdl-data-table__cell--non-numeric" >{value.app_installed ? "Yes" : "No"}</td>
-          <td className="mdl-data-table__cell--non-numeric" >
-            <IconButton style={{boxShadow:'none'}}  onClick={()=>{ this.handleDelete({token:this.props.user.userLogged.data.token,data:{_id:value._id,infusion_id:value.infusion_id?value.infusion_id :'' }})  }} >
-              <i className="material-icons" color="red" style={{color:'red'},styles.icon} >delete_forever</i>
-            </IconButton>
-          </td>          
+          
         </tr>
       ));
-      const customerData =( <table style={{marginLeft:'-1%', display: 'inherit' }} className="mdl-data-table table-responsive">
+      const customerData =( <table style={{marginLeft:'-1%',width:'100%' }} className="mdl-data-table table-responsive">
       <thead>
         <tr>
-        <th className="mdl-data-table__cell--non-numeric">#</th>
+        <th className="mdl-data-table__cell--non-numeric">No.</th>
         <th className="mdl-data-table__cell--non-numeric">Name</th>
         <th className="mdl-data-table__cell--non-numeric">Email Id</th>
-        <th>Phone Number</th>
-        <th>Redeem Code</th>
-        <th>SMS Option</th>
-        <th>App Installed</th>
-        <th>Deactivate</th>
+        <th className="mdl-data-table__cell--non-numeric">Phone Number</th>
+        <th className="mdl-data-table__cell--non-numeric">Redeem Code</th>
+        <th className="mdl-data-table__cell--non-numeric">SMS Option</th>
+        <th className="mdl-data-table__cell--non-numeric">App Installed</th>
         </tr>
       </thead>
       <tbody>
