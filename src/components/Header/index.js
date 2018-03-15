@@ -74,9 +74,10 @@ class Header extends React.Component {
 
 
           <div className="top-nav-right">
-            <FloatingActionButton mini style={{marginTop: '10%',}} onClick={()=>{this.props.history.push('/app/customer/viewcustomerdetails/0/add')}}  primary  >
+            {/* <FloatingActionButton mini style={{marginTop: '10%',}} onClick={()=>{this.props.history.push('/app/customer/viewcustomerdetails/0/add')}}  primary  >
               <ContentAdd />
-            </FloatingActionButton>
+            </FloatingActionButton> */}
+            <RaisedButton label="Add Customer" style={{marginTop: 13,}}  onClick={()=>{this.props.history.push('/app/customer/viewcustomerdetails/0/add')}}  primary  />
             <NavRightList {...this.props} />
           </div>
         </div>

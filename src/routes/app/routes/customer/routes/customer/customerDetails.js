@@ -156,7 +156,7 @@ const DetailsForm = (props) => {
                       errorText={errors.email == '' ? null : errors.email}
                     />
                   </div>
-                  <label style={styles.label1} className="col-md-2 control-label">Phone Number *</label>
+                  <label style={styles.label1} className="col-md-2 control-label resp-p-x-0">Phone Number *</label>
                   <div className="col-md-4">
                     <TextField
                       hintText="Phone Number "
@@ -513,7 +513,7 @@ class CustomerDetails extends React.Component {
       lastName: '',
       email: '',
       phone: '',
-      sms_option: true,
+      sms_option: false,
       app_installed: false,
       interests: [],
       interest: [],      
