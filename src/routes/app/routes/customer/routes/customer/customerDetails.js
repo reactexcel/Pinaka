@@ -31,7 +31,7 @@ const styles = {
     width: '41%'
   },
   checkbox: {
-    width: '42%',
+    width: '50%',
     float: 'left',
   },
   dropFeild:{
@@ -117,6 +117,9 @@ const DetailsForm = (props) => {
             </div>
             :
               <form role="form" >
+                <div className="form-group row" >
+                  <h3 className="article-title">General Information</h3>                  
+                </div>
                 <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1}  className="col-md-2 control-label">First Name </label>
                   <div className="col-md-4">
@@ -171,17 +174,6 @@ const DetailsForm = (props) => {
                   null
                :
                   <div className="form-group row" style={styles.formGroup}>
-                    <label style={styles.label1} className="col-md-2 control-label">Date of Birth</label>
-                  <div className="col-md-4">
-                    <DatePicker
-                      hintText="Select date"
-                      textFieldStyle={{width:'95%', display:'inherit'}}
-                      value={dobDate}
-                      onChange={props.handleChange('birthday')}
-                      disabled={isDisabled}
-                      errorText={errors.birthday == '' ? null : errors.birthday}
-                    />
-                  </div>
                     <label style={styles.label1} className="col-md-2 control-label">Redeem Code</label>
                     <div className="col-md-4">
                       {!props.data.CodeRedeemFlag && props.type =='edit'?
@@ -205,8 +197,45 @@ const DetailsForm = (props) => {
                     </div>
                   </div>
                 }
+                <div className="form-group row" >
+                  <h3 className="article-title">Interests</h3>                  
+                </div>
+                <div className="form-group row" style={styles.formGroup}>
+                  
+                  <div className="col-md-12" style={{margin:5}} >
+                    {  _.map(props.intrestList,(value,index)=>(
+                        <Checkbox
+                          key={index}
+                          label={value.name}
+                          style={styles.checkbox}
+                          className="col-xs-12"
+                          onCheck={props.type == 'add'?props.handleChange({props:'interests',item:value,index:index}):props.handleChange({props:'interestsFlag',item:value,index:index})}
+                          checked={_.indexOf(props.data.interest, value._id) >= 0}
+                          disabled={isDisabled}
+                        />
+                      )
+                    )}
+                  </div>
+                </div>
+                <div className="form-group row" >
+                  <h3 className="article-title">Personal Information</h3>                  
+                </div>
 
                   <div className="form-group row" style={styles.formGroup}>
+                    <label style={styles.label1} className="col-md-2 control-label">Date of Birth</label>
+                    <div className="col-md-4">
+                      <DatePicker
+                        hintText="Select date"
+                        textFieldStyle={{width:'95%', display:'inherit'}}
+                        value={dobDate}
+                        formatDate={(value)=>{const date = new Date(value);
+                          return `${date.getDate()}/${date.getMonth()}`
+                        }}
+                        onChange={props.handleChange('birthday')}
+                        disabled={isDisabled}
+                        errorText={errors.birthday == '' ? null : errors.birthday}
+                      />
+                    </div>
                     <label style={styles.label1} className="col-md-2 control-label">Age Group</label>
                     <div className="col-md-4">
                     <SelectField
@@ -224,45 +253,130 @@ const DetailsForm = (props) => {
                       </SelectField>
                     </div>
                   </div>
-
-                {props.type == 'add' || props.type == 'edit' ? 
-                null:
+                  <div className="form-group row" style={styles.formGroup}>
+                  {/* */}
+                  <label style={styles.label1}  className="col-md-2 control-label">Anniversary Date/Year </label>
+                  <div className="col-md-4">
+                    <DatePicker
+                      hintText="Select date"
+                      textFieldStyle={{width:'auto', display:'inherit'}}
+                      value={anniversaryDate}
+                      disableYearSelection
+                      formatDate={(value)=>{const date = new Date(value);
+                                  return `${date.getDate()}/${date.getMonth()}`
+                                }}
+                      onChange={props.handleChange('anniversary')}
+                      disabled={isDisabled}
+                    />
+                  </div>
+                  <label  className="col-md-2 control-label" style={styles.label,{marginTop:14}}>Marital status</label>
+                  <div className="col-md-4">
+                    <SelectField
+                      style={styles.dropFeild}
+                      style={{width:"auto", display:'inherit'}}
+                      value={props.data.marital}
+                      onChange={props.handleChange('marital')}
+                      disabled={isDisabled}
+                    >
+                      <MenuItem value={false} primaryText="Single" />
+                      <MenuItem value={true} primaryText="Married" />
+                    </SelectField>
+                  </div>
+                </div>
                 <div className="form-group row" style={styles.formGroup}>
+                  <label style={styles.label1} className="col-md-2 control-label" style={styles.label} >Occupation </label>
+                  <div className="col-md-4">
+                    <TextField
+                      hintText="Occupation"
+                      value={props.data.occupation}
+                      onChange={props.handleChange('occupation')}
+                      style={{width:'95%', display:'inherit'}}
+                      type="text"
+                      disabled={isDisabled}
+                    />
+                  </div>
+                  {props.type == 'add' ? 
+                   null :
+                  <label className="col-md-2 control-label" style={styles.label,{marginTop:14}}>Source</label>
+                  }
+                 {props.type == 'add' ? 
+                   null :
+                   <div className="col-md-4">
+                    <SelectField
+                      hintText="Select Source"
+                      value={props.data.source}
+                      style={styles.dropFeild,{width:"auto", display:'flow-root'}}
+                      onChange={props.handleChange('source')}
+                      disabled
+                    >
+                      <MenuItem value={1} primaryText="Mobile App" />
+                      <MenuItem value={2} primaryText="SMS" />
+                      <MenuItem value={3} primaryText="Manual" />
+                      <MenuItem value={4} primaryText="Other" />
+                    </SelectField>
+                  </div>
+                  }
+                </div>
+                
+                <div className="form-group row" style={styles.formGroup}>
+                <label  className="col-md-2 control-label" style={styles.label} >Kids</label>
+                  <div className="col-md-2">
+                    <Toggle
+                      defaultToggled={props.data.kids}
+                      onToggle={props.handleChange('kids')}
+                      style={styles.toggle}
+                      disabled={isDisabled}
+                    />
+                  </div> 
+                  {props.type == 'add' || props.type == 'edit' ? 
+                    null:
                   <label className="col-md-2 control-label" style={{paddingTop: 14, paddingBottom: 20}}>SMS Option</label>
-                  <div className="col-md-4" style={{paddingTop: 14, paddingBottom: 20}}>
+                }
+                {props.type == 'add' || props.type == 'edit' ? 
+                    null:
+                  <div className="col-md-2" style={{paddingTop: 14, paddingBottom: 20}}>
                     <Toggle
                       defaultToggled={props.data.sms_option}
                       onToggle={props.handleChange('sms_option')}
                       disabled
                     />
                   </div>
+                }
+                {props.type == 'add' || props.type == 'edit' ? 
+                    null:
                   <label  className="col-md-2 control-label" style={{paddingTop: 14, paddingBottom: 20}}>App Installed Status</label>
-                  <div className="col-md-4" style={{paddingTop: 14, paddingBottom: 20}}>
+                }
+                {props.type == 'add' || props.type == 'edit' ? 
+                    null:
+                  <div className="col-md-2" style={{paddingTop: 14, paddingBottom: 20}}>
                     <Toggle
                       defaultToggled={props.data.app_installed}
                       onToggle={props.handleChange('app_installed')}
                       disabled
                     />
                   </div>
-                </div>
                 }
-                <div className="form-group row" style={styles.formGroup}>
-                  <label className={'col-md-2 control-label'}>Interests </label>
-                  <div className="col-md-10">
-                    {  _.map(props.intrestList,(value,index)=>(
-                        <Checkbox
-                          key={index}
-                          label={value.name}
-                          style={styles.checkbox}
-                          className="col-xs-12"
-                          onCheck={props.type == 'add'?props.handleChange({props:'interests',item:value,index:index}):props.handleChange({props:'interestsFlag',item:value,index:index})}
-                          checked={_.indexOf(props.data.interest, value._id) >= 0}
-                          disabled={isDisabled}
-                        />
-                      )
-                    )}
-                  </div>
                 </div>
+                {/* <div className="form-group row" style={styles.formGroup}>
+                  <label className="col-md-2 control-label" style={{'paddingTop': 14}}>Gender </label>
+                  <div className='col-md-10' style={{'paddingTop': 14}}>
+                    <RadioButtonGroup disabled={isDisabled} name="gender" valueSelected={genderVaalue}  defaultSelected={genderVaalue} onChange={props.handleChange('gender')}>
+                      <RadioButton
+                        value={false}
+                        label="Male"
+                        style={styles.radioButton}
+                        disabled={isDisabled}
+                      />
+                      <RadioButton
+                        value={true}
+                        label="Female"
+                        style={styles.radioButton}
+                        disabled={isDisabled}
+                      />
+                    </RadioButtonGroup>
+                  </div>
+                </div> */}
+                
                 <div className="form-group row" style={styles.formGroup}>
                   <label style={styles.label1} className="col-md-2 control-label">Address Line 1 </label>
                   <div className="col-md-4">
@@ -329,7 +443,7 @@ const DetailsForm = (props) => {
                       errorText={errors.zipcode == '' ? null : errors.zipcode}
                     />
                   </div>
-                  <label style={styles.label1}  className="col-md-2 control-label">Anniversary Date/Year </label>
+                  {/* <label style={styles.label1}  className="col-md-2 control-label">Anniversary Date/Year </label>
                   <div className="col-md-4">
                     <DatePicker
                       hintText="Select date"
@@ -338,85 +452,9 @@ const DetailsForm = (props) => {
                       onChange={props.handleChange('anniversary')}
                       disabled={isDisabled}
                     />
-                  </div>
+                  </div> */}
                 </div>
-                <div className="form-group row" style={styles.formGroup}>
-                  <label className="col-md-2 control-label" style={{'paddingTop': 14}}>Gender </label>
-                  <div className='col-md-10' style={{'paddingTop': 14}}>
-                    <RadioButtonGroup disabled={isDisabled} name="gender" valueSelected={genderVaalue}  defaultSelected={genderVaalue} onChange={props.handleChange('gender')}>
-                      <RadioButton
-                        value={false}
-                        label="Male"
-                        style={styles.radioButton}
-                        disabled={isDisabled}
-                      />
-                      <RadioButton
-                        value={true}
-                        label="Female"
-                        style={styles.radioButton}
-                        disabled={isDisabled}
-                      />
-                    </RadioButtonGroup>
-                  </div>
-                </div>
-                <div className="form-group row" style={styles.formGroup}>
-                  <label  className="col-md-2 control-label" style={styles.label} >Kids</label>
-                  <div className="col-md-4">
-                    <Toggle
-                      defaultToggled={props.data.kids}
-                      onToggle={props.handleChange('kids')}
-                      style={styles.toggle}
-                      disabled={isDisabled}
-                    />
-                  </div>
-                  <label  className="col-md-2 control-label" style={styles.label,{marginTop:14}}>Marital status</label>
-                  <div className="col-md-4">
-                    <SelectField
-                      style={styles.dropFeild}
-                      style={{width:"auto", display:'inherit'}}
-                      value={props.data.marital}
-                      onChange={props.handleChange('marital')}
-                      disabled={isDisabled}
-                    >
-                      <MenuItem value={false} primaryText="Single" />
-                      <MenuItem value={true} primaryText="Married" />
-                    </SelectField>
-                  </div>
-                </div>
-                <div className="form-group row" style={styles.formGroup}>
-                  <label style={styles.label1} className="col-md-2 control-label" style={styles.label} >Occupation </label>
-                  <div className="col-md-4">
-                    <TextField
-                      hintText="Occupation"
-                      value={props.data.occupation}
-                      onChange={props.handleChange('occupation')}
-                      style={{width:'95%', display:'inherit'}}
-                      type="text"
-                      disabled={isDisabled}
-                    />
-                  </div>
-                  {props.type == 'add' ? 
-                   null :
-                  <label className="col-md-2 control-label" style={styles.label,{marginTop:14}}>Source</label>
-                  }
-                 {props.type == 'add' ? 
-                   null :
-                   <div className="col-md-4">
-                    <SelectField
-                      hintText="Select Source"
-                      value={props.data.source}
-                      style={styles.dropFeild,{width:"auto", display:'flow-root'}}
-                      onChange={props.handleChange('source')}
-                      disabled
-                    >
-                      <MenuItem value={1} primaryText="Mobile App" />
-                      <MenuItem value={2} primaryText="SMS" />
-                      <MenuItem value={3} primaryText="Manual" />
-                      <MenuItem value={4} primaryText="Other" />
-                    </SelectField>
-                  </div>
-                  }
-                </div>
+            
                 <div className="form-group row" style={styles.formGroup,{marginTop:10}}>
                   {props.type == 'disable' ?
                   isLoading ?
@@ -498,6 +536,9 @@ class CustomerDetails extends React.Component {
       source: 1,
     };
     this.setState({intrestList: interest.interestList.data,});
+    for(var i = 0; i < interest.interestList.data.length; i++){
+      data.interests.push(false);
+    }
     if(match.params.type == 'add' && this.state.time == 0){
       this.setState({
         data,
