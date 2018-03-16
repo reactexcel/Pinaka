@@ -71,13 +71,14 @@ class Header extends React.Component {
           <div className="brand d-none d-lg-inline-block d-xl-inline-block">
             <h2><Link to="/">{APPCONFIG.brand}</Link></h2>
           </div>
-
+          <div className="top-nav-left" >
+            <RaisedButton label="Add Customer" style={{marginTop: 13,marginLeft:5,}}  onClick={()=>{this.props.history.push('/app/customer/viewcustomerdetails/0/add')}}  primary  />
+          </div>
 
           <div className="top-nav-right">
             {/* <FloatingActionButton mini style={{marginTop: '10%',}} onClick={()=>{this.props.history.push('/app/customer/viewcustomerdetails/0/add')}}  primary  >
               <ContentAdd />
             </FloatingActionButton> */}
-            <RaisedButton label="Add Customer" style={{marginTop: 13,}}  onClick={()=>{this.props.history.push('/app/customer/viewcustomerdetails/0/add')}}  primary  />
             <NavRightList {...this.props} />
           </div>
         </div>

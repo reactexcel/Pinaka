@@ -64,7 +64,7 @@ const DetailsForm = (props) => {
               <div className='col-md-6 col-xs-9 resp-p-x-0'>
                 {/* button for add update and delete */}
                 <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-xs" />
-                <RaisedButton label="Delete" backgroundColor="#FF0000" style={{marginLeft:5}} labelColor="#ffffff"  onClick={()=>{props.handleDelete({token:props.user.userLogged.data.token,data:{_id:props.data._id} })}} className="btn-w-xs" />
+                <RaisedButton label="Delete" style={{marginLeft:5}} backgroundColor="#ff00a2" labelColor="white" onClick={()=>{props.handleDelete({token:props.user.userLogged.data.token,data:{_id:props.data._id} })}} className="btn-w-xs" />
                 <RaisedButton label={props.type == 'disable'?"Back":"cancel"}  style={{marginLeft:5}}  onClick={()=>{props.type=='disable'? props.handleEdit('back'):props.handleEdit('cancel')}} className="btn-w-xs" />
               </div>
           }
