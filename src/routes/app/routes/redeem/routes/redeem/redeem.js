@@ -75,10 +75,10 @@ class Redeem extends React.Component {
               <div className="box-body">
                 <article className="article">
                   <div>
-                    <h2 className="article-title">Redeem Code Details</h2>
+                    <h2 className="article-title">Redeem Code List</h2>
                     <div>
                       {/* button for add update and delete */}
-                      <RaisedButton label="Add Redeem Code" style={{margin: '5px',}}  onClick={()=>{this.props.history.push('/app/redeem/viewredeemdetails/0/add')}} backgroundColor="#3f6ff6" />
+                      <RaisedButton label="Add Redeem Code" style={{margin: '5px',}}  onClick={()=>{this.props.history.push('/app/redeem/viewredeemdetails/0/add')}} backgroundColor="#3f6ff6" labelColor="white" />
 
                     </div>
                   </div>

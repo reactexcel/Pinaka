@@ -77,12 +77,12 @@ class User extends React.Component {
               <div className="box-body">
                 <article className="article">
                   <div>
-                    <h2 className="article-title">User Details</h2>
+                    <h2 className="article-title">User List</h2>
                     
                   </div>
                   <div className="row">
                     <div className="col-xl-12">
-                      <RaisedButton label="Add User" style={{boxShadow:'none',marginRight:5}}  onClick={()=>{this.props.history.push('/app/user/viewuserdetails/0/add')}}  backgroundColor="#3f6ff6"  />
+                      <RaisedButton label="Add User" labelColor='white' style={{boxShadow:'none',marginRight:5}}  onClick={()=>{this.props.history.push('/app/user/viewuserdetails/0/add')}}  backgroundColor="#3f6ff6"  />
                       <TextField
                         hintText="Search"
                         style={{width:'75%', marginLeft: "3vw" }}

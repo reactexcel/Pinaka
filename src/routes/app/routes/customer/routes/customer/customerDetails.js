@@ -75,7 +75,7 @@ const DetailsForm = (props) => {
     <div className="col-xl-12 no-padding">
       <div className="box box-default">
         <div className="box-heading">
-            <h3 className="article-title" style={{color:'black'}} >New Customer</h3>
+            <h3 className="article-title" style={{color:'black'}} > {props.type == "add"? "New Customer":"Customer"}</h3>
         </div>
         <div className="box-body" style={{margin:15}} >
           <div className="form-group row" style={styles.formGroup}>
@@ -84,7 +84,7 @@ const DetailsForm = (props) => {
               null
               :
               <div className='col-md-6 col-xs-9 resp-p-x-0 no-padding' >
-                <RaisedButton style={{marginLeft:5}} label={props.type =='add'?"Add":"Save"} backgroundColor={"#414afa"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-xs" />
+                <RaisedButton style={{marginLeft:5}} label={props.type =='add'?"Add":"Save"} backgroundColor={"#3f6ff6"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-xs" />
                 <RaisedButton label="Cancel" style={styles.button} onClick={()=>{props.handleEdit('cancel')}} className="btn-w-xs" />
               </div>  
               :
@@ -92,7 +92,7 @@ const DetailsForm = (props) => {
               null
               :
               <div className='col-md-6 col-xs-9 resp-p-x-0'>
-                <RaisedButton label="Edit" backgroundColor="#414afa" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-xs" />
+                <RaisedButton label="Edit" backgroundColor="#3f6ff6" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-xs" />
                 <RaisedButton label="Delete" backgroundColor="#ff0051" labelColor="white" style={{marginLeft:5}} onClick={()=>{props.handleDelete({token:props.user.data.token,data:{_id:props.data._id,infusion_id:props.data.infusion_id?props.data.infusion_id :'' }}) }} className="btn-w-xs" />
                 <RaisedButton label={props.type == 'disable'?"Back":"cancel"}  style={{marginLeft:5}}  onClick={()=>{props.type == 'disable'? props.handleEdit('back'):props.handleEdit('cancel')}} className="btn-w-xs" />
               </div>
@@ -461,13 +461,13 @@ const DetailsForm = (props) => {
                   null
                   :
                   <div className='col-md-6 col-xs-9 resp-p-x-0 ' style={{paddingLeft:13}} >
-                    <RaisedButton label="Edit" backgroundColor="#414afa" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-xs" />
+                    <RaisedButton label="Edit" backgroundColor="#3f6ff6" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-xs" />
                     <RaisedButton label="Delete" style={{marginLeft:5}} backgroundColor="#ff0051" labelColor="white" onClick={()=>{props.handleDelete({token:props.user.data.token,data:{_id:props.data._id,infusion_id:props.data.infusion_id?props.data.infusion_id :'' }})}} className="btn-w-xs" />
                     <RaisedButton label={props.type == 'disable'?"Back":"cancel"}  style={{marginLeft:5}}  onClick={()=>{props.type == 'disable'? props.handleEdit('back'):props.handleEdit('cancel')}} className="btn-w-xs" />
                   </div>
                 :
                   <div className="col-md-6 col-xs-9 resp-p-x-0 " style={{paddingLeft:4}} >
-                    <RaisedButton label={props.type =='add'?"Add":"Save"} backgroundColor={"#1b025c"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-xs" />
+                    <RaisedButton label={props.type =='add'?"Add":"Save"} backgroundColor={"#3f6ff6"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-xs" />
     
                       <RaisedButton label="Cancel" style={styles.button} onClick={()=>{props.handleEdit('cancel')}} className="btn-w-xs" />
                     
