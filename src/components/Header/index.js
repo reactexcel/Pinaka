@@ -72,7 +72,7 @@ class Header extends React.Component {
             <h2><Link to="/">{APPCONFIG.brand}</Link></h2>
           </div>
           <div className="top-nav-left" >
-            <RaisedButton label="Add Customer" style={{marginTop: 13,marginLeft:5,}}  onClick={()=>{this.props.history.push('/app/customer/viewcustomerdetails/0/add')}} backgroundColor="#3f6ff6"  />
+            <RaisedButton label="Add Customer" labelColor="white" style={{marginTop: 13,marginLeft:5,}}  onClick={()=>{this.props.history.push('/app/customer/viewcustomerdetails/0/add')}} backgroundColor="#3f6ff6"  />
           </div>
 
           <div className="top-nav-right">

@@ -75,7 +75,7 @@ const DetailsForm = (props) => {
     <div className="col-xl-12 no-padding">
       <div className="box box-default">
         <div className="box-heading">
-            <h3 className="article-title">Customer Detail</h3>
+            <h3 className="article-title" style={{color:'black'}} >New Customer</h3>
         </div>
         <div className="box-body" style={{margin:15}} >
           <div className="form-group row" style={styles.formGroup}>
