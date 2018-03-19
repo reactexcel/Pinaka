@@ -92,13 +92,13 @@ const styles = {
       const customerData =( <table style={{marginLeft:'-1%',width:'100%' }} className="mdl-data-table table-responsive table-resp">
       <thead>
         <tr>
-        <th className="mdl-data-table__cell--non-numeric">No.</th>
-        <th className="mdl-data-table__cell--non-numeric">Name</th>
-        <th className="mdl-data-table__cell--non-numeric">Email Id</th>
-        <th className="mdl-data-table__cell--non-numeric">Phone Number</th>
-        <th className="mdl-data-table__cell--non-numeric">Redeem Code</th>
-        <th className="mdl-data-table__cell--non-numeric">SMS Option</th>
-        <th className="mdl-data-table__cell--non-numeric">App Installed</th>
+        <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >No.</th>
+        <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >Name</th>
+        <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >Email Id</th>
+        <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >Phone Number</th>
+        <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >Redeem Code</th>
+        <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >SMS Option</th>
+        <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >App Installed</th>
         </tr>
       </thead>
       <tbody>
@@ -119,9 +119,9 @@ const styles = {
     const redemptionData =( <table style={{marginLeft:'1%',width:"94%"}} className="table mdl-data-table table-responsive">
       <thead>
         <tr>
-        <th className="mdl-data-table__cell--non-numeric">#</th>
-        <th className="mdl-data-table__cell--non-numeric">Customer Name</th>
-        <th className="mdl-data-table__cell--non-numeric">Redemption Date and Time</th>
+        <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >#</th>
+        <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >Customer Name</th>
+        <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >Redemption Date and Time</th>
         </tr>
       </thead>
       <tbody>

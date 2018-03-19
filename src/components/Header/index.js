@@ -60,7 +60,7 @@ class Header extends React.Component {
       <section className="app-header">
         <div
           className={classnames('app-header-inner')}
-          style={{backgroundColor:'#1b025c'}}
+          style={{backgroundColor:'white'}}
                 >
           <div className="d-lg-none d-xl-none float-left">
             <a href="javascript:;" className="md-button header-icon toggle-sidebar-btn" ref={(c) => { this.sidebarBtn = c; }}>
@@ -72,7 +72,7 @@ class Header extends React.Component {
             <h2><Link to="/">{APPCONFIG.brand}</Link></h2>
           </div>
           <div className="top-nav-left" >
-            <RaisedButton label="Add Customer" style={{marginTop: 13,marginLeft:5,}}  onClick={()=>{this.props.history.push('/app/customer/viewcustomerdetails/0/add')}} backgroundColor="#414afa"  />
+            <RaisedButton label="Add Customer" style={{marginTop: 13,marginLeft:5,}}  onClick={()=>{this.props.history.push('/app/customer/viewcustomerdetails/0/add')}} backgroundColor="#3f6ff6"  />
           </div>
 
           <div className="top-nav-right">

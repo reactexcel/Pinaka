@@ -78,7 +78,7 @@ class Redeem extends React.Component {
                     <h2 className="article-title">Redeem Code Details</h2>
                     <div>
                       {/* button for add update and delete */}
-                      <RaisedButton label="Add Redeem Code" style={{margin: '5px',}}  onClick={()=>{this.props.history.push('/app/redeem/viewredeemdetails/0/add')}} backgroundColor="#414afa" />
+                      <RaisedButton label="Add Redeem Code" style={{margin: '5px',}}  onClick={()=>{this.props.history.push('/app/redeem/viewredeemdetails/0/add')}} backgroundColor="#3f6ff6" />
 
                     </div>
                   </div>
@@ -102,13 +102,13 @@ class Redeem extends React.Component {
                     />
                   </div> */}
                   <div className="box box-default table-box mdl-shadow--2dp">
-                    <table className="mdl-data-table table-responsive">
-                      <thead style={{backgroundColor:'#414afa'}} >
+                    <table className="mdl-data-table">
+                      <thead style={{backgroundColor:'#3f6ff6'}} >
                         <tr>
-                          <th className="mdl-data-table__cell--non-numeric">#</th>
-                          <th className="mdl-data-table__cell--non-numeric">Redeem Code</th>
-                          <th className="mdl-data-table__cell--non-numeric">Type</th>
-                          <th>Status</th>
+                          <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >#</th>
+                          <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >Redeem Code</th>
+                          <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >Type</th>
+                          <th style={{color:'white'}} >Status</th>
                           {/* <th>Used By</th> */}
                         </tr>
                       </thead>

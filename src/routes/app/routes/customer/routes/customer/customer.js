@@ -106,7 +106,7 @@ class Customer extends React.Component {
             <div className="box box-default">
               <div className="box-body">
                 <article className="article">
-                  <h2 className="article-title">Customer Details</h2>
+                  <h2 className="article-title">Customer</h2>
                   
                   <div className="row">
                     <div className="col-xs-4 search-resp" style={{border:"1px solid #e9e8ec", borderRadius:5,marginBottom:10,marginLeft:14}} >
@@ -115,7 +115,7 @@ class Customer extends React.Component {
                         <TextField
                           hintText="Search"
                           icon={<i className="material-icons">search</i>}
-                          style={{width:'92%' }}
+                          style={{width:'90%' }}
                           value={this.state.search}
                           onChange={this.handleChange('search')}
                           type="text"
@@ -135,14 +135,14 @@ class Customer extends React.Component {
                   </div>
                   <div className="box box-default table-box mdl-shadow--2dp">
                     <table className="mdl-data-table table-responsive table-resp " >
-                      <thead style={{backgroundColor:'#414afa'}} >
+                      <thead style={{backgroundColor:'#3f6ff6'}} >
                         <tr>
-                          <th className="mdl-data-table__cell--non-numeric">Phone Number</th>
-                          <th className="mdl-data-table__cell--non-numeric">Email Id</th>
-                          <th className="mdl-data-table__cell--non-numeric">Name</th>
-                          <th>Redeem Code</th>
-                          <th>SMS Option</th>
-                          <th>App Installed</th>
+                          <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >Phone Number</th>
+                          <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >Email Id</th>
+                          <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >Name</th>
+                          <th style={{color:'white'}} >Redeem Code</th>
+                          <th style={{color:'white'}} >SMS Option</th>
+                          <th style={{color:'white'}} >App Installed</th>
                           {/* {this.state.search != ''? 
                           <th> Deactivate </th>
                           : null } */}
