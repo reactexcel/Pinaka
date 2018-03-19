@@ -84,7 +84,7 @@ const DetailsForm = (props) => {
               null
               :
               <div className='col-md-6 col-xs-9 resp-p-x-0 no-padding' >
-                <RaisedButton style={{marginLeft:5}} label={props.type =='add'?"Add":"Save"} backgroundColor={"#1b025c"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-xs" />
+                <RaisedButton style={{marginLeft:5}} label={props.type =='add'?"Add":"Save"} backgroundColor={"#414afa"} labelColor="#ffffff" onClick={()=>{props.handleSave()}} className="btn-w-xs" />
                 <RaisedButton label="Cancel" style={styles.button} onClick={()=>{props.handleEdit('cancel')}} className="btn-w-xs" />
               </div>  
               :
@@ -92,8 +92,8 @@ const DetailsForm = (props) => {
               null
               :
               <div className='col-md-6 col-xs-9 resp-p-x-0'>
-                <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-xs" />
-                <RaisedButton label="Delete" backgroundColor="#ff00a2" labelColor="white" style={{marginLeft:5}} onClick={()=>{props.handleDelete({token:props.user.data.token,data:{_id:props.data._id,infusion_id:props.data.infusion_id?props.data.infusion_id :'' }}) }} className="btn-w-xs" />
+                <RaisedButton label="Edit" backgroundColor="#414afa" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-xs" />
+                <RaisedButton label="Delete" backgroundColor="#ff0051" labelColor="white" style={{marginLeft:5}} onClick={()=>{props.handleDelete({token:props.user.data.token,data:{_id:props.data._id,infusion_id:props.data.infusion_id?props.data.infusion_id :'' }}) }} className="btn-w-xs" />
                 <RaisedButton label={props.type == 'disable'?"Back":"cancel"}  style={{marginLeft:5}}  onClick={()=>{props.type == 'disable'? props.handleEdit('back'):props.handleEdit('cancel')}} className="btn-w-xs" />
               </div>
             }
@@ -105,8 +105,8 @@ const DetailsForm = (props) => {
              isLoading ?
               null
               :
-              <div className="col-md-4 resp-p-x-0"  >
-                <RaisedButton label={"Activity"}  style={{marginLeft:5, float:'right' }}  onClick={ props.handleActivity } className="btn-w-xs" />              
+              <div className="col-md-4 resp-p-x-0 btn-activity"  >
+                <RaisedButton label={"Activity"}  style={{marginLeft:5, float:'right' }} labelStyle={{paddingLeft: "5px",paddingRight:"8px" , fontSize: 13,}}  onClick={ props.handleActivity } className="btn-w-xs label-activity" />              
               </div>
             }
           </div>
@@ -461,8 +461,8 @@ const DetailsForm = (props) => {
                   null
                   :
                   <div className='col-md-6 col-xs-9 resp-p-x-0 ' style={{paddingLeft:13}} >
-                    <RaisedButton label="Edit" backgroundColor="#7edbe8" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-xs" />
-                    <RaisedButton label="Delete" style={{marginLeft:5}} backgroundColor="#ff00a2" labelColor="white" onClick={()=>{props.handleDelete({token:props.user.data.token,data:{_id:props.data._id,infusion_id:props.data.infusion_id?props.data.infusion_id :'' }})}} className="btn-w-xs" />
+                    <RaisedButton label="Edit" backgroundColor="#414afa" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-xs" />
+                    <RaisedButton label="Delete" style={{marginLeft:5}} backgroundColor="#ff0051" labelColor="white" onClick={()=>{props.handleDelete({token:props.user.data.token,data:{_id:props.data._id,infusion_id:props.data.infusion_id?props.data.infusion_id :'' }})}} className="btn-w-xs" />
                     <RaisedButton label={props.type == 'disable'?"Back":"cancel"}  style={{marginLeft:5}}  onClick={()=>{props.type == 'disable'? props.handleEdit('back'):props.handleEdit('cancel')}} className="btn-w-xs" />
                   </div>
                 :
@@ -863,7 +863,7 @@ class CustomerDetails extends React.Component {
   }
   handleDelete (data) {
     this.props.customerDeleteRequest({token:data.token,data:data.data});
-    this.props.customerListRequest({token:data.token,page:0});
+    this.props.customerListRequest({token:data.token,page:0});  
     this.props.customerListChartRequest(data.token)
     this.props.history.push('/app/customer/viewcustomer');
   }

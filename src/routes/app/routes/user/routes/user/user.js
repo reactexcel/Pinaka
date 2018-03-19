@@ -82,7 +82,7 @@ class User extends React.Component {
                   </div>
                   <div className="row">
                     <div className="col-xl-12">
-                      <RaisedButton label="Add User" style={{boxShadow:'none',marginRight:5}}  onClick={()=>{this.props.history.push('/app/user/viewuserdetails/0/add')}}  primary  />
+                      <RaisedButton label="Add User" style={{boxShadow:'none',marginRight:5}}  onClick={()=>{this.props.history.push('/app/user/viewuserdetails/0/add')}}  backgroundColor="#414afa"  />
                       <TextField
                         hintText="Search"
                         style={{width:'75%', marginLeft: "3vw" }}
@@ -95,7 +95,7 @@ class User extends React.Component {
                   </div>
                   <div className="box box-default table-box mdl-shadow--2dp">
                     <table className="mdl-data-table table-responsive">
-                      <thead>
+                      <thead style={{backgroundColor:'#414afa'}} >
                         <tr>
                           <th className="mdl-data-table__cell--non-numeric">#</th>
                           <th className="mdl-data-table__cell--non-numeric">Name</th>

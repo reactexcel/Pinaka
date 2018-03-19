@@ -109,26 +109,33 @@ class Customer extends React.Component {
                   <h2 className="article-title">Customer Details</h2>
                   
                   <div className="row">
-                    <div className="col-xl-12">
-                      <RaisedButton label="Add Customer"  style={{boxShadow:'none',marginRight:5}}  onClick={()=>{this.props.history.push('/app/customer/viewcustomerdetails/0/add')}} primary />
-                      <TextField
-                        hintText="Search"
-                        style={{width:'75%', marginLeft: "3vw" }}
-                        value={this.state.search}
-                        onChange={this.handleChange('search')}
-                        type="text"
-                        fullWidth
-                      />
+                    <div className="col-xs-4 search-resp" style={{border:"1px solid #e9e8ec", borderRadius:5,marginBottom:10,marginLeft:14}} >
+                      {/* <RaisedButton label="Add Customer"  style={{boxShadow:'none',marginRight:5}}  onClick={()=>{this.props.history.push('/app/customer/viewcustomerdetails/0/add')}} primary /> */}
+                        <i className="material-icons" style={{transform: 'translateY(8px)',color:'#e9e8ec'}}>search</i>
+                        <TextField
+                          hintText="Search"
+                          icon={<i className="material-icons">search</i>}
+                          style={{width:'92%' }}
+                          value={this.state.search}
+                          onChange={this.handleChange('search')}
+                          type="text"
+                          fullWidth
+                        />
+                    </div>
+                    <div className="col-xs-2 hidden-xs" />
+                    <div className="col-xs-6 btn-nxt-pre" style={{display:'flex'}} >
+                      <span style={{marginRight:"10%",marginTop:"2%",color:"#grey"}} >{this.state.page + 1} out of {totalPage}</span>
+                      <div  className="btn-s-m" style={{float:'right'}} >
+                        <a style={{color:this.state.page!= 0 ? '#414afa':'grey',cursor:this.state.page !=0?'pointer':"not-allowed",marginRight:15}} onClick={()=>{this.state.page != 0 ?this.handleNext('prev'):null}} ><span><i className="material-icons" style={{transform:"translateY(7px)",color:this.state.page!= 0 ? '#414afa':'grey'}} >keyboard_arrow_left </i> Previous </span></a>
+                        <a style={{color:this.props.customer.data.length > 20 ? '#414afa':'grey',cursor:this.props.customer.data.length > 20?'pointer':"not-allowed",marginRight:15}} onClick={()=>{this.props.customer.data.length > 20 ?this.handleNext('next'):null}} ><span> Next <i className="material-icons" style={{transform:"translateY(7px)",color:this.props.customer.data.length > 20? '#414afa':'grey'}} >keyboard_arrow_right </i> </span></a>
+                      </div>
+                      {/* {this.state.page != 0 ? <a style={{color:'#00bcd6',cursor:'pointer',marginRight:15}} onClick={()=>{this.handleNext('prev')}} > Previous </a>: null  } */}
+                      {/* {this.props.customer.data.length < 20 ? null : <a style={{color:'#00bcd6',cursor:'pointer'}} onClick={()=>{this.handleNext('next')}} > Next </a>} */}
                     </div>
                   </div>
-                  <div>
-                    {this.state.page != 0 ? <a style={{color:'#00bcd6',cursor:'pointer',marginRight:15}} onClick={()=>{this.handleNext('prev')}} > Previous </a>: null  }
-                    {this.props.customer.data.length < 20 ? null : <a style={{color:'#00bcd6',cursor:'pointer'}} onClick={()=>{this.handleNext('next')}} > Next </a>}
-                    <span style={{float:"right",marginRight:5}} >{this.state.page + 1} out of {totalPage}</span>
-                  </div>
                   <div className="box box-default table-box mdl-shadow--2dp">
-                    <table className="mdl-data-table table-responsive" >
-                      <thead>
+                    <table className="mdl-data-table table-responsive table-resp " >
+                      <thead style={{backgroundColor:'#414afa'}} >
                         <tr>
                           <th className="mdl-data-table__cell--non-numeric">Phone Number</th>
                           <th className="mdl-data-table__cell--non-numeric">Email Id</th>

@@ -89,7 +89,7 @@ const styles = {
           
         </tr>
       ));
-      const customerData =( <table style={{marginLeft:'-1%',width:'100%' }} className="mdl-data-table table-responsive">
+      const customerData =( <table style={{marginLeft:'-1%',width:'100%' }} className="mdl-data-table table-responsive table-resp">
       <thead>
         <tr>
         <th className="mdl-data-table__cell--non-numeric">No.</th>

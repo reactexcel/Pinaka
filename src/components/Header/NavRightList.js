@@ -19,7 +19,9 @@ class NavRightList extends React.Component {
     if(value == '/logout'){
       sessionStorage.removeItem('user');
       this.props.loginUserReset();
-      this.props.history.push(value);
+      this.props.history.push('/login');
+    } else {
+      this.props.history.push(value);      
     }
   }
 

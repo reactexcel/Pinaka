@@ -51,7 +51,7 @@
 }
 
 .top-nav-left {
-  display: inline-block;
+  display: -webkit-box;
   > ul {
     display: inline;
     margin: 0;
