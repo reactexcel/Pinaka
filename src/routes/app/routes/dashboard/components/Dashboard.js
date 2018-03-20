@@ -80,30 +80,25 @@ const styles = {
       let CustomerList = _.map(this.props.customer.customerList.data, (value, index) => (
         <tr key={index}>
           <td className="mdl-data-table__cell--non-numeric">{index+1}</td>
-          <td className="mdl-data-table__cell--non-numeric"> <a href={`/#/app/customer/viewcustomerdetails/${index}/disable`}>{value.name} {value.lastName}</a></td>
-          <td className="mdl-data-table__cell--non-numeric">{value.email}</td>
-          <td className="mdl-data-table__cell--non-numeric" ><a href={`/#/app/customer/viewcustomerdetails/${index}/disable`}>{value.phone?value.phone.length > 10 ? value.phone.substring(2, value.phone.length) : value.phone : ''}</a></td>
+          <td className="mdl-data-table__cell--non-numeric"> <a href={`/#/app/customer/viewcustomerdetails/${value._id}/disable`}>{value.name} {value.lastName}</a></td>
+          <td className="mdl-data-table__cell--non-numeric"><a href={`/#/app/customer/viewcustomerdetails/${value._id}/disable`}>{value.email}</a></td>
+          <td className="mdl-data-table__cell--non-numeric" ><a href={`/#/app/customer/viewcustomerdetails/${value._id}/disable`}>{value.phone?value.phone.length > 10 ? value.phone.substring(2, value.phone.length) : value.phone : ''}</a></td>
           <td className="mdl-data-table__cell--non-numeric" >{value.CodeRedeemFlag ? "Yes" : "No"}</td>        
           <td className="mdl-data-table__cell--non-numeric" >{value.sms_option ? "Yes" : "No"}</td>
           <td className="mdl-data-table__cell--non-numeric" >{value.app_installed ? "Yes" : "No"}</td>
-          <td className="mdl-data-table__cell--non-numeric" >
-            <IconButton style={{boxShadow:'none'}}  onClick={()=>{ this.handleDelete({token:this.props.user.userLogged.data.token,data:{_id:value._id,infusion_id:value.infusion_id?value.infusion_id :'' }})  }} >
-              <i className="material-icons" color="red" style={{color:'red'},styles.icon} >delete_forever</i>
-            </IconButton>
-          </td>          
+          
         </tr>
       ));
-      const customerData =( <table style={{marginLeft:'-1%', display: 'inherit' }} className="mdl-data-table table-responsive">
+      const customerData =( <table style={{marginLeft:'-1%',width:'100%' }} className="mdl-data-table table-responsive table-resp">
       <thead>
         <tr>
-        <th className="mdl-data-table__cell--non-numeric">#</th>
-        <th className="mdl-data-table__cell--non-numeric">Name</th>
-        <th className="mdl-data-table__cell--non-numeric">Email Id</th>
-        <th>Phone Number</th>
-        <th>Redeem Code</th>
-        <th>SMS Option</th>
-        <th>App Installed</th>
-        <th>Deactivate</th>
+        <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >No.</th>
+        <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >Name</th>
+        <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >Email Id</th>
+        <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >Phone Number</th>
+        <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >Redeem Code</th>
+        <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >SMS Option</th>
+        <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >App Installed</th>
         </tr>
       </thead>
       <tbody>
@@ -124,9 +119,9 @@ const styles = {
     const redemptionData =( <table style={{marginLeft:'1%',width:"94%"}} className="table mdl-data-table table-responsive">
       <thead>
         <tr>
-        <th className="mdl-data-table__cell--non-numeric">#</th>
-        <th className="mdl-data-table__cell--non-numeric">Customer Name</th>
-        <th className="mdl-data-table__cell--non-numeric">Redemption Date and Time</th>
+        <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >#</th>
+        <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >Customer Name</th>
+        <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >Redemption Date and Time</th>
         </tr>
       </thead>
       <tbody>
