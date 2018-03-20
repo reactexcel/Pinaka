@@ -10,9 +10,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 const styles = {
   chart: {
     position: "relative",
-    margin: "auto",
-    height: "90vh",
-    width: "80vw",
+    margin: "2%",
+    width: "76vw",
   }
 }
 
@@ -104,7 +103,7 @@ constructor(props){
       <div>
         <div className="col-md-12" >
           <div style={{margin:20}} > <h4>Redemption {redeem} </h4> </div>
-          <div  style={{float:"right",marginRight:30,transform: "translateY(-20px)"}} >
+          <div  style={{float:"right",marginRight:70,transform: "translateY(-20px)"}} >
             <RaisedButton label="Week" style={{boxShadow:'none' }}  onClick={()=>{ this.props.handleRedemption(1) }}   />
             <RaisedButton label="Month" style={{boxShadow:'none'}}  onClick={()=>{ this.props.handleRedemption(2) }} />
             <RaisedButton label="Quarter" style={{boxShadow:'none'}}  onClick={()=>{ this.props.handleRedemption(3) }} />

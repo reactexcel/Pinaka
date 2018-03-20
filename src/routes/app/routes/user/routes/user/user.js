@@ -77,12 +77,12 @@ class User extends React.Component {
               <div className="box-body">
                 <article className="article">
                   <div>
-                    <h2 className="article-title">User Details</h2>
+                    <h2 className="article-title">User List</h2>
                     
                   </div>
                   <div className="row">
                     <div className="col-xl-12">
-                      <RaisedButton label="Add User" style={{boxShadow:'none',marginRight:5}}  onClick={()=>{this.props.history.push('/app/user/viewuserdetails/0/add')}}  primary  />
+                      <RaisedButton label="Add User" labelColor='white' style={{boxShadow:'none',marginRight:5}}  onClick={()=>{this.props.history.push('/app/user/viewuserdetails/0/add')}}  backgroundColor="#3f6ff6"  />
                       <TextField
                         hintText="Search"
                         style={{width:'75%', marginLeft: "3vw" }}
@@ -95,13 +95,13 @@ class User extends React.Component {
                   </div>
                   <div className="box box-default table-box mdl-shadow--2dp">
                     <table className="mdl-data-table table-responsive">
-                      <thead>
+                      <thead style={{backgroundColor:'#3f6ff6'}} >
                         <tr>
-                          <th className="mdl-data-table__cell--non-numeric">#</th>
-                          <th className="mdl-data-table__cell--non-numeric">Name</th>
-                          <th className="mdl-data-table__cell--non-numeric">Email Id</th>
-                          <th>Role</th>
-                          <th>Last Login Time</th>
+                          <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >#</th>
+                          <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >Name</th>
+                          <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >Email Id</th>
+                          <th style={{color:'white'}} >Role</th>
+                          <th style={{color:'white'}} >Last Login Time</th>
                         </tr>
                       </thead>
                       <tbody>
