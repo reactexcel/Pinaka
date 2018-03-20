@@ -78,7 +78,7 @@ class Redeem extends React.Component {
                     <h2 className="article-title">Redeem Code List</h2>
                     <div>
                       {/* button for add update and delete */}
-                      <RaisedButton label="Add Redeem Code" style={{margin: '5px',}}  onClick={()=>{this.props.history.push('/app/redeem/viewredeemdetails/0/add')}} backgroundColor="#3f6ff6" labelColor="white" />
+                      <RaisedButton label="Add Redeem Code" style={{marginBottom: '5px',}}  onClick={()=>{this.props.history.push('/app/redeem/viewredeemdetails/0/add')}} backgroundColor="#3f6ff6" labelColor="white" />
 
                     </div>
                   </div>
@@ -102,7 +102,7 @@ class Redeem extends React.Component {
                     />
                   </div> */}
                   <div className="box box-default table-box mdl-shadow--2dp">
-                    <table className="mdl-data-table">
+                    <table className="mdl-data-table table-responsive">
                       <thead style={{backgroundColor:'#3f6ff6'}} >
                         <tr>
                           <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >#</th>

@@ -94,7 +94,7 @@ class User extends React.Component {
                     </div>
                   </div>
                   <div className="box box-default table-box mdl-shadow--2dp">
-                    <table className="mdl-data-table">
+                    <table className="mdl-data-table table-responsive">
                       <thead style={{backgroundColor:'#3f6ff6'}} >
                         <tr>
                           <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >#</th>
