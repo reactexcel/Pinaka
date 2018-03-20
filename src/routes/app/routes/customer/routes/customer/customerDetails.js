@@ -723,6 +723,8 @@ class CustomerDetails extends React.Component {
     if(this.props.customer.updateCustomer.isSuccess){
       this.props.customerReset();
       this.setState({time:0})
+    } else if(this.props.customer.updateCustomer.isError){
+      this.props.customerReset();
     }
   }
   handleActivity = (event) => {
