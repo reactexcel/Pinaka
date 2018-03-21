@@ -116,6 +116,7 @@ class Customer extends React.Component {
                           hintText="Search"
                           icon={<i className="material-icons">search</i>}
                           style={{width:'90%' }}
+                          underlineStyle={{display: 'none'}}
                           value={this.state.search}
                           onChange={this.handleChange('search')}
                           type="text"
@@ -124,17 +125,17 @@ class Customer extends React.Component {
                     </div>
                     <div className="col-xs-2 hidden-xs" />
                     <div className="col-xs-6 btn-nxt-pre" style={{display:'flex'}} >
-                      <span style={{marginRight:"10%",marginTop:"2%",color:"#grey"}} >{this.state.page + 1} out of {totalPage}</span>
+                      {/* <span style={{marginRight:"10%",marginTop:"2%",color:"#grey"}} >{this.state.page + 1} out of {totalPage}</span> */}
                       <div  className="btn-s-m" style={{float:'right'}} >
-                        <a style={{color:this.state.page!= 0 ? '#414afa':'grey',cursor:this.state.page !=0?'pointer':"not-allowed",marginRight:15}} onClick={()=>{this.state.page != 0 ?this.handleNext('prev'):null}} ><span><i className="material-icons" style={{transform:"translateY(7px)",color:this.state.page!= 0 ? '#414afa':'grey'}} >keyboard_arrow_left </i> Previous </span></a>
-                        <a style={{color:this.props.customer.data.length > 20 ? '#414afa':'grey',cursor:this.props.customer.data.length > 20?'pointer':"not-allowed",marginRight:15}} onClick={()=>{this.props.customer.data.length > 20 ?this.handleNext('next'):null}} ><span> Next <i className="material-icons" style={{transform:"translateY(7px)",color:this.props.customer.data.length > 20? '#414afa':'grey'}} >keyboard_arrow_right </i> </span></a>
+                      {this.state.page != 0 ?<a style={{color:this.state.page!= 0 ? '#414afa':'grey',cursor:this.state.page !=0?'pointer':"not-allowed",marginRight:15}} onClick={()=>{this.state.page != 0 ?this.handleNext('prev'):null}} ><span><i className="material-icons" style={{transform:"translateY(7px)",color:this.state.page!= 0 ? '#414afa':'grey'}} >keyboard_arrow_left </i> Previous </span></a>:null}
+                      {this.props.customer.data.length < 25 ? null :<a style={{color:this.props.customer.data.length > 25 ? '#414afa':'grey',cursor:this.props.customer.data.length > 25?'pointer':"not-allowed",marginRight:15}} onClick={()=>{this.props.customer.data.length > 25 ?this.handleNext('next'):null}} ><span> Next <i className="material-icons" style={{transform:"translateY(7px)",color:this.props.customer.data.length > 25? '#414afa':'grey'}} >keyboard_arrow_right </i> </span></a>}
                       </div>
                       {/* {this.state.page != 0 ? <a style={{color:'#00bcd6',cursor:'pointer',marginRight:15}} onClick={()=>{this.handleNext('prev')}} > Previous </a>: null  } */}
                       {/* {this.props.customer.data.length < 20 ? null : <a style={{color:'#00bcd6',cursor:'pointer'}} onClick={()=>{this.handleNext('next')}} > Next </a>} */}
                     </div>
                   </div>
-                  <div className="box box-default table-box mdl-shadow--2dp">
-                    <table className="mdl-data-table table-responsive table-resp " >
+                  <div className="box box-default table-box table-responsive mdl-shadow--2dp">
+                    <table className="mdl-data-table table">
                       <thead style={{backgroundColor:'#3f6ff6'}} >
                         <tr>
                           <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >Phone Number</th>
@@ -165,7 +166,7 @@ class Customer extends React.Component {
                   <div>
                     {this.state.page != 0 ? <a style={{color:'#00bcd6',cursor:'pointer',marginRight:15}} onClick={()=>{this.handleNext('prev')}} > Previous </a>: null  }
                     {this.props.customer.data.length < 20 ? null : <a style={{color:'#00bcd6',cursor:'pointer'}} onClick={()=>{this.handleNext('next')}} > Next </a>}
-                    <span style={{float:"right",marginRight:5}} >{this.state.page + 1} of {totalPage}</span>
+                    {/* <span style={{float:"right",marginRight:5}} >{this.state.page + 1} of {totalPage}</span> */}
                   </div>
                 </article>
               </div>

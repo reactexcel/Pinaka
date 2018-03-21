@@ -4,7 +4,8 @@ import classnames from 'classnames';
 import { Link, withRouter } from 'react-router-dom';
 import APPCONFIG from 'constants/Config';
 import {
-    toggleCollapsedNav
+    toggleCollapsedNav,
+    loginUserReset
 } from '../../actions';
 import SidenavContent from './SidenavContent';
 
@@ -24,8 +25,8 @@ class Sidebar extends React.Component {
     }
   }
 
-  handleChange = (event, value) => {
-    if(value == '/logout'){
+  handleChange = ( value) => {
+    if(value == '/login'){
       sessionStorage.removeItem('user');
       this.props.loginUserReset();
       this.props.history.push(value);
@@ -68,7 +69,7 @@ class Sidebar extends React.Component {
           <ul className="nav"
             style={{backgroundColor:'#1b025c',cursor:'pointer' }}
             >
-            <li style={{marginLeft:"7%",marginTop:'3%',paddingBottom:'5%',display:'inline-flex'}}  onclick={()=>{this.handleChange('/logout')}} >
+            <li style={{marginLeft:"7%",marginTop:'3%',paddingBottom:'5%',display:'inline-flex'}}  onClick={()=>{this.handleChange('/login')}} >
                 <i className="material-icons">power_settings_new</i>
                 <span className="nav-text" style={{marginLeft:'8%'}} >Logout</span>
             </li>
@@ -88,7 +89,14 @@ const mapDispatchToProps = dispatch => ({
   handleToggleCollapsedNav: (isNavCollapsed) => {
     dispatch(toggleCollapsedNav(isNavCollapsed));
   },
+  loginUserReset : ()=>{
+    dispatch(loginUserReset() );
+  },
+
 });
+
+// const mapDispatchToProps = (dispatch) => { return bindActionCreators(actions, dispatch); };
+
 
 module.exports = withRouter(connect(
   mapStateToProps,
