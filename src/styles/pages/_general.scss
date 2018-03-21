@@ -7,15 +7,25 @@
         margin: 0; 
     }
 }
-@media (max-width: 768px) {
-    .table-responsive{
-        display: inline-table ;
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+    // .table-responsive{
+    //     display: inline-table;
+    // }
+    .btn-resp-6{
+        padding-top: 6% !important;
     }
+
 }
 //ipad 
 @media only screen  and (max-width: 1024px) {
     .table-resp{
+        display: inline-table;
+    }
+    .table-responsive{
         display: -webkit-box;
+    }
+    .m-l-6{
+        margin-left: 6% !important;
     }
     .col-xs-6{
         width: 50% !important;
@@ -35,7 +45,7 @@
     }
   }
 // phone
-@media only screen and (max-width: 786px) {
+@media only screen and (max-width: 767px) {
     .resp-p-a-0 {
         padding: 0;
     }
@@ -75,6 +85,9 @@
         width: 85% !important;
     }
     .table-resp{
+        display: -webkit-box;
+    }
+    .table-responsive{
         display: -webkit-box;
     }
     .col-xs-0{

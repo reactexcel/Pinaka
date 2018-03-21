@@ -236,7 +236,7 @@ export function* addCustomer(data){
     }
     formData.append('age_group', params.age_group);
     formData.append('interests', params.interest);
-    formData.append('source', params.source);
+    formData.append('source', params.contact_source);
     formData.append('type', 0);
     formData.append('password', params.password);
     formData.append('occupation', params.occupation);
@@ -309,7 +309,7 @@ export function* updateCustomer(data){
     formData.append('age_group', params.age_group);
   }
   formData.append('interests', params.interest);
-  formData.append('source', params.source != undefined ? params.source : 1);
+  formData.append('source', params.contact_source != undefined ? params.contact_source : 1);
   formData.append('type', 0);
   formData.append('password', params.password);
   formData.append('occupation', params.occupation);
