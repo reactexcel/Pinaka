@@ -76,10 +76,12 @@ class Redeem extends React.Component {
                 <article className="article">
                   <div>
                     <h2 className="article-title">Redeem Code List</h2>
-                    <div>
-                      {/* button for add update and delete */}
-                      <RaisedButton label="Add Redeem Code" style={{marginBottom: '5px',}}  onClick={()=>{this.props.history.push('/app/redeem/viewredeemdetails/0/add')}} backgroundColor="#3f6ff6" labelColor="white" />
-
+                    <div className="row">
+                      <div className="col-md-12" >
+                      <div style={{float:"right"}} >
+                        <RaisedButton label="Add Redeem Code" style={{marginBottom: '5px',}}  onClick={()=>{this.props.history.push('/app/redeem/viewredeemdetails/0/add')}} backgroundColor="#3f6ff6" labelColor="white" />
+                      </div>
+                      </div>
                     </div>
                   </div>
                   {/* <div className=" col-xl-12 row" >
@@ -101,8 +103,8 @@ class Redeem extends React.Component {
                       fullWidth
                     />
                   </div> */}
-                  <div className="box box-default table-box mdl-shadow--2dp">
-                    <table className="mdl-data-table table-responsive">
+                  <div className="box box-default table-box table-responsivex mdl-shadow--2dp">
+                    <table className="mdl-data-table table">
                       <thead style={{backgroundColor:'#3f6ff6'}} >
                         <tr>
                           <th className="mdl-data-table__cell--non-numeric" style={{color:'white'}} >#</th>

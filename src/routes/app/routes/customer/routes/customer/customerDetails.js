@@ -229,7 +229,7 @@ const DetailsForm = (props) => {
                         textFieldStyle={{width:'95%', display:'inherit'}}
                         value={dobDate}
                         formatDate={(value)=>{const date = new Date(value);
-                          return `${date.getDate()}/${date.getMonth()}`
+                          return `${date.getDate()}/${date.getMonth()+1}`
                         }}
                         onChange={props.handleChange('birthday')}
                         disabled={isDisabled}
@@ -263,7 +263,7 @@ const DetailsForm = (props) => {
                       value={anniversaryDate}
                       disableYearSelection
                       formatDate={(value)=>{const date = new Date(value);
-                                  return `${date.getDate()}/${date.getMonth()}`
+                                  return `${date.getDate()}/${date.getMonth()+1}`
                                 }}
                       onChange={props.handleChange('anniversary')}
                       disabled={isDisabled}
@@ -304,10 +304,10 @@ const DetailsForm = (props) => {
                    <div className="col-md-4">
                     <SelectField
                       hintText="Select Source"
-                      value={props.data.source}
+                      value={props.data.contact_source}
                       style={styles.dropFeild,{width:"auto", display:'flow-root'}}
                       onChange={props.handleChange('source')}
-                      disabled
+                      disabled={isDisabled}
                     >
                       <MenuItem value={1} primaryText="Mobile App" />
                       <MenuItem value={2} primaryText="SMS" />
@@ -460,7 +460,7 @@ const DetailsForm = (props) => {
                   isLoading ?
                   null
                   :
-                  <div className='col-md-6 col-xs-9 resp-p-x-0 ' style={{paddingLeft:13}} >
+                  <div className='col-md-6 col-xs-9 resp-p-x-0 ' >
                     <RaisedButton label="Edit" backgroundColor="#3f6ff6" labelColor="#ffffff"  onClick={()=>{props.handleEdit('edit')}} className="btn-w-xs" />
                     <RaisedButton label="Delete" style={{marginLeft:5}} backgroundColor="#ff0051" labelColor="white" onClick={()=>{props.handleDelete({token:props.user.data.token,data:{_id:props.data._id,infusion_id:props.data.infusion_id?props.data.infusion_id :'' }})}} className="btn-w-xs" />
                     <RaisedButton label={props.type == 'disable'?"Back":"cancel"}  style={{marginLeft:5}}  onClick={()=>{props.type == 'disable'? props.handleEdit('back'):props.handleEdit('cancel')}} className="btn-w-xs" />
@@ -533,7 +533,7 @@ class CustomerDetails extends React.Component {
       marital: true,
       type:false,
       occupation: '',
-      source: 1,
+      contact_source: 1,
     };
     this.setState({intrestList: interest.interestList.data,});
     for(var i = 0; i < interest.interestList.data.length; i++){
@@ -560,7 +560,7 @@ class CustomerDetails extends React.Component {
       data.state = data.state ? data.state : '';
       data.city = data.city ? data.city : '';
       data.zipcode = data.zipcode ? data.zipcode : '';
-      data.source = data.source ? data.source : 1;
+      data.contact_source = data.contact_source ? data.contact_source : 1;
       data.phone = data.phone? data.phone.length > 10 ? data.phone.substring(2, data.phone.length) : data.phone : '';
       data.interest = [];
       _.map(data.interests,(value,index)=>{ return data.interest.push(value.id)}); 
@@ -626,7 +626,7 @@ class CustomerDetails extends React.Component {
       marital: true,
       type:false,
       occupation: '',
-      source: 1
+      contact_source: 1
     };
     this.setState({intrestList: interest.interestList.data,});    
     for(var i = 0; i < interest.interestList.data.length; i++){
@@ -842,7 +842,7 @@ class CustomerDetails extends React.Component {
   }
   handleChange = props => (event, index, value) =>{
     let data = this.state.data;
-    if(props == 'source' || props == 'marital' || props == 'city' || props == 'state' || props == 'age_group' ){
+    if(props == 'contact_source' || props == 'marital' || props == 'city' || props == 'state' || props == 'age_group' ){
       data[props] = value;
     } else if (props == 'kids' || props == 'sms_option' || props == 'CodeRedeemFlag' || props == 'app_installed') {
       data[props] = !data[props];
