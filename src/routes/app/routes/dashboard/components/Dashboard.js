@@ -135,7 +135,7 @@ const styles = {
             <div key="2"><StatBoxes {...this.props} handleSelect={this.handleSelect} {...this.state} /></div>
           </QueueAnim>
           {this.props.user.userLogged.data.data.role == 'Admin'? 
-            <div className="row box box-default" style={{marginBottom:80}} >
+            <div className="row box box-default" style={{marginBottom:80,marginLeft:"0%"}} >
                 <Chart {...this.props} redemption={this.props.customer.redemption.data}  handleRedemption={this.handleRedemption} {...this.state} />
             </div>
             :

@@ -76,18 +76,9 @@ class User extends React.Component {
             <div className="box box-default">
               <div className="box-body">
                 <article className="article">
-                  <div className="row" >
-                    <div className="col-xs-4" >
-                      <h2 className="article-title">User List</h2>
-                    </div>
-                    <div className="col-xs-2 hidden-xs" />
-                    <div className="col-xs-6 m-l-6" style={{marginLeft:"33%"}} >                    
-                    <div className="btn-resp-6"  style={{float:"right",paddingTop:'4%'}} >
-                        <RaisedButton label="Add User" labelColor='white' style={{boxShadow:'none',marginRight:5}}  onClick={()=>{this.props.history.push('/app/user/viewuserdetails/0/add')}}  backgroundColor="#3f6ff6"  />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row">
+                  <h2 className="article-title">User List</h2>
+                  
+                  {/* <div className="row">
                     <div className="col-xs-4 search-resp" style={{border:"1px solid #e9e8ec", borderRadius:5,marginBottom:10,marginLeft:14}} >
                         <i className="material-icons" style={{transform: 'translateY(8px)',color:'#e9e8ec'}}>search</i>
                         <TextField
@@ -102,8 +93,31 @@ class User extends React.Component {
                         />
                     </div>
                     <div className="col-xs-2 hidden-xs" />                    
-                      
-                  </div>
+                  </div> */}
+                  <div className="row">
+                      {/* <div className="col-md-6" > */}
+                      <div className="col-xs-4 search-resp" style={{border:"1px solid #e9e8ec", borderRadius:5,marginBottom:10,marginLeft:14,marginRight:"3%"}} >
+                        <i className="material-icons" style={{transform: 'translateY(8px)',color:'#e9e8ec'}}>search</i>
+                        <TextField
+                          hintText="Search"
+                          icon={<i className="material-icons">search</i>}
+                          style={{width:'90%' }}
+                          underlineStyle={{display: 'none'}}
+                          value={this.state.search}
+                          onChange={this.handleChange('search')}
+                          type="text"
+                          fullWidth
+                        />
+                    </div>
+                      {/* </div> */}
+                    <div className="col-xs-2 hidden-xs" />                                          
+                      <div className="col-md-6" >
+                      <div style={{float:"right",paddingTop:'3%'}} >
+                        <RaisedButton label="Add User" labelColor='white' style={{boxShadow:'none',marginBottom:"5px",}}  onClick={()=>{this.props.history.push('/app/user/viewuserdetails/0/add')}}  backgroundColor="#3f6ff6"  />
+                      </div>
+                      </div>
+                    </div>
+
                   <div className="box box-default table-box table-responsive mdl-shadow--2dp">
                     <table className="mdl-data-table table">
                       <thead style={{backgroundColor:'#3f6ff6'}} >
