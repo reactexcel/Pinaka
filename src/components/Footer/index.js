@@ -5,7 +5,7 @@ class Footer extends React.Component {
   render() {
     return (
       <section className="app-footer"
-        style={{backgroundColor:'#1b025c',position:'fixed'}}
+        style={{backgroundColor:'#1b025c',position:'fixed',zIndex:1}}
          >
         <div className="container-fluid" >
           <span className="float-left">

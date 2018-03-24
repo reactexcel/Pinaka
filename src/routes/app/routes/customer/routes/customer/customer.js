@@ -106,7 +106,7 @@ class Customer extends React.Component {
             <div className="box box-default">
               <div className="box-body">
                 <article className="article">
-                  <h2 className="article-title" style={{color:'black'}} >Customer</h2>
+                  <h2 className="article-title" >Customer</h2>
                   
                   <div className="row">
                     <div className="col-xs-4 search-resp" style={{border:"1px solid #e9e8ec", borderRadius:5,marginBottom:10,marginLeft:14}} >
@@ -164,8 +164,8 @@ class Customer extends React.Component {
                     </table>
                   </div>
                   <div>
-                    {this.state.page != 0 ? <a style={{color:'#00bcd6',cursor:'pointer',marginRight:15}} onClick={()=>{this.handleNext('prev')}} > Previous </a>: null  }
-                    {this.props.customer.data.length < 20 ? null : <a style={{color:'#00bcd6',cursor:'pointer'}} onClick={()=>{this.handleNext('next')}} > Next </a>}
+                    {/* {this.state.page != 0 ? <a style={{color:'#00bcd6',cursor:'pointer',marginRight:15}} onClick={()=>{this.handleNext('prev')}} > Previous </a>: null  } */}
+                    {/* {this.props.customer.data.length < 20 ? null : <a style={{color:'#00bcd6',cursor:'pointer'}} onClick={()=>{this.handleNext('next')}} > Next </a>} */}
                     {/* <span style={{float:"right",marginRight:5}} >{this.state.page + 1} of {totalPage}</span> */}
                   </div>
                 </article>
