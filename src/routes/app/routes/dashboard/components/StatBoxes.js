@@ -21,10 +21,10 @@ const Statboxes = (props) =>{
       </div>
     </div>
 
-    {props.user.userLogged.data.data.role == 'Admin'? 
-      <div className="col-xl-3 col-sm-6" style={{cursor:'pointer'}} >
+    {/* {props.user.userLogged.data.data.role == 'Admin'? 
+      <div className="col-xl-3 col-sm-6" style={{cursor:'pointer'}} > */}
       {/* <div className="col-xl-3 col-sm-6" style={{cursor:'pointer'}} onClick={()=>{props.history.push('/app/user/viewuser')}} > */}
-        <div className="box box-default">
+        {/* <div className="box box-default">
           <div className="box-top">
             <span>{props.user.user.data.length}</span>
           </div>
@@ -38,7 +38,7 @@ const Statboxes = (props) =>{
       </div>
       :
       null
-      }
+      } */}
 
       {props.user.userLogged.data.data.role == 'Admin'? 
       <div className="col-xl-3 col-sm-6" style={{cursor:'pointer'}}  >

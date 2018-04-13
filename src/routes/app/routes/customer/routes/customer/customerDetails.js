@@ -228,8 +228,12 @@ const DetailsForm = (props) => {
                         hintText="Select date"
                         textFieldStyle={{width:'95%', display:'inherit'}}
                         value={dobDate}
-                        formatDate={(value)=>{const date = new Date(value);
-                          return `${date.getDate()}/${date.getMonth()+1}`
+                        formatDate={(value)=>{ const date = new Date(value);
+                          if(props.data.app_installed){
+                            return `${date.getDate()}/${date.getMonth()}`
+                          } else {
+                            return `${date.getDate()}/${date.getMonth()+1}`
+                          }
                         }}
                         onChange={props.handleChange('birthday')}
                         disabled={isDisabled}
@@ -263,8 +267,12 @@ const DetailsForm = (props) => {
                       value={anniversaryDate}
                       disableYearSelection
                       formatDate={(value)=>{const date = new Date(value);
-                                  return `${date.getDate()}/${date.getMonth()+1}`
-                                }}
+                              if(props.data.app_installed){
+                                return `${date.getDate()}/${date.getMonth()}`
+                              } else {
+                                return `${date.getDate()}/${date.getMonth()+1}`
+                              }
+                          }}
                       onChange={props.handleChange('anniversary')}
                       disabled={isDisabled}
                     />
