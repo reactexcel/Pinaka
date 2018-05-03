@@ -19,6 +19,8 @@ import * as actions from 'actions';
 import Snackbar from 'material-ui/Snackbar';
 import {statecity} from 'constants/statecity';
 import {API} from 'constants/api';
+import moment from 'moment';
+import * as $ from 'jquery';
 
 const styles = {
   toggle: {
@@ -62,7 +64,7 @@ const styles = {
 
 
 const DetailsForm = (props) => {
-  let token = props.user.data.token;  
+  let token = props.user.data.token;
   let isDisabled = props.type == 'disable' ? true : false;
   const { isLoading, data, errors } = props;
   const genderVaalue = props.data.gender;
@@ -230,7 +232,7 @@ const DetailsForm = (props) => {
                         value={dobDate}
                         formatDate={(value)=>{ const date = new Date(value);
                           if(props.data.app_installed){
-                            return `${date.getDate()}/${date.getMonth()}`
+                            return `${date.getDate()}/${date.getMonth()+1}`
                           } else {
                             return `${date.getDate()}/${date.getMonth()+1}`
                           }
@@ -268,7 +270,7 @@ const DetailsForm = (props) => {
                       disableYearSelection
                       formatDate={(value)=>{const date = new Date(value);
                               if(props.data.app_installed){
-                                return `${date.getDate()}/${date.getMonth()}`
+                                return `${date.getDate()}/${date.getMonth()+1}`
                               } else {
                                 return `${date.getDate()}/${date.getMonth()+1}`
                               }
@@ -555,8 +557,15 @@ class CustomerDetails extends React.Component {
         time : 1
       });
     }else if(match.params.type == 'disable' ){
-      const select = _.filter(customer.customerList.data,{_id:match.params.id})            
-      let data = select[0];
+      const select = _.filter(customer.customerList.data,{_id:match.params.id})    
+      let customerdata;
+      if(select[0] != null){
+        sessionStorage.setItem('customer',JSON.stringify(select)) 
+      } else {
+        customerdata = JSON.parse(sessionStorage.getItem('customer'));
+      }
+
+      let data = select[0] != null ? select[0]: customerdata[0];
       data.name = data.name ? data.name : '';
       data.lastName = data.lastName ? data.lastName:'';
       data.email = data.email ? data.email : '';
@@ -649,9 +658,15 @@ class CustomerDetails extends React.Component {
       });
     } else if(match.params.type == 'disable') {
       const select = _.filter(customer.customerList.data,{_id:match.params.id})      
-      
-      let data = select[0];
-      const item = select[0]
+      let customerdata;
+      if(select[0] != null){
+        sessionStorage.setItem('customer',JSON.stringify(select)) 
+      } else {
+        customerdata = JSON.parse(sessionStorage.getItem('customer'));
+      }
+
+      let data = select[0] != null ? select[0]: customerdata[0];
+      const item = select[0] != null ?select[0]: customerdata[0];
       data.name = data.name ? data.name : '';
       data.lastName = data.lastName ? data.lastName:'';
       data.email = data.email ? data.email : '';
